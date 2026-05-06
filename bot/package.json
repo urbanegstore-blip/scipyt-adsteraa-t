@@ -1,0 +1,13 @@
+{
+  "name": "impression-bot",
+  "version": "1.0.0",
+  "description": "High-stealth impression bot",
+  "main": "impression-bot.js",
+  "scripts": {
+    "start": "node impression-bot.js"
+  },
+  "dependencies": {
+    "ghost-cursor": "latest",
+    "playwright": "latest"
+  }
+}
