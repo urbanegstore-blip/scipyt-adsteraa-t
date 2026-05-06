@@ -3,6 +3,7 @@ const { runImpression } = require('./impression-bot');
 
 const fs = require('fs');
 const path = require('path');
+const http = require('http');
 
 // ==========================================
 // ⚙️ CONFIGURATION
@@ -25,6 +26,16 @@ try {
 // ==========================================
 
 async function runContinuousFleet() {
+  // Render.com Port Binding Hack
+  // Render requires Web Services to bind to a port, otherwise it crashes the app.
+  const PORT = process.env.PORT || 3000;
+  http.createServer((req, res) => {
+    res.writeHead(200, { 'Content-Type': 'text/plain' });
+    res.end('Bot Fleet is active and running.');
+  }).listen(PORT, () => {
+    console.log(`🌐 Dummy Web Server listening on port ${PORT} to satisfy Render!`);
+  });
+
   const BATCH_SIZE = 1;
   console.log(`🚀 Booting up Bot Fleet on Browserless. Concurrent scaling set to: ${BATCH_SIZE}`);
   console.log(`🎯 Target URL: ${TARGET_URL}`);
