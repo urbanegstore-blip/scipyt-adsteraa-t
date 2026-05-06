@@ -83,7 +83,7 @@ async function runImpression(targetUrl, profileId, browserlessToken) {
     browser = await chromium.connectOverCDP(wsUrl);
   } catch (error) {
     console.error(`[Bot ${profileId}] Failed to connect to Browserless. Check token/limits.`, error.message);
-    return;
+    throw error; // Throw the error so fleet.js can instantly pivot to the next token
   }
 
   const uas = [
