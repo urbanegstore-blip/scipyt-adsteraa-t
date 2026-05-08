@@ -118,48 +118,10 @@ async function runImpression(targetUrl, profileId, browserlessToken) {
   const page = await context.newPage();
   let activePage = page;
   let impressionRecorded = false;
-  let redirectCount = 0;
-
-  // 🛡️ SILENT UNIT-SAVER FIREWALL (Fulfills with empty data to avoid detection)
-  const applyFirewall = async (targetPage) => {
-    await targetPage.route('**/*', (route) => {
-      const url = route.request().url().toLowerCase();
-      const type = route.request().resourceType();
-
-      // Block heavy videos and fonts by extension and type
-      const isHeavy = 
-        ['font', 'media'].includes(type) || 
-        url.endsWith('.mp4') || url.endsWith('.webm') || 
-        url.endsWith('.woff2') || url.endsWith('.woff') || url.endsWith('.ttf');
-
-      if (isHeavy) {
-        // We FULFILL instead of ABORT so the website thinks it loaded but stays empty
-        return route.fulfill({
-          status: 200,
-          contentType: 'text/plain',
-          body: ''
-        });
-      }
-      
-      route.continue();
-    });
-  };
-
-  await applyFirewall(page);
-
-  // 🛑 DOWNLOAD INTERCEPTOR
-  page.on('download', async (download) => {
-    await download.cancel();
-    console.log(`[Bot ${profileId}] ✅ Download intercepted (Units Saved).`);
-  });
-
-  // 🕵️ REDIRECT FOLLOWER (Max 5)
+  // 🕵️ ALLOW FULL LOAD & REDIRECTS (To maximize CPM)
   context.on('page', async newPage => {
-    redirectCount++;
-    if (redirectCount > 5) return;
-    console.log(`[Bot ${profileId}] 🔀 Redirect ${redirectCount}/5 detected!`);
+    console.log(`[Bot ${profileId}] 🔀 Pop-up or Redirect opened!`);
     activePage = newPage;
-    await applyFirewall(activePage);
     await activePage.bringToFront().catch(() => {});
   });
 
