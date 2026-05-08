@@ -123,15 +123,11 @@ async function runSingleFarmingCycle() {
   }
 }
 
-// Run 5 accounts per job
+// Run EXACTLY 1 account per job (For Matrix Carpet Bombing)
 async function startBatch() {
-    console.log("🚀 STARTING CLOUD BATCH (5 Accounts)");
-    for(let i=0; i<5; i++) {
-        await runSingleFarmingCycle();
-        console.log(`🏁 Account ${i+1}/5 complete.`);
-        await new Promise(r => setTimeout(r, 2000));
-    }
-    console.log("🎉 Batch finished.");
+    console.log("🚀 STARTING CLOUD SINGLE-STRIKE");
+    await runSingleFarmingCycle();
+    console.log(`🏁 Strike complete.`);
     process.exit(0);
 }
 
