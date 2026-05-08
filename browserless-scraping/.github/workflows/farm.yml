@@ -28,6 +28,7 @@ jobs:
       run: |
         rm -rf node_modules
         npm install
+        npm install ws
 
     - name: 🌐 Install Playwright Browsers
       working-directory: ./browserless-scraping

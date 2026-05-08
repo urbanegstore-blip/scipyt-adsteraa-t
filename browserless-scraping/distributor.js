@@ -1,6 +1,9 @@
 const { createClient } = require('@supabase/supabase-js');
 require('dotenv').config();
 
+// Polyfill for Node 20 WebSockets on GitHub Actions
+global.WebSocket = require('ws');
+
 const supabase = createClient(process.env.SUPABASE_URL, process.env.SUPABASE_KEY);
 
 /**

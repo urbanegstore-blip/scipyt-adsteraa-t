@@ -3,6 +3,9 @@ const { createClient } = require('@supabase/supabase-js');
 const { syncTokens } = require('./distributor');
 require('dotenv').config();
 
+// Polyfill for Node 20 WebSockets on GitHub Actions
+global.WebSocket = require('ws');
+
 // Use Environment Variables (will be passed from GitHub Secrets)
 const supabase = createClient(
   process.env.SUPABASE_URL, 
