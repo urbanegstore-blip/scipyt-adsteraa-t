@@ -7,7 +7,7 @@ const { getActiveTokens, logRequest, getFleetStatus } = require('./db.js');
 
 const TARGET_URL = 'https://www.profitablecpmratenetwork.com/ji7r2d6y?key=5c429c07a1c5d04ca019e4a57b64e167';
 const BOTS_PER_TOKEN = 2;       
-const MAX_CONCURRENT_TOKENS = 100; 
+const MAX_CONCURRENT_TOKENS = 250; 
 
 async function runContinuousFleet() {
   console.log(`🚀 Booting up High-Velocity Scaling Fleet...`);
