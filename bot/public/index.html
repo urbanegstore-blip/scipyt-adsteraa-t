@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fleet Alpha | Command Center</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&family=JetBrains+Mono&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Outfit', sans-serif; background: #020617; color: #f8fafc; margin: 0; }
+        .font-mono { font-family: 'JetBrains Mono', monospace; }
+        .glass { background: rgba(15, 23, 42, 0.6); backdrop-filter: blur(20px); border: 1px solid rgba(255,255,255,0.05); }
+        .terminal { background: #000; border: 1px solid #1e293b; font-family: 'JetBrains Mono', monospace; scrollbar-width: thin; }
+        ::-webkit-scrollbar { width: 4px; }
+        ::-webkit-scrollbar-thumb { background: #334155; border-radius: 10px; }
+        .pulse { animation: pulse-animation 2s infinite; }
+        @keyframes pulse-animation { 0% { opacity: 1; } 50% { opacity: 0.3; } 100% { opacity: 1; } }
+        .modal { background: rgba(0,0,0,0.85); backdrop-filter: blur(10px); }
+    </style>
+</head>
+<body class="p-4 md:p-8">
+    <!-- Log History Vault -->
+    <div id="vault-modal" class="fixed inset-0 modal z-[110] hidden flex items-center justify-center p-4">
+        <div class="glass w-full max-w-5xl rounded-3xl overflow-hidden border-indigo-500/20 flex flex-col max-h-[90vh]">
+            <div class="p-6 border-b border-white/5 flex justify-between items-center bg-white/5">
+                <h2 class="text-xl font-bold flex items-center gap-3 italic">LOG HISTORY VAULT</h2>
+                <button onclick="closeVault()" class="text-slate-400 hover:text-white font-bold">CLOSE [ESC]</button>
+            </div>
+            <div id="vault-content" class="p-6 overflow-y-auto font-mono text-xs leading-relaxed text-slate-400"></div>
+        </div>
+    </div>
+
+    <!-- Login Screen -->
+    <div id="login-screen" class="fixed inset-0 flex items-center justify-center bg-slate-950 z-[100] backdrop-blur-xl">
+        <div class="glass p-10 rounded-3xl w-full max-w-md text-center border-white/10">
+            <h1 class="text-3xl font-bold mb-8 tracking-tighter italic">FLEET ALPHA</h1>
+            <input type="password" id="pass-input" placeholder="Admin Key" class="w-full bg-slate-900 border border-slate-700 p-4 rounded-xl mb-4 focus:outline-none focus:border-indigo-500 text-center tracking-widest text-white">
+            <button onclick="login()" class="w-full bg-indigo-600 hover:bg-indigo-500 p-4 rounded-xl font-bold transition-all shadow-lg shadow-indigo-600/20">Authorize</button>
+        </div>
+    </div>
+
+    <div class="max-w-[1600px] mx-auto">
+        <header class="flex flex-col md:flex-row justify-between items-start md:items-center gap-6 mb-12">
+            <div class="flex items-center gap-4">
+                <div class="w-12 h-12 bg-indigo-600/20 rounded-2xl flex items-center justify-center border border-indigo-500/30">
+                    <svg class="w-6 h-6 text-indigo-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M13 10V3L4 14h7v7l9-11h-7z" stroke-width="2"></path></svg>
+                </div>
+                <div>
+                    <h1 class="text-2xl font-bold tracking-tight italic">Fleet Command Center</h1>
+                    <p class="text-[10px] text-slate-500 font-bold uppercase tracking-widest flex items-center gap-2">
+                        <span id="status-pulse" class="w-2 h-2 rounded-full bg-emerald-500 pulse"></span>
+                        Neural Link Active
+                    </p>
+                </div>
+            </div>
+            <div class="flex gap-4">
+                <button id="toggle-btn" onclick="toggleFleet()" class="px-8 py-3 rounded-2xl font-bold border transition-all text-xs tracking-widest bg-emerald-600/10 border-emerald-500/30 text-emerald-500">LOADING...</button>
+                <button onclick="openVault()" class="glass px-8 py-3 rounded-2xl font-bold text-xs tracking-widest text-indigo-400 hover:bg-white/5">LOG VAULT</button>
+            </div>
+        </header>
+
+        <div class="grid grid-cols-1 lg:grid-cols-4 gap-8 mb-8">
+            <!-- Sidebar -->
+            <div class="lg:col-span-1 space-y-6">
+                <div class="glass p-6 rounded-3xl">
+                    <h2 class="font-bold mb-4 text-xs uppercase text-slate-500">Deploy Tokens</h2>
+                    <textarea id="bulk-input" rows="5" class="w-full bg-slate-900 border border-slate-800 p-3 rounded-2xl text-[10px] font-mono mb-4 text-white outline-none focus:border-indigo-500" placeholder="Paste keys..."></textarea>
+                    <button onclick="bulkAdd()" class="w-full bg-indigo-600/20 text-indigo-400 border border-indigo-500/30 py-3 rounded-2xl font-bold text-xs hover:bg-indigo-600 hover:text-white transition-all">ADD TO REGISTRY</button>
+                </div>
+                <div class="glass p-4 rounded-3xl space-y-1">
+                    <button onclick="setFilter('all')" class="w-full text-left p-3 rounded-xl hover:bg-white/5 transition flex justify-between text-xs font-bold">ALL KEYS <span id="count-all">0</span></button>
+                    <button onclick="setFilter('active')" class="w-full text-left p-3 rounded-xl hover:bg-white/5 transition flex justify-between text-xs font-bold text-emerald-400">READY <span id="count-active">0</span></button>
+                    <button onclick="setFilter('exhausted')" class="w-full text-left p-3 rounded-xl hover:bg-white/5 transition flex justify-between text-xs font-bold text-rose-400">EXHAUSTED <span id="count-exhausted">0</span></button>
+                </div>
+            </div>
+
+            <!-- Registry -->
+            <div class="lg:col-span-3">
+                <div class="glass rounded-3xl overflow-hidden">
+                    <div class="p-4 border-b border-white/5 bg-white/5 flex justify-between items-center">
+                        <div class="flex gap-4 items-center">
+                            <input type="text" id="search-input" oninput="refresh()" placeholder="Search..." class="bg-slate-950 border border-slate-800 px-4 py-2 rounded-xl text-[10px] w-64 outline-none focus:border-indigo-500">
+                            <button onclick="refresh()" class="text-[9px] font-bold text-indigo-400 uppercase tracking-widest border border-indigo-500/20 px-4 py-2 rounded-xl hover:bg-indigo-500/10">Refresh</button>
+                        </div>
+                        <div class="glass px-6 py-2 rounded-xl">
+                            <span class="text-[9px] text-slate-500 font-bold uppercase block">Total Requests</span>
+                            <span id="stat-total" class="text-lg font-mono font-bold">0</span>
+                        </div>
+                    </div>
+                    <div class="overflow-x-auto min-h-[400px]">
+                        <table class="w-full text-left">
+                            <thead class="text-slate-500 text-[10px] uppercase font-bold border-b border-white/5">
+                                <tr>
+                                    <th class="px-8 py-4">Identity</th>
+                                    <th class="px-8 py-4">Status</th>
+                                    <th class="px-8 py-4 text-center">Usage</th>
+                                    <th class="px-8 py-4 text-right">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="token-table" class="divide-y divide-white/5 text-[11px]"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Terminal -->
+        <div class="glass rounded-3xl overflow-hidden">
+            <div class="p-4 border-b border-white/5 bg-white/5 flex justify-between items-center text-xs font-bold">
+                <span class="flex items-center gap-2 tracking-widest uppercase"><span class="w-2 h-2 rounded-full bg-emerald-500 pulse"></span> Neural Stream</span>
+                <button onclick="clearTerminal()" class="text-[10px] text-slate-500 hover:text-white uppercase">Clear</button>
+            </div>
+            <div id="terminal-out" class="terminal p-6 h-64 overflow-y-auto text-[11px] leading-relaxed text-slate-300">
+                <div class="text-indigo-400 italic">SYSTEM READY.</div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let password = localStorage.getItem('fleet_pass') || '';
+        let currentFilter = 'all';
+        let currentSort = 'last_used_at';
+
+        if (password) {
+            document.getElementById('login-screen').style.display = 'none';
+            window.onload = init;
+        }
+
+        function login() {
+            password = document.getElementById('pass-input').value;
+            localStorage.setItem('fleet_pass', password);
+            location.reload();
+        }
+
+        async function api(path, method = 'GET', body = null) {
+            try {
+                const res = await fetch(path, {
+                    method,
+                    headers: { 'Authorization': password, 'Content-Type': 'application/json' },
+                    body: body ? JSON.stringify(body) : null
+                });
+                if (res.status === 401) { localStorage.removeItem('fleet_pass'); location.reload(); return null; }
+                return res.json();
+            } catch(e) { return { error: 'Network Error' }; }
+        }
+
+        function initSSE() {
+            const es = new EventSource(`/api/logs/stream?auth=${encodeURIComponent(password)}`); 
+            const term = document.getElementById('terminal-out');
+            es.onmessage = (e) => {
+                const data = JSON.parse(e.data);
+                const line = document.createElement('div');
+                line.className = 'mb-1 opacity-80';
+                line.innerHTML = data.msg;
+                term.appendChild(line);
+                term.scrollTop = term.scrollHeight;
+                if (term.childNodes.length > 500) term.removeChild(term.firstChild);
+            };
+            es.onerror = () => { es.close(); setTimeout(initSSE, 3000); };
+        }
+
+        async function refresh() {
+            const data = await api('/api/stats');
+            if (!data || data.error) return;
+
+            // 🛡️ SAFE UPDATE (Crash Protection)
+            const el = (id) => document.getElementById(id);
+            if (el('stat-total')) el('stat-total').innerText = data.totalRequests || 0;
+            if (el('count-all')) el('count-all').innerText = data.tokens.length;
+            if (el('count-active')) el('count-active').innerText = data.tokens.filter(t => t.status === 'active').length;
+            if (el('count-exhausted')) el('count-exhausted').innerText = data.tokens.filter(t => t.status === 'exhausted').length;
+
+            const btn = el('toggle-btn');
+            if (btn) {
+                btn.innerText = data.fleetStatus === 'running' ? 'SHUTDOWN FLEET' : 'DEPLOY FLEET';
+                btn.className = `px-8 py-3 rounded-2xl font-bold border transition-all text-xs tracking-widest ${data.fleetStatus === 'running' ? 'bg-rose-600/10 border-rose-500/30 text-rose-500' : 'bg-emerald-600/10 border-emerald-500/30 text-emerald-500'}`;
+            }
+
+            const table = el('token-table');
+            if (table) {
+                let tokens = [...data.tokens];
+                if (currentFilter !== 'all') tokens = tokens.filter(t => t.status === currentFilter);
+                
+                tokens.sort((a, b) => {
+                    const dateA = a.last_used_at ? new Date(a.last_used_at) : new Date(0);
+                    const dateB = b.last_used_at ? new Date(b.last_used_at) : new Date(0);
+                    return dateB - dateA;
+                });
+
+                table.innerHTML = tokens.length ? tokens.map(t => `
+                    <tr class="hover:bg-white/[0.02]">
+                        <td class="px-8 py-4 font-mono text-slate-400">
+                            <span class="hover:text-indigo-400 cursor-pointer" onclick="editToken('${t.token}')">${t.token.slice(0, 35)}...</span>
+                        </td>
+                        <td class="px-8 py-4">
+                            <span class="px-3 py-1 rounded-full text-[9px] font-bold border ${
+                                t.status === 'active' ? 'border-emerald-500/30 text-emerald-400 bg-emerald-500/5' : 
+                                t.status === 'inactive' ? 'border-amber-500/30 text-amber-400 bg-amber-500/5' : 
+                                'border-rose-500/30 text-rose-400 bg-rose-500/5'
+                            }">${t.status.toUpperCase()}</span>
+                        </td>
+                        <td class="px-8 py-4 font-mono font-bold text-center">${t.usage_count || 0}</td>
+                        <td class="px-8 py-4 text-right flex justify-end gap-1">
+                            <button title="Mark Active" onclick="setStatus('${t.token}', 'active')" class="p-2 hover:text-emerald-400 transition opacity-40 hover:opacity-100">✔</button>
+                            <button title="Mark Inactive" onclick="setStatus('${t.token}', 'inactive')" class="p-2 hover:text-amber-400 transition opacity-40 hover:opacity-100">⏸</button>
+                            <button title="Mark Exhausted" onclick="setStatus('${t.token}', 'exhausted')" class="p-2 hover:text-rose-400 transition opacity-40 hover:opacity-100">💀</button>
+                            <button title="Delete" onclick="deleteToken('${t.token}')" class="p-2 hover:text-white transition opacity-40 hover:opacity-100 ml-2">🗑</button>
+                        </td>
+                    </tr>
+                `).join('') : '<tr><td colspan="4" class="px-8 py-10 text-center text-slate-600 italic">No tokens found.</td></tr>';
+            }
+        }
+
+        async function editToken(oldToken) {
+            const newToken = prompt("Update API Token String:", oldToken);
+            if (newToken && newToken !== oldToken) {
+                await api('/api/token/edit', 'POST', { oldToken, newToken });
+                refresh();
+            }
+        }
+
+        async function deleteToken(token) {
+            if (confirm("Permanently delete this token?")) {
+                await api('/api/token/delete', 'POST', { token });
+                refresh();
+            }
+        }
+
+        async function openVault() {
+            const modal = document.getElementById('vault-modal');
+            const content = document.getElementById('vault-content');
+            modal.classList.remove('hidden');
+            content.innerHTML = '<div class="text-indigo-400 pulse uppercase tracking-widest">Decrypting Logs...</div>';
+            const data = await api('/api/logs/history');
+            if (data && data.logs) {
+                content.innerHTML = data.logs.map(l => `<div class="mb-1 border-b border-white/[0.02] pb-1">${l}</div>`).join('');
+                content.scrollTop = content.scrollHeight;
+            }
+        }
+
+        function closeVault() { document.getElementById('vault-modal').classList.add('hidden'); }
+        async function bulkAdd() {
+            const val = document.getElementById('bulk-input').value;
+            const tokens = val.split('\n').map(t => t.trim()).filter(t => t.length > 5);
+            if (tokens.length === 0) return;
+            await api('/api/tokens/bulk', 'POST', { tokens });
+            document.getElementById('bulk-input').value = '';
+            refresh();
+        }
+        async function toggleFleet() { await api('/api/fleet/toggle', 'POST'); refresh(); }
+        async function setStatus(token, status) { await api('/api/token/status', 'POST', { token, status }); refresh(); }
+        function setFilter(f) { currentFilter = f; refresh(); }
+        function clearTerminal() { document.getElementById('terminal-out').innerHTML = ''; }
+        function init() { refresh(); setInterval(refresh, 5000); initSSE(); }
+        window.addEventListener('keydown', (e) => { if(e.key === 'Escape') closeVault(); });
+    </script>
+</body>
+</html>

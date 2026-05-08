@@ -4,9 +4,16 @@
   "description": "High-stealth impression bot",
   "main": "impression-bot.js",
   "scripts": {
-    "start": "node impression-bot.js"
+    "start": "node master.js",
+    "bot": "node fleet.js",
+    "dashboard": "node dashboard-server.js"
   },
   "dependencies": {
+    "@supabase/supabase-js": "^2.105.3",
+    "dotenv": "^17.4.2",
+    "express": "^5.2.1",
+    "express-rate-limit": "^7.1.5",
+    "helmet": "^7.1.0",
     "ghost-cursor": "latest",
     "playwright": "latest"
   }

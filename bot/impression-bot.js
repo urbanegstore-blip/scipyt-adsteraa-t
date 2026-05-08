@@ -3,173 +3,179 @@ const { chromium } = require('playwright');
 const path = require('path');
 const fs = require('fs').promises;
 
+/**
+ * Moves the mouse in a human-like way with randomized steps.
+ */
 async function humanMouseMove(page, targetX, targetY) {
+  if (page.isClosed()) return;
   const steps = Math.floor(Math.random() * 20) + 15;
-  await page.mouse.move(targetX, targetY, { steps });
+  await page.mouse.move(targetX, targetY, { steps }).catch(() => {});
 }
 
 const randomDelay = (min, max) =>
   new Promise(r => setTimeout(r, Math.floor(Math.random() * (max - min) + min)));
 
 const STEALTH_SCRIPT = (shift) => {
-  const newProto = Object.getPrototypeOf(navigator);
-  delete newProto.webdriver;
-  Object.defineProperty(navigator, 'webdriver', { get: () => false });
+  try {
+    const newProto = Object.getPrototypeOf(navigator);
+    delete newProto.webdriver;
+    Object.defineProperty(navigator, 'webdriver', { get: () => false });
 
-  const cores = shift.cores;
-  const memory = shift.memory;
-  Object.defineProperty(navigator, 'hardwareConcurrency', { get: () => cores });
-  Object.defineProperty(navigator, 'deviceMemory', { get: () => memory });
-  Object.defineProperty(navigator, 'platform', { get: () => shift.platform });
+    // 🏎️ Hardware Profiling
+    Object.defineProperty(navigator, 'hardwareConcurrency', { get: () => shift.cores });
+    Object.defineProperty(navigator, 'deviceMemory', { get: () => shift.memory });
+    Object.defineProperty(navigator, 'platform', { get: () => shift.platform });
+    Object.defineProperty(navigator, 'languages', { get: () => ['en-US', 'en'] });
 
-  Object.defineProperty(navigator, 'plugins', {
-    get: () => {
-      const entries = [
-        { name: 'PDF Viewer', filename: 'internal-pdf-viewer', description: 'Portable Document Format' },
-        { name: 'Chrome PDF Viewer', filename: 'internal-pdf-viewer', description: 'Portable Document Format' }
-      ];
-      const p = entries;
-      p.refresh = () => {};
-      p.item = (i) => entries[i];
-      p.namedItem = (n) => entries.find(e => e.name === n);
-      return p;
+    // 🔇 WebRTC Leak Prevention
+    const originalPeerConnection = window.RTCPeerConnection;
+    window.RTCPeerConnection = function(...args) {
+      const pc = new originalPeerConnection(...args);
+      pc.createOffer = () => Promise.reject(new Error('WebRTC Disabled for Privacy'));
+      return pc;
+    };
+
+    // 🎨 WebGL & WebGL2 Spoofing (Critical for Cluster Prevention)
+    const spoofWebGL = (proto) => {
+      const getParam = proto.getParameter;
+      proto.getParameter = function(parameter) {
+        if (parameter === 37445) return 'Google Inc. (Intel)'; // UNMASKED_VENDOR
+        if (parameter === 37446) return 'ANGLE (Intel, Intel(R) UHD Graphics Direct3D11)'; // UNMASKED_RENDERER
+        return getParam.apply(this, arguments);
+      };
+    };
+    if (window.WebGLRenderingContext) spoofWebGL(WebGLRenderingContext.prototype);
+    if (window.WebGL2RenderingContext) spoofWebGL(WebGL2RenderingContext.prototype);
+
+    // 🎵 Audio Fingerprint Noise
+    const originalGetChannelData = AudioBuffer.prototype.getChannelData;
+    AudioBuffer.prototype.getChannelData = function() {
+      const data = originalGetChannelData.apply(this, arguments);
+      for (let i = 0; i < data.length; i += 100) {
+        data[i] = data[i] + (Math.random() * 0.0000001);
+      }
+      return data;
+    };
+
+    // 🔋 Battery Status Spoofing
+    if (navigator.getBattery) {
+      navigator.getBattery = () => Promise.resolve({
+        charging: true,
+        level: 1.0,
+        chargingTime: 0,
+        dischargingTime: Infinity,
+        onchargingchange: null,
+        onlevelchange: null
+      });
     }
-  });
 
-  Object.defineProperty(navigator, 'languages', { get: () => ['en-US', 'en'] });
+    // 🛡️ Canvas Noise
+    const originalGetImageData = CanvasRenderingContext2D.prototype.getImageData;
+    CanvasRenderingContext2D.prototype.getImageData = function (x, y, width, height) {
+      const imageData = originalGetImageData.call(this, x, y, width, height);
+      for (let i = 0; i < imageData.data.length; i += 4) {
+        imageData.data[i] += shift.r;
+        imageData.data[i + 1] += shift.g;
+        imageData.data[i + 2] += shift.b;
+      }
+      return imageData;
+    };
 
-  window.chrome = { runtime: {}, loadTimes: function() {}, csi: function() {}, app: {} };
-
-  const originalQuery = window.navigator.permissions.query;
-  window.navigator.permissions.query = (parameters) => (
-    parameters.name === 'notifications'
-      ? Promise.resolve({ state: Notification.permission })
-      : originalQuery(parameters)
-  );
-
-  const originalGetImageData = CanvasRenderingContext2D.prototype.getImageData;
-  CanvasRenderingContext2D.prototype.getImageData = function(x, y, width, height) {
-    const imageData = originalGetImageData.call(this, x, y, width, height);
-    for (let i = 0; i < imageData.data.length; i += 4) {
-      imageData.data[i] = Math.max(0, Math.min(255, imageData.data[i] + shift.r));
-      imageData.data[i+1] = Math.max(0, Math.min(255, imageData.data[i+1] + shift.g));
-      imageData.data[i+2] = Math.max(0, Math.min(255, imageData.data[i+2] + shift.b));
-    }
-    return imageData;
-  };
-
-  const originalToDataURL = HTMLCanvasElement.prototype.toDataURL;
-  HTMLCanvasElement.prototype.toDataURL = function(...args) {
-    const ctx = this.getContext('2d');
-    if (ctx) {
-      const imageData = ctx.getImageData(0, 0, this.width, this.height);
-      ctx.putImageData(imageData, 0, 0); 
-    }
-    return originalToDataURL.apply(this, args);
-  };
+    window.chrome = { runtime: {}, loadTimes: () => {}, csi: () => {}, app: {} };
+  } catch (e) {}
 };
 
 /**
- * Executes a fast, highly scalable 10-15s impression session on Browserless.
+ * Executes a high-stealth impression session with Redirect Resilience.
  */
 async function runImpression(targetUrl, profileId, browserlessToken) {
-  console.log(`[Bot ${profileId}] Connecting to Browserless.io...`);
-
-  // Using the Browserless residential proxy network
-  const wsUrl = `wss://chrome.browserless.io?token=${browserlessToken}&stealth=true&timeout=60000&proxy=residential`;
-  
   let browser;
-  try {
-    browser = await chromium.connectOverCDP(wsUrl);
-  } catch (error) {
-    console.error(`[Bot ${profileId}] Failed to connect to Browserless. Check token/limits.`, error.message);
-    throw error; // Throw the error so fleet.js can instantly pivot to the next token
+  const flags = [
+    '--disable-web-security',
+    '--disable-features=SafeBrowsing,SafeBrowsingService,IsolateOrigins,site-per-process,AdFilter,HeavyAdPrivacyMitigations',
+    '--disable-site-isolation-trials',
+    '--disable-blink-features=AutomationControlled,BlockAds',
+    '--ignore-certificate-errors',
+    '--disable-gpu'
+  ].join('&');
+
+  const wsUrl = `wss://chrome.browserless.io?token=${browserlessToken}&stealth=true&blockAds=false&timeout=60000&proxy=residential&proxyCountry=us&${flags}`;
+  
+  // 🔄 CONNECTION RETRY ENGINE (2 Attempts)
+  for (let attempt = 1; attempt <= 2; attempt++) {
+    try {
+      browser = await chromium.connectOverCDP(wsUrl);
+      break; // Success!
+    } catch (error) {
+      if (attempt === 2) {
+        console.error(`[Bot ${profileId}] Connection Final Failure:`, error.message);
+        throw error;
+      }
+      console.log(`[Bot ${profileId}] ⚠️ Connection Glitch (Attempt ${attempt}/2). Retrying in 5s...`);
+      await randomDelay(5000, 7000);
+    }
   }
 
-  const uas = [
-    'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36',
-    'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/123.0.0.0 Safari/537.36',
-    'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36'
-  ];
-  const platforms = ['Win32', 'MacIntel', 'Win32'];
-  const profileIndex = Math.floor(Math.random() * uas.length);
-
   const context = await browser.newContext({
-    viewport: { 
-      width: 1366 + Math.floor(Math.random() * 554), // Randomize between 1366 and 1920
-      height: 768 + Math.floor(Math.random() * 312)  // Randomize between 768 and 1080
-    },
-    userAgent: uas[profileIndex],
-    locale: 'en-US',
-    timezoneId: 'America/New_York'
+    userAgent: 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36',
+    viewport: { width: 1280 + Math.floor(Math.random() * 200), height: 720 + Math.floor(Math.random() * 200) }
   });
 
-  const noiseShift = {
-    r: Math.floor(Math.random() * 6) - 3,
-    g: Math.floor(Math.random() * 6) - 3,
-    b: Math.floor(Math.random() * 6) - 3,
-    cores: [4, 8, 12, 16][Math.floor(Math.random() * 4)], // Randomize CPU cores
-    memory: [4, 8, 16][Math.floor(Math.random() * 3)],    // Randomize RAM
-    platform: platforms[profileIndex]
-  };
+  const noiseShift = { r: Math.floor(Math.random() * 4) - 2, g: Math.floor(Math.random() * 4) - 2, b: Math.floor(Math.random() * 4) - 2, cores: 8, memory: 16, platform: 'Win32' };
   await context.addInitScript(STEALTH_SCRIPT, noiseShift);
 
   const page = await context.newPage();
-  await page.bringToFront();
+  let activePage = page;
+  let impressionRecorded = false;
 
-  console.log(`[Bot ${profileId}] Navigating directly to target: ${targetUrl}`);
+  context.on('page', async newPage => {
+    console.log(`[Bot ${profileId}] 🔀 Redirect detected! Switching focus...`);
+    activePage = newPage;
+    await activePage.bringToFront().catch(() => {});
+  });
+
+  page.on('request', req => {
+    if (/pixel|impression|trk|analytics/.test(req.url())) {
+      impressionRecorded = true;
+      console.log(`[Bot ${profileId}] 🎯 Impression Detected!`);
+    }
+  });
+
   try {
-    await page.goto(targetUrl, { waitUntil: 'domcontentloaded', timeout: 30000 });
-  } catch (e) {
-    console.log(`[Bot ${profileId}] Page load took too long, proceeding anyway.`);
-  }
-
-  // Calculate random duration between 10 and 15 seconds
-  const durationMs = Math.floor(Math.random() * 5000) + 10000; 
-  const endTime = Date.now() + durationMs;
-  console.log(`[Bot ${profileId}] Dwell time locked to ${durationMs / 1000}s. Simulating human...`);
-
-  // Simple while loop: just scroll and move the mouse until the timer hits 0
-  while (Date.now() < endTime) {
-    // 1. Random human mouse movement across the screen
-    await humanMouseMove(page, 150 + Math.random() * 800, 100 + Math.random() * 600);
+    console.log(`[Bot ${profileId}] 🚀 Navigating to Target...`);
+    await page.goto(targetUrl, { waitUntil: 'domcontentloaded', timeout: 60000 });
     
-    // 2. Random scrolling (mostly down, occasionally slightly up)
-    if (Math.random() > 0.3) {
-      const scrollAmount = (Math.random() * 400) - 100;
-      await page.mouse.wheel(0, scrollAmount);
+    // Phase 1: Dwell
+    const dwellEnd = Date.now() + 12000 + Math.random() * 3000;
+    console.log(`[Bot ${profileId}] Phase 1: Human Dwell...`);
+    while (Date.now() < dwellEnd && !activePage.isClosed()) {
+      await humanMouseMove(activePage, Math.random() * 800, Math.random() * 600);
+      await randomDelay(2000, 4000);
     }
 
-    // 3. Pause briefly to mimic human reading and processing
-    await randomDelay(800, 2000);
-  }
+    // Phase 2: Click
+    if (!activePage.isClosed()) {
+      console.log(`[Bot ${profileId}] Phase 2: Scanning for Click Target...`);
+      const cta = await activePage.evaluate(() => {
+        const btn = document.querySelector('a[href], button');
+        if (!btn) return null;
+        const r = btn.getBoundingClientRect();
+        return { x: r.left + r.width/2, y: r.top + r.height/2 };
+      }).catch(() => null);
 
-  // 4. THE CLICK BEHAVIOR (Generates CTR)
-  console.log(`[Bot ${profileId}] Executing final click behavior...`);
-  try {
-    // Look for anything clickable (ads are usually inside <a> or <button> tags)
-    const elements = await page.$$('a, button');
-    if (elements.length > 0) {
-      // Pick a random link on the page
-      const randomEl = elements[Math.floor(Math.random() * elements.length)];
-      const box = await randomEl.boundingBox();
-      if (box && box.width > 0 && box.height > 0) {
-        // Move mouse smoothly to the element
-        await humanMouseMove(page, box.x + box.width / 2, box.y + box.height / 2);
-        await page.mouse.down();
-        await randomDelay(50, 150);
-        await page.mouse.up();
-        console.log(`[Bot ${profileId}] Clicked an element successfully!`);
-        // Wait a second so the analytics pixel registers the click before we close
-        await randomDelay(1000, 2000); 
+      if (cta) {
+        await activePage.mouse.click(cta.x, cta.y).catch(() => {});
+        console.log(`[Bot ${profileId}] ✅ Interaction successful.`);
+        await randomDelay(5000, 7000);
       }
     }
-  } catch (e) {
-    console.log(`[Bot ${profileId}] Couldn't find a valid element to click.`);
-  }
 
-  console.log(`[Bot ${profileId}] ✅ Time reached (${durationMs / 1000}s). Killing session.`);
-  await browser.close();
+  } catch (error) {
+    console.log(`[Bot ${profileId}] Interaction Interrupted: ${error.message}`);
+  } finally {
+    console.log(`[Bot ${profileId}] ✅ Closing Session.`);
+    await browser.close().catch(() => {});
+  }
 }
 
 module.exports = { runImpression };

@@ -1,90 +1,67 @@
 // bot/fleet.js
 const { runImpression } = require('./impression-bot');
+const { createClient } = require('@supabase/supabase-js');
+require('dotenv').config();
+const supabase = createClient(process.env.SUPABASE_URL, process.env.SUPABASE_KEY);
+const { getActiveTokens, logRequest, getFleetStatus } = require('./db.js');
 
-const fs = require('fs');
-const path = require('path');
-const http = require('http');
-
-// ==========================================
-// ⚙️ CONFIGURATION
-// ==========================================
-
-// 1. Set the Target URL you want the bots to visit here
-const TARGET_URL = 'https://www.profitablecpmratenetwork.com/s6hmi1bh?key=eb552aa11e60ae5d54331085d1cd457a';
-
-// 2. Load API Tokens from tokens.txt directly into RAM at startup (Lightning fast)
-let tokens = [];
-try {
-  const fileContent = fs.readFileSync(path.join(__dirname, 'tokens.txt'), 'utf-8');
-  tokens = fileContent.split('\n').map(t => t.trim()).filter(t => t.length > 0);
-  console.log(`🔑 Loaded ${tokens.length} API tokens into memory.`);
-} catch (e) {
-  console.error("❌ Could not find tokens.txt! Please create it and add your keys.");
-  process.exit(1);
-}
-
-// ==========================================
+const TARGET_URL = 'https://www.profitablecpmratenetwork.com/ji7r2d6y?key=5c429c07a1c5d04ca019e4a57b64e167';
+const BOTS_PER_TOKEN = 2;       
+const MAX_CONCURRENT_TOKENS = 10; 
 
 async function runContinuousFleet() {
-  // Render.com Port Binding Hack
-  // Render requires Web Services to bind to a port, otherwise it crashes the app.
-  const PORT = process.env.PORT || 3000;
-  http.createServer((req, res) => {
-    res.writeHead(200, { 'Content-Type': 'text/plain' });
-    res.end('Bot Fleet is active and running.');
-  }).listen(PORT, () => {
-    console.log(`🌐 Dummy Web Server listening on port ${PORT} to satisfy Render!`);
-  });
-
-  const BATCH_SIZE = 1;
-  console.log(`🚀 Booting up Bot Fleet on Browserless. Concurrent scaling set to: ${BATCH_SIZE}`);
+  console.log(`🚀 Booting up High-Velocity Scaling Fleet...`);
   console.log(`🎯 Target URL: ${TARGET_URL}`);
-  console.log(`🔄 INFINITE LOOP MODE ENABLED. Press Ctrl+C to stop.\n`);
+  console.log(`📊 Mode: ${BOTS_PER_TOKEN} Bots per Token.`);
 
   let cycleCounter = 1;
 
   while (true) {
-    console.log(`\n=========================================`);
-    console.log(`🔥 STARTING FLEET CYCLE #${cycleCounter}`);
+    const isRunning = await getFleetStatus();
+    if (!isRunning) {
+      console.log("⏸️ Fleet is PAUSED. Waiting 10s...");
+      await new Promise(r => setTimeout(r, 10000));
+      continue;
+    }
+
+    let tokens = await getActiveTokens().catch(() => []);
+    if (tokens.length === 0) {
+      console.log("😴 No active tokens found. Waiting 60s...");
+      await new Promise(r => setTimeout(r, 60000));
+      continue;
+    }
+
+    console.log(`\n🔥 STARTING VELOCITY CYCLE #${cycleCounter} [Tokens: ${tokens.length}]`);
     console.log(`=========================================\n`);
 
-    // Using dynamic IDs so you can track different cycles in the logs
-    const profiles = [
-      { id: `bot_cycle${cycleCounter}` }
-    ];
+    for (let i = 0; i < tokens.length; i += MAX_CONCURRENT_TOKENS) {
+      const tokenBatch = tokens.slice(i, i + MAX_CONCURRENT_TOKENS);
+      console.log(`📡 Dispatching ${tokenBatch.length} tokens (${tokenBatch.length * BOTS_PER_TOKEN} bots)...`);
 
-    const promises = profiles.map(async (profile) => {
-      // INSTANT FALLBACK LOGIC: If a token drops, instantly pivot to the next one without waiting
-      for (let attempt = 0; attempt < tokens.length; attempt++) {
-        // Calculate which token to use, naturally rotating each cycle and attempt
-        const tokenIndex = (cycleCounter - 1 + attempt) % tokens.length;
-        const currentToken = tokens[tokenIndex];
+      const allBotTasks = [];
 
-        console.log(`[Fleet] Using API Token index: ${tokenIndex}`);
-
-        try {
-          // If it throws an error (ETIMEDOUT, 400), it jumps straight to catch
-          await runImpression(TARGET_URL, profile.id, currentToken);
-          return; // Success! Break out of the retry loop completely.
-        } catch (err) {
-          console.error(`[Error] Token ${tokenIndex} failed (${err.message}). Instant pivoting to next token...`);
-          // The loop immediately restarts with attempt++, using the next token in RAM
+      for (let tIdx = 0; tIdx < tokenBatch.length; tIdx++) {
+        const token = tokenBatch[tIdx];
+        for (let b = 0; b < BOTS_PER_TOKEN; b++) {
+          const profileId = `bot_c${cycleCounter}_t${i + tIdx}_b${b + 1}`;
+          allBotTasks.push((async () => {
+             await new Promise(r => setTimeout(r, Math.random() * 10000));
+             try {
+               await runImpression(TARGET_URL, profileId, token);
+               await logRequest({ bot_id: profileId, target_url: TARGET_URL, token_used: token, status: 'success', error_message: null });
+             } catch (err) {
+               await logRequest({ bot_id: profileId, target_url: TARGET_URL, token_used: token, status: 'failed', error_message: err.message });
+             }
+          })());
         }
       }
-      console.log(`[Fleet] 🚨 All tokens failed for profile ${profile.id} on this cycle.`);
-    });
-
-    await Promise.all(promises);
-    console.log(`\n🎯 Fleet Cycle #${cycleCounter} Complete.`);
-
-    // Browserless Free Tier takes a few seconds to fully destroy the previous browser container.
-    // If we connect too quickly, it thinks we are using 2 concurrent sessions and blocks us.
-    console.log(`⏳ Cooldown: Waiting 10 seconds for Browserless to clear the previous session slot...\n`);
-    await new Promise(r => setTimeout(r, 10000));
-
+      
+      await Promise.all(allBotTasks);
+      console.log(`✅ Batch finished. Cooldown 10s...`);
+      await new Promise(r => setTimeout(r, 10000));
+    }
     cycleCounter++;
   }
 }
 
-// Start the endless loop
-runContinuousFleet();
+runContinuousFleet().catch(err => console.error("🛑 Critical Fleet Failure:", err));
