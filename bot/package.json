@@ -4,9 +4,9 @@
   "description": "High-stealth impression bot",
   "main": "impression-bot.js",
   "scripts": {
-    "start": "node master.js",
-    "bot": "node fleet.js",
-    "dashboard": "node dashboard-server.js"
+    "start": "node dashboard-server.js",
+    "fleet": "node fleet.js",
+    "test": "node fleet.js --test"
   },
   "dependencies": {
     "@supabase/supabase-js": "^2.105.3",

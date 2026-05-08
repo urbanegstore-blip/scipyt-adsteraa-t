@@ -6474,3 +6474,967 @@ Call log:
 [2026-05-08T13:29:46.886Z] [Bot bot_c4_t1_b1] 🎯 Impression Detected!
 [2026-05-08T13:29:46.928Z] [Bot bot_c4_t4_b1] Phase 2: Scanning for Click Target...
 [2026-05-08T13:29:46.961Z] [Bot bot_c4_t5_b2] Phase 2: Scanning for Click Target...
+[2026-05-08T14:26:17.627Z] 🔄 Registry Updated: 1 keys.
+[2026-05-08T14:26:19.692Z] ◇ injected env (0) from .env // tip: ⌘ suppress logs { quiet: true }
+[2026-05-08T14:26:19.720Z] ◇ injected env (0) from .env // tip: ⌘ override existing { override: true }
+[2026-05-08T14:26:19.721Z] 🚀 Booting up High-Velocity Scaling Fleet...
+[2026-05-08T14:26:19.722Z] 🎯 Target URL: https://www.profitablecpmratenetwork.com/ji7r2d6y?key=5c429c07a1c5d04ca019e4a57b64e167
+[2026-05-08T14:26:19.722Z] 📊 Mode: 2 Bots per Token.
+[2026-05-08T14:26:20.326Z] 🔥 STARTING VELOCITY CYCLE #1 [Tokens: 1]
+[2026-05-08T14:26:20.326Z] =========================================
+[2026-05-08T14:26:20.327Z] 📡 Dispatching 1 tokens (2 bots)...
+[2026-05-08T14:26:31.182Z] [Bot bot_c1_t0_b1] 🚀 Navigating to Target...
+[2026-05-08T14:26:33.189Z] [Bot bot_c1_t0_b1] Phase 1: Human Dwell...
+[2026-05-08T14:26:36.018Z] [Bot bot_c1_t0_b2] 🚀 Navigating to Target...
+[2026-05-08T14:26:38.209Z] [Bot bot_c1_t0_b2] Interaction Interrupted: page.goto: net::ERR_CONNECTION_CLOSED at https://www.profitablecpmratenetwork.com/ji7r2d6y?key=5c429c07a1c5d04ca019e4a57b64e167
+[2026-05-08T14:26:38.209Z] Call log:
+[2026-05-08T14:26:38.210Z] [2m  - navigating to "https://www.profitablecpmratenetwork.com/ji7r2d6y?key=5c429c07a1c5d04ca019e4a57b64e167", waiting until "domcontentloaded"[22m
+[2026-05-08T14:26:38.210Z] [Bot bot_c1_t0_b2] ✅ Closing Session.
+[2026-05-08T14:26:48.420Z] [Bot bot_c1_t0_b1] 🎯 Impression Detected!
+[2026-05-08T14:26:48.564Z] [Bot bot_c1_t0_b1] 🎯 Impression Detected!
+[2026-05-08T14:26:48.601Z] [Bot bot_c1_t0_b1] 🎯 Impression Detected!
+[2026-05-08T14:26:48.679Z] [Bot bot_c1_t0_b1] 🎯 Impression Detected!
+[2026-05-08T14:26:48.681Z] [Bot bot_c1_t0_b1] 🎯 Impression Detected!
+[2026-05-08T14:26:48.683Z] [Bot bot_c1_t0_b1] 🎯 Impression Detected!
+[2026-05-08T14:26:48.684Z] [Bot bot_c1_t0_b1] 🎯 Impression Detected!
+[2026-05-08T14:26:52.628Z] [Bot bot_c1_t0_b1] Phase 2: Scanning for Click Target...
+[2026-05-08T14:26:54.138Z] [Bot bot_c1_t0_b1] ✅ Interaction successful.
+[2026-05-08T14:26:59.186Z] [Bot bot_c1_t0_b1] 🎯 Impression Detected!
+[2026-05-08T14:27:00.045Z] [Bot bot_c1_t0_b1] ✅ Closing Session.
+[2026-05-08T14:27:00.642Z] ✅ Batch finished. Cooldown 10s...
+[2026-05-08T14:27:11.991Z] 🔥 STARTING VELOCITY CYCLE #2 [Tokens: 1]
+[2026-05-08T14:27:11.992Z] =========================================
+[2026-05-08T14:27:11.992Z] 📡 Dispatching 1 tokens (2 bots)...
+[2026-05-08T14:27:22.403Z] [Bot bot_c2_t0_b2] ⚠️ Connection Glitch (Attempt 1/2). Retrying in 5s...
+[2026-05-08T14:27:23.721Z] [Bot bot_c2_t0_b1] 🚀 Navigating to Target...
+[2026-05-08T14:27:26.047Z] [Bot bot_c2_t0_b1] Phase 1: Human Dwell...
+[2026-05-08T14:27:29.722Z] ⚠️ ERROR: [Bot bot_c2_t0_b2] Connection Final Failure: browserType.connectOverCDP: WebSocket error: wss://chrome.browserless.io/ 429 Too Many Requests
+<html>
+<head><title>429 Too Many Requests</title></head>
+<body>
+<center><h1>429 Too Many Requests</h1></center>
+<hr><center>openresty</center>
+</body>
+</html>
+
+Call log:
+[2m  - <ws connecting> wss://chrome.browserless.io/[22m
+[2m  - <ws unexpected response> wss://chrome.browserless.io/ 429 Too Many Requests[22m
+[2m<html>[22m
+[2m<head><title>429 Too Many Requests</title></head>[22m
+[2m<body>[22m
+[2m<center><h1>429 Too Many Requests</h1></center>[22m
+[2m<hr><center>openresty</center>[22m
+[2m</body>[22m
+[2m</html>[22m
+[2m  - <ws error> wss://chrome.browserless.io/ error WebSocket was closed before the connection was established[22m
+[2m  - <ws connect error> wss://chrome.browserless.io/ WebSocket was closed before the connection was established[22m
+[2m  - <ws disconnected> wss://chrome.browserless.io/ code=1006 reason=[22m
+
+
+[2026-05-08T14:27:45.335Z] [Bot bot_c2_t0_b1] 🎯 Impression Detected!
+[2026-05-08T14:27:45.440Z] [Bot bot_c2_t0_b1] 🎯 Impression Detected!
+[2026-05-08T14:27:45.467Z] [Bot bot_c2_t0_b1] 🎯 Impression Detected!
+[2026-05-08T14:27:45.511Z] [Bot bot_c2_t0_b1] 🎯 Impression Detected!
+[2026-05-08T14:27:45.564Z] [Bot bot_c2_t0_b1] 🎯 Impression Detected!
+[2026-05-08T14:27:45.604Z] [Bot bot_c2_t0_b1] 🎯 Impression Detected!
+[2026-05-08T14:27:45.646Z] [Bot bot_c2_t0_b1] 🎯 Impression Detected!
+[2026-05-08T14:27:50.578Z] [Bot bot_c2_t0_b1] Phase 2: Scanning for Click Target...
+[2026-05-08T14:27:51.750Z] [Bot bot_c2_t0_b1] ✅ Interaction successful.
+[2026-05-08T14:27:56.881Z] [Bot bot_c2_t0_b1] 🎯 Impression Detected!
+[2026-05-08T14:27:57.802Z] [Bot bot_c2_t0_b1] ✅ Closing Session.
+[2026-05-08T14:27:58.475Z] ✅ Batch finished. Cooldown 10s...
+[2026-05-08T14:28:09.064Z] 🔥 STARTING VELOCITY CYCLE #3 [Tokens: 1]
+[2026-05-08T14:28:09.065Z] =========================================
+[2026-05-08T14:28:09.065Z] 📡 Dispatching 1 tokens (2 bots)...
+[2026-05-08T14:28:15.893Z] [Bot bot_c3_t0_b2] ⚠️ Connection Glitch (Attempt 1/2). Retrying in 5s...
+[2026-05-08T14:28:19.570Z] [Bot bot_c3_t0_b1] 🚀 Navigating to Target...
+[2026-05-08T14:28:22.177Z] [Bot bot_c3_t0_b1] Phase 1: Human Dwell...
+[2026-05-08T14:28:23.550Z] ⚠️ ERROR: [Bot bot_c3_t0_b2] Connection Final Failure: browserType.connectOverCDP: WebSocket error: wss://chrome.browserless.io/ 429 Too Many Requests
+<html>
+<head><title>429 Too Many Requests</title></head>
+<body>
+<center><h1>429 Too Many Requests</h1></center>
+<hr><center>openresty</center>
+</body>
+</html>
+
+Call log:
+[2m  - <ws connecting> wss://chrome.browserless.io/[22m
+[2m  - <ws unexpected response> wss://chrome.browserless.io/ 429 Too Many Requests[22m
+[2m<html>[22m
+[2m<head><title>429 Too Many Requests</title></head>[22m
+[2m<body>[22m
+[2m<center><h1>429 Too Many Requests</h1></center>[22m
+[2m<hr><center>openresty</center>[22m
+[2m</body>[22m
+[2m</html>[22m
+[2m  - <ws error> wss://chrome.browserless.io/ error WebSocket was closed before the connection was established[22m
+[2m  - <ws connect error> wss://chrome.browserless.io/ WebSocket was closed before the connection was established[22m
+[2m  - <ws disconnected> wss://chrome.browserless.io/ code=1006 reason=[22m
+
+
+[2026-05-08T14:28:38.714Z] [Bot bot_c3_t0_b1] 🎯 Impression Detected!
+[2026-05-08T14:28:38.735Z] [Bot bot_c3_t0_b1] 🎯 Impression Detected!
+[2026-05-08T14:28:38.736Z] [Bot bot_c3_t0_b1] 🎯 Impression Detected!
+[2026-05-08T14:28:38.740Z] [Bot bot_c3_t0_b1] 🎯 Impression Detected!
+[2026-05-08T14:28:38.741Z] [Bot bot_c3_t0_b1] 🎯 Impression Detected!
+[2026-05-08T14:28:38.741Z] [Bot bot_c3_t0_b1] 🎯 Impression Detected!
+[2026-05-08T14:28:38.742Z] [Bot bot_c3_t0_b1] 🎯 Impression Detected!
+[2026-05-08T14:28:42.653Z] [Bot bot_c3_t0_b1] Phase 2: Scanning for Click Target...
+[2026-05-08T14:28:44.114Z] [Bot bot_c3_t0_b1] ✅ Interaction successful.
+[2026-05-08T14:28:49.213Z] [Bot bot_c3_t0_b1] 🎯 Impression Detected!
+[2026-05-08T14:28:50.849Z] [Bot bot_c3_t0_b1] ✅ Closing Session.
+[2026-05-08T14:28:51.515Z] ✅ Batch finished. Cooldown 10s...
+[2026-05-08T14:29:02.076Z] 🔥 STARTING VELOCITY CYCLE #4 [Tokens: 1]
+[2026-05-08T14:29:02.077Z] =========================================
+[2026-05-08T14:29:02.077Z] 📡 Dispatching 1 tokens (2 bots)...
+[2026-05-08T14:29:11.413Z] [Bot bot_c4_t0_b1] ⚠️ Connection Glitch (Attempt 1/2). Retrying in 5s...
+[2026-05-08T14:29:18.173Z] [Bot bot_c4_t0_b2] 🚀 Navigating to Target...
+[2026-05-08T14:29:18.609Z] ⚠️ ERROR: [Bot bot_c4_t0_b1] Connection Final Failure: browserType.connectOverCDP: WebSocket error: wss://chrome.browserless.io/ 429 Too Many Requests
+<html>
+<head><title>429 Too Many Requests</title></head>
+<body>
+<center><h1>429 Too Many Requests</h1></center>
+<hr><center>openresty</center>
+</body>
+</html>
+
+Call log:
+[2m  - <ws connecting> wss://chrome.browserless.io/[22m
+[2m  - <ws unexpected response> wss://chrome.browserless.io/ 429 Too Many Requests[22m
+[2m<html>[22m
+[2m<head><title>429 Too Many Requests</title></head>[22m
+[2m<body>[22m
+[2m<center><h1>429 Too Many Requests</h1></center>[22m
+[2m<hr><center>openresty</center>[22m
+[2m</body>[22m
+[2m</html>[22m
+[2m  - <ws error> wss://chrome.browserless.io/ error WebSocket was closed before the connection was established[22m
+[2m  - <ws connect error> wss://chrome.browserless.io/ WebSocket was closed before the connection was established[22m
+[2m  - <ws disconnected> wss://chrome.browserless.io/ code=1006 reason=[22m
+
+
+[2026-05-08T14:29:20.476Z] [Bot bot_c4_t0_b2] Phase 1: Human Dwell...
+[2026-05-08T14:29:36.761Z] [Bot bot_c4_t0_b2] 🎯 Impression Detected!
+[2026-05-08T14:29:36.777Z] [Bot bot_c4_t0_b2] 🎯 Impression Detected!
+[2026-05-08T14:29:36.779Z] [Bot bot_c4_t0_b2] 🎯 Impression Detected!
+[2026-05-08T14:29:36.781Z] [Bot bot_c4_t0_b2] 🎯 Impression Detected!
+[2026-05-08T14:29:36.812Z] [Bot bot_c4_t0_b2] 🎯 Impression Detected!
+[2026-05-08T14:29:36.814Z] [Bot bot_c4_t0_b2] 🎯 Impression Detected!
+[2026-05-08T14:29:36.815Z] [Bot bot_c4_t0_b2] 🎯 Impression Detected!
+[2026-05-08T14:29:40.256Z] [Bot bot_c4_t0_b2] Phase 2: Scanning for Click Target...
+[2026-05-08T14:29:41.402Z] [Bot bot_c4_t0_b2] ✅ Interaction successful.
+[2026-05-08T14:29:46.470Z] [Bot bot_c4_t0_b2] 🎯 Impression Detected!
+[2026-05-08T14:29:46.659Z] [Bot bot_c4_t0_b2] ✅ Closing Session.
+[2026-05-08T14:29:47.277Z] ✅ Batch finished. Cooldown 10s...
+[2026-05-08T14:29:57.821Z] 🔥 STARTING VELOCITY CYCLE #5 [Tokens: 1]
+[2026-05-08T14:29:57.822Z] =========================================
+[2026-05-08T14:29:57.822Z] 📡 Dispatching 1 tokens (2 bots)...
+[2026-05-08T14:30:08.136Z] [Bot bot_c5_t0_b1] ⚠️ Connection Glitch (Attempt 1/2). Retrying in 5s...
+[2026-05-08T14:30:14.283Z] [Bot bot_c5_t0_b2] 🚀 Navigating to Target...
+[2026-05-08T14:30:16.832Z] ⚠️ ERROR: [Bot bot_c5_t0_b1] Connection Final Failure: browserType.connectOverCDP: WebSocket error: wss://chrome.browserless.io/ 429 Too Many Requests
+<html>
+<head><title>429 Too Many Requests</title></head>
+<body>
+<center><h1>429 Too Many Requests</h1></center>
+<hr><center>openresty</center>
+</body>
+</html>
+
+Call log:
+[2m  - <ws connecting> wss://chrome.browserless.io/[22m
+[2m  - <ws unexpected response> wss://chrome.browserless.io/ 429 Too Many Requests[22m
+[2m<html>[22m
+[2m<head><title>429 Too Many Requests</title></head>[22m
+[2m<body>[22m
+[2m<center><h1>429 Too Many Requests</h1></center>[22m
+[2m<hr><center>openresty</center>[22m
+[2m</body>[22m
+[2m</html>[22m
+[2m  - <ws error> wss://chrome.browserless.io/ error WebSocket was closed before the connection was established[22m
+[2m  - <ws connect error> wss://chrome.browserless.io/ WebSocket was closed before the connection was established[22m
+[2m  - <ws disconnected> wss://chrome.browserless.io/ code=1006 reason=[22m
+
+
+[2026-05-08T14:30:17.222Z] [Bot bot_c5_t0_b2] Phase 1: Human Dwell...
+[2026-05-08T14:30:31.674Z] [Bot bot_c5_t0_b2] 🎯 Impression Detected!
+[2026-05-08T14:30:31.683Z] [Bot bot_c5_t0_b2] 🎯 Impression Detected!
+[2026-05-08T14:30:31.684Z] [Bot bot_c5_t0_b2] 🎯 Impression Detected!
+[2026-05-08T14:30:31.689Z] [Bot bot_c5_t0_b2] 🎯 Impression Detected!
+[2026-05-08T14:30:31.698Z] [Bot bot_c5_t0_b2] 🎯 Impression Detected!
+[2026-05-08T14:30:31.705Z] [Bot bot_c5_t0_b2] 🎯 Impression Detected!
+[2026-05-08T14:30:31.706Z] [Bot bot_c5_t0_b2] 🎯 Impression Detected!
+[2026-05-08T14:30:32.811Z] [Bot bot_c5_t0_b2] Phase 2: Scanning for Click Target...
+[2026-05-08T14:30:34.480Z] [Bot bot_c5_t0_b2] ✅ Interaction successful.
+[2026-05-08T14:30:39.616Z] [Bot bot_c5_t0_b2] 🎯 Impression Detected!
+[2026-05-08T14:30:41.427Z] [Bot bot_c5_t0_b2] ✅ Closing Session.
+[2026-05-08T14:30:42.036Z] ✅ Batch finished. Cooldown 10s...
+[2026-05-08T14:30:52.634Z] 🔥 STARTING VELOCITY CYCLE #6 [Tokens: 1]
+[2026-05-08T14:30:52.634Z] =========================================
+[2026-05-08T14:30:52.634Z] 📡 Dispatching 1 tokens (2 bots)...
+[2026-05-08T14:31:02.767Z] [Bot bot_c6_t0_b1] 🚀 Navigating to Target...
+[2026-05-08T14:31:03.940Z] [Bot bot_c6_t0_b2] ⚠️ Connection Glitch (Attempt 1/2). Retrying in 5s...
+[2026-05-08T14:31:05.039Z] [Bot bot_c6_t0_b1] Phase 1: Human Dwell...
+[2026-05-08T14:31:11.908Z] ⚠️ ERROR: [Bot bot_c6_t0_b2] Connection Final Failure: browserType.connectOverCDP: WebSocket error: wss://chrome.browserless.io/ 429 Too Many Requests
+<html>
+<head><title>429 Too Many Requests</title></head>
+<body>
+<center><h1>429 Too Many Requests</h1></center>
+<hr><center>openresty</center>
+</body>
+</html>
+
+Call log:
+[2m  - <ws connecting> wss://chrome.browserless.io/[22m
+[2m  - <ws unexpected response> wss://chrome.browserless.io/ 429 Too Many Requests[22m
+[2m<html>[22m
+[2m<head><title>429 Too Many Requests</title></head>[22m
+[2m<body>[22m
+[2m<center><h1>429 Too Many Requests</h1></center>[22m
+[2m<hr><center>openresty</center>[22m
+[2m</body>[22m
+[2m</html>[22m
+[2m  - <ws error> wss://chrome.browserless.io/ error WebSocket was closed before the connection was established[22m
+[2m  - <ws connect error> wss://chrome.browserless.io/ WebSocket was closed before the connection was established[22m
+[2m  - <ws disconnected> wss://chrome.browserless.io/ code=1006 reason=[22m
+
+
+[2026-05-08T14:31:18.969Z] [Bot bot_c6_t0_b1] Phase 2: Scanning for Click Target...
+[2026-05-08T14:31:20.362Z] [Bot bot_c6_t0_b1] ✅ Interaction successful.
+[2026-05-08T14:31:22.203Z] [Bot bot_c6_t0_b1] 🎯 Impression Detected!
+[2026-05-08T14:31:22.219Z] [Bot bot_c6_t0_b1] 🎯 Impression Detected!
+[2026-05-08T14:31:22.221Z] [Bot bot_c6_t0_b1] 🎯 Impression Detected!
+[2026-05-08T14:31:22.223Z] [Bot bot_c6_t0_b1] 🎯 Impression Detected!
+[2026-05-08T14:31:22.232Z] [Bot bot_c6_t0_b1] 🎯 Impression Detected!
+[2026-05-08T14:31:22.236Z] [Bot bot_c6_t0_b1] 🎯 Impression Detected!
+[2026-05-08T14:31:22.250Z] [Bot bot_c6_t0_b1] 🎯 Impression Detected!
+[2026-05-08T14:31:26.552Z] [Bot bot_c6_t0_b1] ✅ Closing Session.
+[2026-05-08T14:31:27.163Z] ✅ Batch finished. Cooldown 10s...
+[2026-05-08T14:31:37.777Z] 🔥 STARTING VELOCITY CYCLE #7 [Tokens: 1]
+[2026-05-08T14:31:37.777Z] =========================================
+[2026-05-08T14:31:37.777Z] 📡 Dispatching 1 tokens (2 bots)...
+[2026-05-08T14:31:53.375Z] [Bot bot_c7_t0_b1] 🚀 Navigating to Target...
+[2026-05-08T14:31:55.090Z] [Bot bot_c7_t0_b2] 🚀 Navigating to Target...
+[2026-05-08T14:31:55.684Z] [Bot bot_c7_t0_b1] Interaction Interrupted: page.goto: net::ERR_SSL_PROTOCOL_ERROR at https://www.profitablecpmratenetwork.com/ji7r2d6y?key=5c429c07a1c5d04ca019e4a57b64e167
+[2026-05-08T14:31:55.685Z] Call log:
+[2026-05-08T14:31:55.685Z] [2m  - navigating to "https://www.profitablecpmratenetwork.com/ji7r2d6y?key=5c429c07a1c5d04ca019e4a57b64e167", waiting until "domcontentloaded"[22m
+[2026-05-08T14:31:55.685Z] [Bot bot_c7_t0_b1] ✅ Closing Session.
+[2026-05-08T14:31:56.809Z] [Bot bot_c7_t0_b2] Phase 1: Human Dwell...
+[2026-05-08T14:32:12.980Z] [Bot bot_c7_t0_b2] 🎯 Impression Detected!
+[2026-05-08T14:32:12.986Z] [Bot bot_c7_t0_b2] 🎯 Impression Detected!
+[2026-05-08T14:32:12.988Z] [Bot bot_c7_t0_b2] 🎯 Impression Detected!
+[2026-05-08T14:32:12.990Z] [Bot bot_c7_t0_b2] 🎯 Impression Detected!
+[2026-05-08T14:32:12.992Z] [Bot bot_c7_t0_b2] 🎯 Impression Detected!
+[2026-05-08T14:32:12.993Z] [Bot bot_c7_t0_b2] 🎯 Impression Detected!
+[2026-05-08T14:32:12.994Z] [Bot bot_c7_t0_b2] 🎯 Impression Detected!
+[2026-05-08T14:32:15.937Z] [Bot bot_c7_t0_b2] Phase 2: Scanning for Click Target...
+[2026-05-08T14:32:17.369Z] [Bot bot_c7_t0_b2] ✅ Interaction successful.
+[2026-05-08T14:32:22.777Z] [Bot bot_c7_t0_b2] ✅ Closing Session.
+[2026-05-08T14:32:33.278Z] ✅ Batch finished. Cooldown 10s...
+[2026-05-08T14:32:43.764Z] 🔥 STARTING VELOCITY CYCLE #8 [Tokens: 1]
+[2026-05-08T14:32:43.764Z] =========================================
+[2026-05-08T14:32:43.764Z] 📡 Dispatching 1 tokens (2 bots)...
+[2026-05-08T14:32:51.540Z] 🛑 Fleet Process Terminated.
+[2026-05-08T14:33:12.072Z] ◇ injected env (0) from .env // tip: ⌘ custom filepath { path: '/custom/path/.env' }
+[2026-05-08T14:33:12.099Z] ◇ injected env (0) from .env // tip: ◈ encrypted .env [www.dotenvx.com]
+[2026-05-08T14:33:12.101Z] 🚀 Booting up High-Velocity Scaling Fleet...
+[2026-05-08T14:33:12.101Z] 🎯 Target URL: https://www.profitablecpmratenetwork.com/ji7r2d6y?key=5c429c07a1c5d04ca019e4a57b64e167
+[2026-05-08T14:33:12.101Z] 📊 Mode: 2 Bots per Token.
+[2026-05-08T14:33:12.771Z] 🔥 STARTING VELOCITY CYCLE #1 [Tokens: 1]
+[2026-05-08T14:33:12.772Z] =========================================
+[2026-05-08T14:33:12.772Z] 📡 Dispatching 1 tokens (2 bots)...
+[2026-05-08T14:33:22.724Z] [Bot bot_c1_t0_b2] 🚀 Navigating to Target...
+[2026-05-08T14:33:26.052Z] [Bot bot_c1_t0_b2] Phase 1: Human Dwell...
+[2026-05-08T14:33:31.231Z] [Bot bot_c1_t0_b1] 🚀 Navigating to Target...
+[2026-05-08T14:33:33.416Z] [Bot bot_c1_t0_b1] Phase 1: Human Dwell...
+[2026-05-08T14:33:48.847Z] [Bot bot_c1_t0_b2] Phase 2: Scanning for Click Target...
+[2026-05-08T14:33:49.512Z] [Bot bot_c1_t0_b1] 🎯 Impression Detected!
+[2026-05-08T14:33:49.575Z] [Bot bot_c1_t0_b1] 🎯 Impression Detected!
+[2026-05-08T14:33:49.599Z] [Bot bot_c1_t0_b1] 🎯 Impression Detected!
+[2026-05-08T14:33:49.627Z] [Bot bot_c1_t0_b1] 🎯 Impression Detected!
+[2026-05-08T14:33:49.672Z] [Bot bot_c1_t0_b1] 🎯 Impression Detected!
+[2026-05-08T14:33:49.679Z] [Bot bot_c1_t0_b1] 🎯 Impression Detected!
+[2026-05-08T14:33:49.699Z] [Bot bot_c1_t0_b1] 🎯 Impression Detected!
+[2026-05-08T14:33:50.328Z] [Bot bot_c1_t0_b2] ✅ Interaction successful.
+[2026-05-08T14:33:55.601Z] [Bot bot_c1_t0_b2] ✅ Closing Session.
+[2026-05-08T14:33:58.232Z] [Bot bot_c1_t0_b1] Phase 2: Scanning for Click Target...
+[2026-05-08T14:33:59.506Z] [Bot bot_c1_t0_b1] ✅ Interaction successful.
+[2026-05-08T14:34:04.630Z] [Bot bot_c1_t0_b1] 🎯 Impression Detected!
+[2026-05-08T14:34:05.926Z] [Bot bot_c1_t0_b1] ✅ Closing Session.
+[2026-05-08T14:34:06.551Z] ✅ Batch finished. Cooldown 10s...
+[2026-05-08T14:34:17.124Z] 🔥 STARTING VELOCITY CYCLE #2 [Tokens: 1]
+[2026-05-08T14:34:17.125Z] =========================================
+[2026-05-08T14:34:17.125Z] 📡 Dispatching 1 tokens (2 bots)...
+[2026-05-08T14:34:21.662Z] [Bot bot_c2_t0_b1] ⚠️ Connection Glitch (Attempt 1/2). Retrying in 5s...
+[2026-05-08T14:34:21.815Z] [Bot bot_c2_t0_b2] ⚠️ Connection Glitch (Attempt 1/2). Retrying in 5s...
+[2026-05-08T14:34:27.855Z] ⚠️ ERROR: [Bot bot_c2_t0_b2] Connection Final Failure: browserType.connectOverCDP: WebSocket error: wss://chrome.browserless.io/ 401 Unauthorized
+
+You've reached the units usage limit allowed under our free plan, please upgrade to a paid plan at https://browserless.io/account/upgrade
+Call log:
+[2m  - <ws connecting> wss://chrome.browserless.io/[22m
+[2m  - <ws unexpected response> wss://chrome.browserless.io/ 401 Unauthorized[22m
+
+[2mYou've reached the units usage limit allowed under our free plan, please upgrade to a paid plan at https://browserless.io/account/upgrade[22m
+[2m  - <ws error> wss://chrome.browserless.io/ error WebSocket was closed before the connection was established[22m
+[2m  - <ws connect error> wss://chrome.browserless.io/ WebSocket was closed before the connection was established[22m
+[2m  - <ws disconnected> wss://chrome.browserless.io/ code=1006 reason=[22m
+
+
+[2026-05-08T14:34:28.036Z] ⚠️ ERROR: [Bot bot_c2_t0_b1] Connection Final Failure: browserType.connectOverCDP: WebSocket error: wss://chrome.browserless.io/ 401 Unauthorized
+
+You've reached the units usage limit allowed under our free plan, please upgrade to a paid plan at https://browserless.io/account/upgrade
+Call log:
+[2m  - <ws connecting> wss://chrome.browserless.io/[22m
+[2m  - <ws unexpected response> wss://chrome.browserless.io/ 401 Unauthorized[22m
+
+[2mYou've reached the units usage limit allowed under our free plan, please upgrade to a paid plan at https://browserless.io/account/upgrade[22m
+[2m  - <ws error> wss://chrome.browserless.io/ error WebSocket was closed before the connection was established[22m
+[2m  - <ws connect error> wss://chrome.browserless.io/ WebSocket was closed before the connection was established[22m
+[2m  - <ws disconnected> wss://chrome.browserless.io/ code=1006 reason=[22m
+
+
+[2026-05-08T14:34:28.195Z] 🚨 Token 2UTmv2su... marked as EXHAUSTED.
+[2026-05-08T14:34:28.351Z] 🚨 Token 2UTmv2su... marked as EXHAUSTED.
+[2026-05-08T14:34:28.499Z] ✅ Batch finished. Cooldown 10s...
+[2026-05-08T14:34:39.054Z] 😴 No active tokens found. Waiting 60s...
+[2026-05-08T14:35:39.823Z] 🔥 STARTING VELOCITY CYCLE #3 [Tokens: 17]
+[2026-05-08T14:35:39.823Z] =========================================
+[2026-05-08T14:35:39.823Z] 📡 Dispatching 10 tokens (20 bots)...
+[2026-05-08T14:35:43.767Z] [Bot bot_c3_t0_b2] ⚠️ Connection Glitch (Attempt 1/2). Retrying in 5s...
+[2026-05-08T14:35:43.931Z] [Bot bot_c3_t4_b1] ⚠️ Connection Glitch (Attempt 1/2). Retrying in 5s...
+[2026-05-08T14:35:44.316Z] [Bot bot_c3_t9_b1] ⚠️ Connection Glitch (Attempt 1/2). Retrying in 5s...
+[2026-05-08T14:35:44.318Z] [Bot bot_c3_t3_b1] ⚠️ Connection Glitch (Attempt 1/2). Retrying in 5s...
+[2026-05-08T14:35:44.318Z] [Bot bot_c3_t2_b1] ⚠️ Connection Glitch (Attempt 1/2). Retrying in 5s...
+[2026-05-08T14:35:44.379Z] [Bot bot_c3_t5_b1] ⚠️ Connection Glitch (Attempt 1/2). Retrying in 5s...
+[2026-05-08T14:35:44.698Z] [Bot bot_c3_t6_b1] ⚠️ Connection Glitch (Attempt 1/2). Retrying in 5s...
+[2026-05-08T14:35:46.959Z] [Bot bot_c3_t7_b1] ⚠️ Connection Glitch (Attempt 1/2). Retrying in 5s...
+[2026-05-08T14:35:47.123Z] [Bot bot_c3_t8_b2] ⚠️ Connection Glitch (Attempt 1/2). Retrying in 5s...
+[2026-05-08T14:35:47.609Z] [Bot bot_c3_t1_b1] ⚠️ Connection Glitch (Attempt 1/2). Retrying in 5s...
+[2026-05-08T14:35:47.660Z] [Bot bot_c3_t5_b2] ⚠️ Connection Glitch (Attempt 1/2). Retrying in 5s...
+[2026-05-08T14:35:47.702Z] [Bot bot_c3_t4_b2] ⚠️ Connection Glitch (Attempt 1/2). Retrying in 5s...
+[2026-05-08T14:35:47.908Z] [Bot bot_c3_t7_b2] ⚠️ Connection Glitch (Attempt 1/2). Retrying in 5s...
+[2026-05-08T14:35:48.242Z] [Bot bot_c3_t8_b1] ⚠️ Connection Glitch (Attempt 1/2). Retrying in 5s...
+[2026-05-08T14:35:49.036Z] [Bot bot_c3_t9_b2] ⚠️ Connection Glitch (Attempt 1/2). Retrying in 5s...
+[2026-05-08T14:35:49.717Z] [Bot bot_c3_t3_b2] ⚠️ Connection Glitch (Attempt 1/2). Retrying in 5s...
+[2026-05-08T14:35:49.952Z] [Bot bot_c3_t6_b2] ⚠️ Connection Glitch (Attempt 1/2). Retrying in 5s...
+[2026-05-08T14:35:50.489Z] [Bot bot_c3_t0_b1] ⚠️ Connection Glitch (Attempt 1/2). Retrying in 5s...
+[2026-05-08T14:35:50.722Z] [Bot bot_c3_t2_b2] ⚠️ Connection Glitch (Attempt 1/2). Retrying in 5s...
+[2026-05-08T14:35:50.752Z] ⚠️ ERROR: [Bot bot_c3_t4_b1] Connection Final Failure: browserType.connectOverCDP: WebSocket error: wss://chrome.browserless.io/ 401 Unauthorized
+
+You've reached the units usage limit allowed under our free plan, please upgrade to a paid plan at https://browserless.io/account/upgrade
+Call log:
+[2m  - <ws connecting> wss://chrome.browserless.io/[22m
+[2m  - <ws unexpected response> wss://chrome.browserless.io/ 401 Unauthorized[22m
+
+[2mYou've reached the units usage limit allowed under our free plan, please upgrade to a paid plan at https://browserless.io/account/upgrade[22m
+[2m  - <ws error> wss://chrome.browserless.io/ error WebSocket was closed before the connection was established[22m
+[2m  - <ws connect error> wss://chrome.browserless.io/ WebSocket was closed before the connection was established[22m
+[2m  - <ws disconnected> wss://chrome.browserless.io/ code=1006 reason=[22m
+
+
+[2026-05-08T14:35:51.018Z] [Bot bot_c3_t1_b2] ⚠️ Connection Glitch (Attempt 1/2). Retrying in 5s...
+[2026-05-08T14:35:51.019Z] ⚠️ ERROR: [Bot bot_c3_t5_b1] Connection Final Failure: browserType.connectOverCDP: WebSocket error: wss://chrome.browserless.io/ 401 Unauthorized
+
+You've reached the units usage limit allowed under our free plan, please upgrade to a paid plan at https://browserless.io/account/upgrade
+Call log:
+[2m  - <ws connecting> wss://chrome.browserless.io/[22m
+[2m  - <ws unexpected response> wss://chrome.browserless.io/ 401 Unauthorized[22m
+
+[2mYou've reached the units usage limit allowed under our free plan, please upgrade to a paid plan at https://browserless.io/account/upgrade[22m
+[2m  - <ws error> wss://chrome.browserless.io/ error WebSocket was closed before the connection was established[22m
+[2m  - <ws connect error> wss://chrome.browserless.io/ WebSocket was closed before the connection was established[22m
+[2m  - <ws disconnected> wss://chrome.browserless.io/ code=1006 reason=[22m
+
+
+[2026-05-08T14:35:51.157Z] 🚨 Token 2UT79bpW... marked as EXHAUSTED.
+[2026-05-08T14:35:51.172Z] ⚠️ ERROR: [Bot bot_c3_t3_b1] Connection Final Failure: browserType.connectOverCDP: WebSocket error: wss://chrome.browserless.io/ 401 Unauthorized
+
+You've reached the units usage limit allowed under our free plan, please upgrade to a paid plan at https://browserless.io/account/upgrade
+Call log:
+[2m  - <ws connecting> wss://chrome.browserless.io/[22m
+[2m  - <ws unexpected response> wss://chrome.browserless.io/ 401 Unauthorized[22m
+
+[2mYou've reached the units usage limit allowed under our free plan, please upgrade to a paid plan at https://browserless.io/account/upgrade[22m
+[2m  - <ws error> wss://chrome.browserless.io/ error WebSocket was closed before the connection was established[22m
+[2m  - <ws connect error> wss://chrome.browserless.io/ WebSocket was closed before the connection was established[22m
+[2m  - <ws disconnected> wss://chrome.browserless.io/ code=1006 reason=[22m
+
+
+[2026-05-08T14:35:51.284Z] ⚠️ ERROR: [Bot bot_c3_t0_b2] Connection Final Failure: browserType.connectOverCDP: WebSocket error: wss://chrome.browserless.io/ 401 Unauthorized
+
+You've reached the units usage limit allowed under our free plan, please upgrade to a paid plan at https://browserless.io/account/upgrade
+Call log:
+[2m  - <ws connecting> wss://chrome.browserless.io/[22m
+[2m  - <ws unexpected response> wss://chrome.browserless.io/ 401 Unauthorized[22m
+
+[2mYou've reached the units usage limit allowed under our free plan, please upgrade to a paid plan at https://browserless.io/account/upgrade[22m
+[2m  - <ws error> wss://chrome.browserless.io/ error WebSocket was closed before the connection was established[22m
+[2m  - <ws connect error> wss://chrome.browserless.io/ WebSocket was closed before the connection was established[22m
+[2m  - <ws disconnected> wss://chrome.browserless.io/ code=1006 reason=[22m
+
+
+[2026-05-08T14:35:51.388Z] 🚨 Token 2UT7Hwat... marked as EXHAUSTED.
+[2026-05-08T14:35:51.390Z] ⚠️ ERROR: [Bot bot_c3_t2_b1] Connection Final Failure: browserType.connectOverCDP: WebSocket error: wss://chrome.browserless.io/ 401 Unauthorized
+
+You've reached the units usage limit allowed under our free plan, please upgrade to a paid plan at https://browserless.io/account/upgrade
+Call log:
+[2m  - <ws connecting> wss://chrome.browserless.io/[22m
+[2m  - <ws unexpected response> wss://chrome.browserless.io/ 401 Unauthorized[22m
+
+[2mYou've reached the units usage limit allowed under our free plan, please upgrade to a paid plan at https://browserless.io/account/upgrade[22m
+[2m  - <ws error> wss://chrome.browserless.io/ error WebSocket was closed before the connection was established[22m
+[2m  - <ws connect error> wss://chrome.browserless.io/ WebSocket was closed before the connection was established[22m
+[2m  - <ws disconnected> wss://chrome.browserless.io/ code=1006 reason=[22m
+
+
+[2026-05-08T14:35:51.405Z] 🚨 Token 2UT7IZdn... marked as EXHAUSTED.
+[2026-05-08T14:35:51.623Z] 🚨 Token 2UTmK1e8... marked as EXHAUSTED.
+[2026-05-08T14:35:51.625Z] 🚨 Token 2UTmv2su... marked as EXHAUSTED.
+[2026-05-08T14:35:52.083Z] ⚠️ ERROR: [Bot bot_c3_t9_b1] Connection Final Failure: browserType.connectOverCDP: WebSocket error: wss://chrome.browserless.io/ 401 Unauthorized
+
+You've reached the units usage limit allowed under our free plan, please upgrade to a paid plan at https://browserless.io/account/upgrade
+Call log:
+[2m  - <ws connecting> wss://chrome.browserless.io/[22m
+[2m  - <ws unexpected response> wss://chrome.browserless.io/ 401 Unauthorized[22m
+
+[2mYou've reached the units usage limit allowed under our free plan, please upgrade to a paid plan at https://browserless.io/account/upgrade[22m
+[2m  - <ws error> wss://chrome.browserless.io/ error WebSocket was closed before the connection was established[22m
+[2m  - <ws connect error> wss://chrome.browserless.io/ WebSocket was closed before the connection was established[22m
+[2m  - <ws disconnected> wss://chrome.browserless.io/ code=1006 reason=[22m
+
+
+[2026-05-08T14:35:52.300Z] 🚨 Token 2UTllEHZ... marked as EXHAUSTED.
+[2026-05-08T14:35:52.533Z] ⚠️ ERROR: [Bot bot_c3_t6_b1] Connection Final Failure: browserType.connectOverCDP: WebSocket error: wss://chrome.browserless.io/ 401 Unauthorized
+
+You've reached the units usage limit allowed under our free plan, please upgrade to a paid plan at https://browserless.io/account/upgrade
+Call log:
+[2m  - <ws connecting> wss://chrome.browserless.io/[22m
+[2m  - <ws unexpected response> wss://chrome.browserless.io/ 401 Unauthorized[22m
+
+[2mYou've reached the units usage limit allowed under our free plan, please upgrade to a paid plan at https://browserless.io/account/upgrade[22m
+[2m  - <ws error> wss://chrome.browserless.io/ error WebSocket was closed before the connection was established[22m
+[2m  - <ws connect error> wss://chrome.browserless.io/ WebSocket was closed before the connection was established[22m
+[2m  - <ws disconnected> wss://chrome.browserless.io/ code=1006 reason=[22m
+
+
+[2026-05-08T14:35:52.769Z] 🚨 Token 2UTmIK8m... marked as EXHAUSTED.
+[2026-05-08T14:35:54.220Z] ⚠️ ERROR: [Bot bot_c3_t5_b2] Connection Final Failure: browserType.connectOverCDP: WebSocket error: wss://chrome.browserless.io/ 401 Unauthorized
+
+You've reached the units usage limit allowed under our free plan, please upgrade to a paid plan at https://browserless.io/account/upgrade
+Call log:
+[2m  - <ws connecting> wss://chrome.browserless.io/[22m
+[2m  - <ws unexpected response> wss://chrome.browserless.io/ 401 Unauthorized[22m
+
+[2mYou've reached the units usage limit allowed under our free plan, please upgrade to a paid plan at https://browserless.io/account/upgrade[22m
+[2m  - <ws error> wss://chrome.browserless.io/ error WebSocket was closed before the connection was established[22m
+[2m  - <ws connect error> wss://chrome.browserless.io/ WebSocket was closed before the connection was established[22m
+[2m  - <ws disconnected> wss://chrome.browserless.io/ code=1006 reason=[22m
+
+
+[2026-05-08T14:35:54.453Z] 🚨 Token 2UT7Hwat... marked as EXHAUSTED.
+[2026-05-08T14:35:54.634Z] ⚠️ ERROR: [Bot bot_c3_t7_b1] Connection Final Failure: browserType.connectOverCDP: WebSocket error: wss://chrome.browserless.io/ 401 Unauthorized
+
+You've reached the units usage limit allowed under our free plan, please upgrade to a paid plan at https://browserless.io/account/upgrade
+Call log:
+[2m  - <ws connecting> wss://chrome.browserless.io/[22m
+[2m  - <ws unexpected response> wss://chrome.browserless.io/ 401 Unauthorized[22m
+
+[2mYou've reached the units usage limit allowed under our free plan, please upgrade to a paid plan at https://browserless.io/account/upgrade[22m
+[2m  - <ws error> wss://chrome.browserless.io/ error WebSocket was closed before the connection was established[22m
+[2m  - <ws connect error> wss://chrome.browserless.io/ WebSocket was closed before the connection was established[22m
+[2m  - <ws disconnected> wss://chrome.browserless.io/ code=1006 reason=[22m
+
+
+[2026-05-08T14:35:54.858Z] 🚨 Token 2UT7EZhM... marked as EXHAUSTED.
+[2026-05-08T14:35:55.038Z] ⚠️ ERROR: [Bot bot_c3_t8_b2] Connection Final Failure: browserType.connectOverCDP: WebSocket error: wss://chrome.browserless.io/ 401 Unauthorized
+
+You've reached the units usage limit allowed under our free plan, please upgrade to a paid plan at https://browserless.io/account/upgrade
+Call log:
+[2m  - <ws connecting> wss://chrome.browserless.io/[22m
+[2m  - <ws unexpected response> wss://chrome.browserless.io/ 401 Unauthorized[22m
+
+[2mYou've reached the units usage limit allowed under our free plan, please upgrade to a paid plan at https://browserless.io/account/upgrade[22m
+[2m  - <ws error> wss://chrome.browserless.io/ error WebSocket was closed before the connection was established[22m
+[2m  - <ws connect error> wss://chrome.browserless.io/ WebSocket was closed before the connection was established[22m
+[2m  - <ws disconnected> wss://chrome.browserless.io/ code=1006 reason=[22m
+
+
+[2026-05-08T14:35:55.187Z] ⚠️ ERROR: [Bot bot_c3_t7_b2] Connection Final Failure: browserType.connectOverCDP: WebSocket error: wss://chrome.browserless.io/ 401 Unauthorized
+
+You've reached the units usage limit allowed under our free plan, please upgrade to a paid plan at https://browserless.io/account/upgrade
+Call log:
+[2m  - <ws connecting> wss://chrome.browserless.io/[22m
+[2m  - <ws unexpected response> wss://chrome.browserless.io/ 401 Unauthorized[22m
+
+[2mYou've reached the units usage limit allowed under our free plan, please upgrade to a paid plan at https://browserless.io/account/upgrade[22m
+[2m  - <ws error> wss://chrome.browserless.io/ error WebSocket was closed before the connection was established[22m
+[2m  - <ws connect error> wss://chrome.browserless.io/ WebSocket was closed before the connection was established[22m
+[2m  - <ws disconnected> wss://chrome.browserless.io/ code=1006 reason=[22m
+
+
+[2026-05-08T14:35:55.257Z] 🚨 Token 2UTlndGj... marked as EXHAUSTED.
+[2026-05-08T14:35:55.299Z] ⚠️ ERROR: [Bot bot_c3_t1_b1] Connection Final Failure: browserType.connectOverCDP: WebSocket error: wss://chrome.browserless.io/ 401 Unauthorized
+
+You've reached the units usage limit allowed under our free plan, please upgrade to a paid plan at https://browserless.io/account/upgrade
+Call log:
+[2m  - <ws connecting> wss://chrome.browserless.io/[22m
+[2m  - <ws unexpected response> wss://chrome.browserless.io/ 401 Unauthorized[22m
+
+[2mYou've reached the units usage limit allowed under our free plan, please upgrade to a paid plan at https://browserless.io/account/upgrade[22m
+[2m  - <ws error> wss://chrome.browserless.io/ error WebSocket was closed before the connection was established[22m
+[2m  - <ws connect error> wss://chrome.browserless.io/ WebSocket was closed before the connection was established[22m
+[2m  - <ws disconnected> wss://chrome.browserless.io/ code=1006 reason=[22m
+
+
+[2026-05-08T14:35:55.415Z] 🚨 Token 2UT7EZhM... marked as EXHAUSTED.
+[2026-05-08T14:35:55.422Z] ⚠️ ERROR: [Bot bot_c3_t4_b2] Connection Final Failure: browserType.connectOverCDP: WebSocket error: wss://chrome.browserless.io/ 401 Unauthorized
+
+You've reached the units usage limit allowed under our free plan, please upgrade to a paid plan at https://browserless.io/account/upgrade
+Call log:
+[2m  - <ws connecting> wss://chrome.browserless.io/[22m
+[2m  - <ws unexpected response> wss://chrome.browserless.io/ 401 Unauthorized[22m
+
+[2mYou've reached the units usage limit allowed under our free plan, please upgrade to a paid plan at https://browserless.io/account/upgrade[22m
+[2m  - <ws error> wss://chrome.browserless.io/ error WebSocket was closed before the connection was established[22m
+[2m  - <ws connect error> wss://chrome.browserless.io/ WebSocket was closed before the connection was established[22m
+[2m  - <ws disconnected> wss://chrome.browserless.io/ code=1006 reason=[22m
+
+
+[2026-05-08T14:35:55.532Z] 🚨 Token 2UTmNwwj... marked as EXHAUSTED.
+[2026-05-08T14:35:55.663Z] 🚨 Token 2UT79bpW... marked as EXHAUSTED.
+[2026-05-08T14:35:55.960Z] ⚠️ ERROR: [Bot bot_c3_t8_b1] Connection Final Failure: browserType.connectOverCDP: WebSocket error: wss://chrome.browserless.io/ 401 Unauthorized
+
+You've reached the units usage limit allowed under our free plan, please upgrade to a paid plan at https://browserless.io/account/upgrade
+Call log:
+[2m  - <ws connecting> wss://chrome.browserless.io/[22m
+[2m  - <ws unexpected response> wss://chrome.browserless.io/ 401 Unauthorized[22m
+
+[2mYou've reached the units usage limit allowed under our free plan, please upgrade to a paid plan at https://browserless.io/account/upgrade[22m
+[2m  - <ws error> wss://chrome.browserless.io/ error WebSocket was closed before the connection was established[22m
+[2m  - <ws connect error> wss://chrome.browserless.io/ WebSocket was closed before the connection was established[22m
+[2m  - <ws disconnected> wss://chrome.browserless.io/ code=1006 reason=[22m
+
+
+[2026-05-08T14:35:56.195Z] 🚨 Token 2UTlndGj... marked as EXHAUSTED.
+[2026-05-08T14:35:56.583Z] ⚠️ ERROR: [Bot bot_c3_t9_b2] Connection Final Failure: browserType.connectOverCDP: WebSocket error: wss://chrome.browserless.io/ 401 Unauthorized
+
+You've reached the units usage limit allowed under our free plan, please upgrade to a paid plan at https://browserless.io/account/upgrade
+Call log:
+[2m  - <ws connecting> wss://chrome.browserless.io/[22m
+[2m  - <ws unexpected response> wss://chrome.browserless.io/ 401 Unauthorized[22m
+
+[2mYou've reached the units usage limit allowed under our free plan, please upgrade to a paid plan at https://browserless.io/account/upgrade[22m
+[2m  - <ws error> wss://chrome.browserless.io/ error WebSocket was closed before the connection was established[22m
+[2m  - <ws connect error> wss://chrome.browserless.io/ WebSocket was closed before the connection was established[22m
+[2m  - <ws disconnected> wss://chrome.browserless.io/ code=1006 reason=[22m
+
+
+[2026-05-08T14:35:56.749Z] ⚠️ ERROR: [Bot bot_c3_t0_b1] Connection Final Failure: browserType.connectOverCDP: WebSocket error: wss://chrome.browserless.io/ 401 Unauthorized
+
+You've reached the units usage limit allowed under our free plan, please upgrade to a paid plan at https://browserless.io/account/upgrade
+Call log:
+[2m  - <ws connecting> wss://chrome.browserless.io/[22m
+[2m  - <ws unexpected response> wss://chrome.browserless.io/ 401 Unauthorized[22m
+
+[2mYou've reached the units usage limit allowed under our free plan, please upgrade to a paid plan at https://browserless.io/account/upgrade[22m
+[2m  - <ws error> wss://chrome.browserless.io/ error WebSocket was closed before the connection was established[22m
+[2m  - <ws connect error> wss://chrome.browserless.io/ WebSocket was closed before the connection was established[22m
+[2m  - <ws disconnected> wss://chrome.browserless.io/ code=1006 reason=[22m
+
+
+[2026-05-08T14:35:56.803Z] 🚨 Token 2UTllEHZ... marked as EXHAUSTED.
+[2026-05-08T14:35:56.854Z] ⚠️ ERROR: [Bot bot_c3_t3_b2] Connection Final Failure: browserType.connectOverCDP: WebSocket error: wss://chrome.browserless.io/ 401 Unauthorized
+
+You've reached the units usage limit allowed under our free plan, please upgrade to a paid plan at https://browserless.io/account/upgrade
+Call log:
+[2m  - <ws connecting> wss://chrome.browserless.io/[22m
+[2m  - <ws unexpected response> wss://chrome.browserless.io/ 401 Unauthorized[22m
+
+[2mYou've reached the units usage limit allowed under our free plan, please upgrade to a paid plan at https://browserless.io/account/upgrade[22m
+[2m  - <ws error> wss://chrome.browserless.io/ error WebSocket was closed before the connection was established[22m
+[2m  - <ws connect error> wss://chrome.browserless.io/ WebSocket was closed before the connection was established[22m
+[2m  - <ws disconnected> wss://chrome.browserless.io/ code=1006 reason=[22m
+
+
+[2026-05-08T14:35:56.983Z] 🚨 Token 2UTmv2su... marked as EXHAUSTED.
+[2026-05-08T14:35:57.072Z] 🚨 Token 2UT7IZdn... marked as EXHAUSTED.
+[2026-05-08T14:35:57.420Z] ⚠️ ERROR: [Bot bot_c3_t1_b2] Connection Final Failure: browserType.connectOverCDP: WebSocket error: wss://chrome.browserless.io/ 401 Unauthorized
+
+You've reached the units usage limit allowed under our free plan, please upgrade to a paid plan at https://browserless.io/account/upgrade
+Call log:
+[2m  - <ws connecting> wss://chrome.browserless.io/[22m
+[2m  - <ws unexpected response> wss://chrome.browserless.io/ 401 Unauthorized[22m
+
+[2mYou've reached the units usage limit allowed under our free plan, please upgrade to a paid plan at https://browserless.io/account/upgrade[22m
+[2m  - <ws error> wss://chrome.browserless.io/ error WebSocket was closed before the connection was established[22m
+[2m  - <ws connect error> wss://chrome.browserless.io/ WebSocket was closed before the connection was established[22m
+[2m  - <ws disconnected> wss://chrome.browserless.io/ code=1006 reason=[22m
+
+
+[2026-05-08T14:35:57.487Z] ⚠️ ERROR: [Bot bot_c3_t2_b2] Connection Final Failure: browserType.connectOverCDP: WebSocket error: wss://chrome.browserless.io/ 401 Unauthorized
+
+You've reached the units usage limit allowed under our free plan, please upgrade to a paid plan at https://browserless.io/account/upgrade
+Call log:
+[2m  - <ws connecting> wss://chrome.browserless.io/[22m
+[2m  - <ws unexpected response> wss://chrome.browserless.io/ 401 Unauthorized[22m
+
+[2mYou've reached the units usage limit allowed under our free plan, please upgrade to a paid plan at https://browserless.io/account/upgrade[22m
+[2m  - <ws error> wss://chrome.browserless.io/ error WebSocket was closed before the connection was established[22m
+[2m  - <ws connect error> wss://chrome.browserless.io/ WebSocket was closed before the connection was established[22m
+[2m  - <ws disconnected> wss://chrome.browserless.io/ code=1006 reason=[22m
+
+
+[2026-05-08T14:35:57.568Z] ⚠️ ERROR: [Bot bot_c3_t6_b2] Connection Final Failure: browserType.connectOverCDP: WebSocket error: wss://chrome.browserless.io/ 401 Unauthorized
+
+You've reached the units usage limit allowed under our free plan, please upgrade to a paid plan at https://browserless.io/account/upgrade
+Call log:
+[2m  - <ws connecting> wss://chrome.browserless.io/[22m
+[2m  - <ws unexpected response> wss://chrome.browserless.io/ 401 Unauthorized[22m
+
+[2mYou've reached the units usage limit allowed under our free plan, please upgrade to a paid plan at https://browserless.io/account/upgrade[22m
+[2m  - <ws error> wss://chrome.browserless.io/ error WebSocket was closed before the connection was established[22m
+[2m  - <ws connect error> wss://chrome.browserless.io/ WebSocket was closed before the connection was established[22m
+[2m  - <ws disconnected> wss://chrome.browserless.io/ code=1006 reason=[22m
+
+
+[2026-05-08T14:35:57.664Z] 🚨 Token 2UTmNwwj... marked as EXHAUSTED.
+[2026-05-08T14:35:57.713Z] 🚨 Token 2UTmK1e8... marked as EXHAUSTED.
+[2026-05-08T14:35:57.787Z] 🚨 Token 2UTmIK8m... marked as EXHAUSTED.
+[2026-05-08T14:35:58.011Z] ✅ Batch finished. Cooldown 10s...
+[2026-05-08T14:36:08.014Z] 📡 Dispatching 7 tokens (14 bots)...
+[2026-05-08T14:36:10.621Z] [Bot bot_c3_t13_b2] ⚠️ Connection Glitch (Attempt 1/2). Retrying in 5s...
+[2026-05-08T14:36:10.710Z] [Bot bot_c3_t16_b2] ⚠️ Connection Glitch (Attempt 1/2). Retrying in 5s...
+[2026-05-08T14:36:10.800Z] [Bot bot_c3_t16_b1] ⚠️ Connection Glitch (Attempt 1/2). Retrying in 5s...
+[2026-05-08T14:36:10.896Z] [Bot bot_c3_t14_b1] ⚠️ Connection Glitch (Attempt 1/2). Retrying in 5s...
+[2026-05-08T14:36:11.130Z] [Bot bot_c3_t13_b1] ⚠️ Connection Glitch (Attempt 1/2). Retrying in 5s...
+[2026-05-08T14:36:11.223Z] [Bot bot_c3_t10_b2] ⚠️ Connection Glitch (Attempt 1/2). Retrying in 5s...
+[2026-05-08T14:36:11.577Z] [Bot bot_c3_t15_b1] ⚠️ Connection Glitch (Attempt 1/2). Retrying in 5s...
+[2026-05-08T14:36:11.985Z] [Bot bot_c3_t12_b1] ⚠️ Connection Glitch (Attempt 1/2). Retrying in 5s...
+[2026-05-08T14:36:13.244Z] [Bot bot_c3_t11_b2] ⚠️ Connection Glitch (Attempt 1/2). Retrying in 5s...
+[2026-05-08T14:36:13.682Z] [Bot bot_c3_t14_b2] ⚠️ Connection Glitch (Attempt 1/2). Retrying in 5s...
+[2026-05-08T14:36:14.103Z] [Bot bot_c3_t10_b1] ⚠️ Connection Glitch (Attempt 1/2). Retrying in 5s...
+[2026-05-08T14:36:15.368Z] [Bot bot_c3_t11_b1] ⚠️ Connection Glitch (Attempt 1/2). Retrying in 5s...
+[2026-05-08T14:36:17.288Z] ⚠️ ERROR: [Bot bot_c3_t13_b1] Connection Final Failure: browserType.connectOverCDP: WebSocket error: wss://chrome.browserless.io/ 401 Unauthorized
+
+You've reached the units usage limit allowed under our free plan, please upgrade to a paid plan at https://browserless.io/account/upgrade
+Call log:
+[2m  - <ws connecting> wss://chrome.browserless.io/[22m
+[2m  - <ws unexpected response> wss://chrome.browserless.io/ 401 Unauthorized[22m
+
+[2mYou've reached the units usage limit allowed under our free plan, please upgrade to a paid plan at https://browserless.io/account/upgrade[22m
+[2m  - <ws error> wss://chrome.browserless.io/ error WebSocket was closed before the connection was established[22m
+[2m  - <ws connect error> wss://chrome.browserless.io/ WebSocket was closed before the connection was established[22m
+[2m  - <ws disconnected> wss://chrome.browserless.io/ code=1006 reason=[22m
+
+
+[2026-05-08T14:36:17.483Z] ⚠️ ERROR: [Bot bot_c3_t16_b1] Connection Final Failure: browserType.connectOverCDP: WebSocket error: wss://chrome.browserless.io/ 401 Unauthorized
+
+You've reached the units usage limit allowed under our free plan, please upgrade to a paid plan at https://browserless.io/account/upgrade
+Call log:
+[2m  - <ws connecting> wss://chrome.browserless.io/[22m
+[2m  - <ws unexpected response> wss://chrome.browserless.io/ 401 Unauthorized[22m
+
+[2mYou've reached the units usage limit allowed under our free plan, please upgrade to a paid plan at https://browserless.io/account/upgrade[22m
+[2m  - <ws error> wss://chrome.browserless.io/ error WebSocket was closed before the connection was established[22m
+[2m  - <ws connect error> wss://chrome.browserless.io/ WebSocket was closed before the connection was established[22m
+[2m  - <ws disconnected> wss://chrome.browserless.io/ code=1006 reason=[22m
+
+
+[2026-05-08T14:36:17.653Z] 🚨 Token 2UTlrv8t... marked as EXHAUSTED.
+[2026-05-08T14:36:17.818Z] 🚨 Token 2UTk7YxL... marked as EXHAUSTED.
+[2026-05-08T14:36:17.867Z] [Bot bot_c3_t15_b2] ⚠️ Connection Glitch (Attempt 1/2). Retrying in 5s...
+[2026-05-08T14:36:17.961Z] ⚠️ ERROR: [Bot bot_c3_t16_b2] Connection Final Failure: browserType.connectOverCDP: WebSocket error: wss://chrome.browserless.io/ 401 Unauthorized
+
+You've reached the units usage limit allowed under our free plan, please upgrade to a paid plan at https://browserless.io/account/upgrade
+Call log:
+[2m  - <ws connecting> wss://chrome.browserless.io/[22m
+[2m  - <ws unexpected response> wss://chrome.browserless.io/ 401 Unauthorized[22m
+
+[2mYou've reached the units usage limit allowed under our free plan, please upgrade to a paid plan at https://browserless.io/account/upgrade[22m
+[2m  - <ws error> wss://chrome.browserless.io/ error WebSocket was closed before the connection was established[22m
+[2m  - <ws connect error> wss://chrome.browserless.io/ WebSocket was closed before the connection was established[22m
+[2m  - <ws disconnected> wss://chrome.browserless.io/ code=1006 reason=[22m
+
+
+[2026-05-08T14:36:18.055Z] ⚠️ ERROR: [Bot bot_c3_t14_b1] Connection Final Failure: browserType.connectOverCDP: WebSocket error: wss://chrome.browserless.io/ 401 Unauthorized
+
+You've reached the units usage limit allowed under our free plan, please upgrade to a paid plan at https://browserless.io/account/upgrade
+Call log:
+[2m  - <ws connecting> wss://chrome.browserless.io/[22m
+[2m  - <ws unexpected response> wss://chrome.browserless.io/ 401 Unauthorized[22m
+
+[2mYou've reached the units usage limit allowed under our free plan, please upgrade to a paid plan at https://browserless.io/account/upgrade[22m
+[2m  - <ws error> wss://chrome.browserless.io/ error WebSocket was closed before the connection was established[22m
+[2m  - <ws connect error> wss://chrome.browserless.io/ WebSocket was closed before the connection was established[22m
+[2m  - <ws disconnected> wss://chrome.browserless.io/ code=1006 reason=[22m
+
+
+[2026-05-08T14:36:18.181Z] 🚨 Token 2UTk7YxL... marked as EXHAUSTED.
+[2026-05-08T14:36:18.218Z] ⚠️ ERROR: [Bot bot_c3_t13_b2] Connection Final Failure: browserType.connectOverCDP: WebSocket error: wss://chrome.browserless.io/ 401 Unauthorized
+
+You've reached the units usage limit allowed under our free plan, please upgrade to a paid plan at https://browserless.io/account/upgrade
+Call log:
+[2m  - <ws connecting> wss://chrome.browserless.io/[22m
+[2m  - <ws unexpected response> wss://chrome.browserless.io/ 401 Unauthorized[22m
+
+[2mYou've reached the units usage limit allowed under our free plan, please upgrade to a paid plan at https://browserless.io/account/upgrade[22m
+[2m  - <ws error> wss://chrome.browserless.io/ error WebSocket was closed before the connection was established[22m
+[2m  - <ws connect error> wss://chrome.browserless.io/ WebSocket was closed before the connection was established[22m
+[2m  - <ws disconnected> wss://chrome.browserless.io/ code=1006 reason=[22m
+
+
+[2026-05-08T14:36:18.278Z] 🚨 Token 2UTlv5N8... marked as EXHAUSTED.
+[2026-05-08T14:36:18.340Z] ⚠️ ERROR: [Bot bot_c3_t10_b2] Connection Final Failure: browserType.connectOverCDP: WebSocket error: wss://chrome.browserless.io/ 401 Unauthorized
+
+You've reached the units usage limit allowed under our free plan, please upgrade to a paid plan at https://browserless.io/account/upgrade
+Call log:
+[2m  - <ws connecting> wss://chrome.browserless.io/[22m
+[2m  - <ws unexpected response> wss://chrome.browserless.io/ 401 Unauthorized[22m
+
+[2mYou've reached the units usage limit allowed under our free plan, please upgrade to a paid plan at https://browserless.io/account/upgrade[22m
+[2m  - <ws error> wss://chrome.browserless.io/ error WebSocket was closed before the connection was established[22m
+[2m  - <ws connect error> wss://chrome.browserless.io/ WebSocket was closed before the connection was established[22m
+[2m  - <ws disconnected> wss://chrome.browserless.io/ code=1006 reason=[22m
+
+
+[2026-05-08T14:36:18.448Z] 🚨 Token 2UTlrv8t... marked as EXHAUSTED.
+[2026-05-08T14:36:18.573Z] 🚨 Token 2UTlsCYb... marked as EXHAUSTED.
+[2026-05-08T14:36:18.708Z] [Bot bot_c3_t12_b2] ⚠️ Connection Glitch (Attempt 1/2). Retrying in 5s...
+[2026-05-08T14:36:19.648Z] ⚠️ ERROR: [Bot bot_c3_t15_b1] Connection Final Failure: browserType.connectOverCDP: WebSocket error: wss://chrome.browserless.io/ 401 Unauthorized
+
+You've reached the units usage limit allowed under our free plan, please upgrade to a paid plan at https://browserless.io/account/upgrade
+Call log:
+[2m  - <ws connecting> wss://chrome.browserless.io/[22m
+[2m  - <ws unexpected response> wss://chrome.browserless.io/ 401 Unauthorized[22m
+
+[2mYou've reached the units usage limit allowed under our free plan, please upgrade to a paid plan at https://browserless.io/account/upgrade[22m
+[2m  - <ws error> wss://chrome.browserless.io/ error WebSocket was closed before the connection was established[22m
+[2m  - <ws connect error> wss://chrome.browserless.io/ WebSocket was closed before the connection was established[22m
+[2m  - <ws disconnected> wss://chrome.browserless.io/ code=1006 reason=[22m
+
+
+[2026-05-08T14:36:19.875Z] 🚨 Token 2UT5xzxJ... marked as EXHAUSTED.
+[2026-05-08T14:36:20.321Z] ⚠️ ERROR: [Bot bot_c3_t12_b1] Connection Final Failure: browserType.connectOverCDP: WebSocket error: wss://chrome.browserless.io/ 401 Unauthorized
+
+You've reached the units usage limit allowed under our free plan, please upgrade to a paid plan at https://browserless.io/account/upgrade
+Call log:
+[2m  - <ws connecting> wss://chrome.browserless.io/[22m
+[2m  - <ws unexpected response> wss://chrome.browserless.io/ 401 Unauthorized[22m
+
+[2mYou've reached the units usage limit allowed under our free plan, please upgrade to a paid plan at https://browserless.io/account/upgrade[22m
+[2m  - <ws error> wss://chrome.browserless.io/ error WebSocket was closed before the connection was established[22m
+[2m  - <ws connect error> wss://chrome.browserless.io/ WebSocket was closed before the connection was established[22m
+[2m  - <ws disconnected> wss://chrome.browserless.io/ code=1006 reason=[22m
+
+
+[2026-05-08T14:36:20.554Z] 🚨 Token 2UTlpDLt... marked as EXHAUSTED.
+[2026-05-08T14:36:21.069Z] ⚠️ ERROR: [Bot bot_c3_t10_b1] Connection Final Failure: browserType.connectOverCDP: WebSocket error: wss://chrome.browserless.io/ 401 Unauthorized
+
+You've reached the units usage limit allowed under our free plan, please upgrade to a paid plan at https://browserless.io/account/upgrade
+Call log:
+[2m  - <ws connecting> wss://chrome.browserless.io/[22m
+[2m  - <ws unexpected response> wss://chrome.browserless.io/ 401 Unauthorized[22m
+
+[2mYou've reached the units usage limit allowed under our free plan, please upgrade to a paid plan at https://browserless.io/account/upgrade[22m
+[2m  - <ws error> wss://chrome.browserless.io/ error WebSocket was closed before the connection was established[22m
+[2m  - <ws connect error> wss://chrome.browserless.io/ WebSocket was closed before the connection was established[22m
+[2m  - <ws disconnected> wss://chrome.browserless.io/ code=1006 reason=[22m
+
+
+[2026-05-08T14:36:21.266Z] ⚠️ ERROR: [Bot bot_c3_t11_b2] Connection Final Failure: browserType.connectOverCDP: WebSocket error: wss://chrome.browserless.io/ 401 Unauthorized
+
+You've reached the units usage limit allowed under our free plan, please upgrade to a paid plan at https://browserless.io/account/upgrade
+Call log:
+[2m  - <ws connecting> wss://chrome.browserless.io/[22m
+[2m  - <ws unexpected response> wss://chrome.browserless.io/ 401 Unauthorized[22m
+
+[2mYou've reached the units usage limit allowed under our free plan, please upgrade to a paid plan at https://browserless.io/account/upgrade[22m
+[2m  - <ws error> wss://chrome.browserless.io/ error WebSocket was closed before the connection was established[22m
+[2m  - <ws connect error> wss://chrome.browserless.io/ WebSocket was closed before the connection was established[22m
+[2m  - <ws disconnected> wss://chrome.browserless.io/ code=1006 reason=[22m
+
+
+[2026-05-08T14:36:21.301Z] 🚨 Token 2UTlsCYb... marked as EXHAUSTED.
+[2026-05-08T14:36:21.377Z] ⚠️ ERROR: [Bot bot_c3_t14_b2] Connection Final Failure: browserType.connectOverCDP: WebSocket error: wss://chrome.browserless.io/ 401 Unauthorized
+
+You've reached the units usage limit allowed under our free plan, please upgrade to a paid plan at https://browserless.io/account/upgrade
+Call log:
+[2m  - <ws connecting> wss://chrome.browserless.io/[22m
+[2m  - <ws unexpected response> wss://chrome.browserless.io/ 401 Unauthorized[22m
+
+[2mYou've reached the units usage limit allowed under our free plan, please upgrade to a paid plan at https://browserless.io/account/upgrade[22m
+[2m  - <ws error> wss://chrome.browserless.io/ error WebSocket was closed before the connection was established[22m
+[2m  - <ws connect error> wss://chrome.browserless.io/ WebSocket was closed before the connection was established[22m
+[2m  - <ws disconnected> wss://chrome.browserless.io/ code=1006 reason=[22m
+
+
+[2026-05-08T14:36:21.489Z] 🚨 Token 2UTlhwgy... marked as EXHAUSTED.
+[2026-05-08T14:36:21.614Z] 🚨 Token 2UTlv5N8... marked as EXHAUSTED.
+[2026-05-08T14:36:23.596Z] ⚠️ ERROR: [Bot bot_c3_t11_b1] Connection Final Failure: browserType.connectOverCDP: WebSocket error: wss://chrome.browserless.io/ 401 Unauthorized
+
+You've reached the units usage limit allowed under our free plan, please upgrade to a paid plan at https://browserless.io/account/upgrade
+Call log:
+[2m  - <ws connecting> wss://chrome.browserless.io/[22m
+[2m  - <ws unexpected response> wss://chrome.browserless.io/ 401 Unauthorized[22m
+
+[2mYou've reached the units usage limit allowed under our free plan, please upgrade to a paid plan at https://browserless.io/account/upgrade[22m
+[2m  - <ws error> wss://chrome.browserless.io/ error WebSocket was closed before the connection was established[22m
+[2m  - <ws connect error> wss://chrome.browserless.io/ WebSocket was closed before the connection was established[22m
+[2m  - <ws disconnected> wss://chrome.browserless.io/ code=1006 reason=[22m
+
+
+[2026-05-08T14:36:23.817Z] 🚨 Token 2UTlhwgy... marked as EXHAUSTED.
+[2026-05-08T14:36:24.199Z] ⚠️ ERROR: [Bot bot_c3_t15_b2] Connection Final Failure: browserType.connectOverCDP: WebSocket error: wss://chrome.browserless.io/ 401 Unauthorized
+
+You've reached the units usage limit allowed under our free plan, please upgrade to a paid plan at https://browserless.io/account/upgrade
+Call log:
+[2m  - <ws connecting> wss://chrome.browserless.io/[22m
+[2m  - <ws unexpected response> wss://chrome.browserless.io/ 401 Unauthorized[22m
+
+[2mYou've reached the units usage limit allowed under our free plan, please upgrade to a paid plan at https://browserless.io/account/upgrade[22m
+[2m  - <ws error> wss://chrome.browserless.io/ error WebSocket was closed before the connection was established[22m
+[2m  - <ws connect error> wss://chrome.browserless.io/ WebSocket was closed before the connection was established[22m
+[2m  - <ws disconnected> wss://chrome.browserless.io/ code=1006 reason=[22m
+
+
+[2026-05-08T14:36:24.424Z] 🚨 Token 2UT5xzxJ... marked as EXHAUSTED.
+[2026-05-08T14:36:26.274Z] ⚠️ ERROR: [Bot bot_c3_t12_b2] Connection Final Failure: browserType.connectOverCDP: WebSocket error: wss://chrome.browserless.io/ 401 Unauthorized
+
+You've reached the units usage limit allowed under our free plan, please upgrade to a paid plan at https://browserless.io/account/upgrade
+Call log:
+[2m  - <ws connecting> wss://chrome.browserless.io/[22m
+[2m  - <ws unexpected response> wss://chrome.browserless.io/ 401 Unauthorized[22m
+
+[2mYou've reached the units usage limit allowed under our free plan, please upgrade to a paid plan at https://browserless.io/account/upgrade[22m
+[2m  - <ws error> wss://chrome.browserless.io/ error WebSocket was closed before the connection was established[22m
+[2m  - <ws connect error> wss://chrome.browserless.io/ WebSocket was closed before the connection was established[22m
+[2m  - <ws disconnected> wss://chrome.browserless.io/ code=1006 reason=[22m
+
+
+[2026-05-08T14:36:26.497Z] 🚨 Token 2UTlpDLt... marked as EXHAUSTED.
+[2026-05-08T14:36:26.713Z] ✅ Batch finished. Cooldown 10s...
+[2026-05-08T14:36:37.429Z] 😴 No active tokens found. Waiting 60s...
+[2026-05-08T14:37:38.085Z] 😴 No active tokens found. Waiting 60s...
+[2026-05-08T14:38:38.741Z] 😴 No active tokens found. Waiting 60s...
+[2026-05-08T14:39:39.466Z] 😴 No active tokens found. Waiting 60s...
+[2026-05-08T14:40:40.206Z] 😴 No active tokens found. Waiting 60s...
+[2026-05-08T14:41:40.902Z] 😴 No active tokens found. Waiting 60s...
+[2026-05-08T14:42:41.625Z] 😴 No active tokens found. Waiting 60s...
+[2026-05-08T14:43:42.284Z] 😴 No active tokens found. Waiting 60s...
+[2026-05-08T14:44:43.028Z] 😴 No active tokens found. Waiting 60s...
+[2026-05-08T14:45:43.765Z] 😴 No active tokens found. Waiting 60s...
+[2026-05-08T14:46:44.425Z] 😴 No active tokens found. Waiting 60s...
+[2026-05-08T14:47:48.092Z] 😴 No active tokens found. Waiting 60s...
+[2026-05-08T14:48:48.736Z] 😴 No active tokens found. Waiting 60s...
+[2026-05-08T14:49:49.465Z] 😴 No active tokens found. Waiting 60s...
+[2026-05-08T14:50:50.153Z] 😴 No active tokens found. Waiting 60s...
+[2026-05-08T14:51:50.862Z] 😴 No active tokens found. Waiting 60s...
+[2026-05-08T14:52:51.694Z] 😴 No active tokens found. Waiting 60s...
+[2026-05-08T14:53:52.360Z] 😴 No active tokens found. Waiting 60s...
+[2026-05-08T14:54:53.028Z] 😴 No active tokens found. Waiting 60s...
+[2026-05-08T14:55:53.684Z] 😴 No active tokens found. Waiting 60s...
+[2026-05-08T14:56:54.401Z] 😴 No active tokens found. Waiting 60s...
+[2026-05-08T14:57:55.193Z] 😴 No active tokens found. Waiting 60s...
+[2026-05-08T14:58:55.850Z] 😴 No active tokens found. Waiting 60s...
+[2026-05-08T14:59:56.689Z] 😴 No active tokens found. Waiting 60s...
+[2026-05-08T15:00:57.344Z] 😴 No active tokens found. Waiting 60s...
+[2026-05-08T15:01:42.916Z] 🛑 Fleet Process Terminated.
+[2026-05-08T16:03:08.147Z] ◇ injected env (0) from .env // tip: ⌘ custom filepath { path: '/custom/path/.env' }
+[2026-05-08T16:03:08.178Z] ◇ injected env (0) from .env // tip: ⌘ override existing { override: true }
+[2026-05-08T16:03:08.179Z] 🚀 Booting up High-Velocity Scaling Fleet...
+[2026-05-08T16:03:08.180Z] 🎯 Target URL: https://www.profitablecpmratenetwork.com/ji7r2d6y?key=5c429c07a1c5d04ca019e4a57b64e167
+[2026-05-08T16:03:08.180Z] 📊 Mode: 2 Bots per Token.
+[2026-05-08T16:03:09.080Z] 🔥 STARTING VELOCITY CYCLE #1 [Tokens: 1]
+[2026-05-08T16:03:09.080Z] =========================================
+[2026-05-08T16:03:09.080Z] 📡 Dispatching 1 tokens (2 bots)...
+[2026-05-08T16:03:24.981Z] 🚨 Token 2UT5xzxJ... marked as EXHAUSTED.
+[2026-05-08T16:03:39.838Z] ✅ Batch finished. Cooldown 10s...
+[2026-05-08T16:03:50.457Z] 😴 No active tokens found. Waiting 60s...
+[2026-05-08T16:04:51.156Z] 😴 No active tokens found. Waiting 60s...
+[2026-05-08T16:05:51.819Z] 😴 No active tokens found. Waiting 60s...
+[2026-05-08T16:06:52.466Z] 😴 No active tokens found. Waiting 60s...
+[2026-05-08T16:07:53.129Z] 😴 No active tokens found. Waiting 60s...
+[2026-05-08T16:08:53.781Z] 😴 No active tokens found. Waiting 60s...
+[2026-05-08T16:09:55.002Z] 😴 No active tokens found. Waiting 60s...
+[2026-05-08T16:10:55.651Z] 😴 No active tokens found. Waiting 60s...
+[2026-05-08T16:11:56.354Z] 😴 No active tokens found. Waiting 60s...
+[2026-05-08T16:12:56.982Z] 😴 No active tokens found. Waiting 60s...
+[2026-05-08T16:13:57.610Z] 😴 No active tokens found. Waiting 60s...
+[2026-05-08T16:14:58.244Z] 😴 No active tokens found. Waiting 60s...
+[2026-05-08T16:15:59.752Z] 😴 No active tokens found. Waiting 60s...
+[2026-05-08T16:17:00.376Z] 😴 No active tokens found. Waiting 60s...
+[2026-05-08T16:18:01.314Z] 😴 No active tokens found. Waiting 60s...
+[2026-05-08T16:19:02.176Z] 😴 No active tokens found. Waiting 60s...
+[2026-05-08T16:20:03.096Z] 😴 No active tokens found. Waiting 60s...
+[2026-05-08T16:21:03.745Z] 😴 No active tokens found. Waiting 60s...
+[2026-05-08T16:22:04.368Z] 😴 No active tokens found. Waiting 60s...
+[2026-05-08T16:23:04.988Z] 😴 No active tokens found. Waiting 60s...
+[2026-05-08T16:24:05.632Z] 😴 No active tokens found. Waiting 60s...
+[2026-05-08T16:25:06.347Z] 😴 No active tokens found. Waiting 60s...
+[2026-05-08T16:26:07.352Z] 😴 No active tokens found. Waiting 60s...
+[2026-05-08T16:27:08.238Z] 😴 No active tokens found. Waiting 60s...
+[2026-05-08T16:28:08.894Z] 😴 No active tokens found. Waiting 60s...
+[2026-05-08T16:29:09.589Z] 😴 No active tokens found. Waiting 60s...
+[2026-05-08T16:30:10.252Z] 😴 No active tokens found. Waiting 60s...
+[2026-05-08T16:31:10.985Z] 😴 No active tokens found. Waiting 60s...
+[2026-05-08T16:32:11.634Z] 😴 No active tokens found. Waiting 60s...
+[2026-05-08T16:33:12.320Z] 😴 No active tokens found. Waiting 60s...
+[2026-05-08T16:34:15.503Z] 😴 No active tokens found. Waiting 60s...
+[2026-05-08T16:35:16.202Z] 😴 No active tokens found. Waiting 60s...
+[2026-05-08T16:36:16.846Z] 😴 No active tokens found. Waiting 60s...
+[2026-05-08T16:37:17.543Z] 😴 No active tokens found. Waiting 60s...
+[2026-05-08T16:38:18.363Z] 😴 No active tokens found. Waiting 60s...
+[2026-05-08T16:39:19.041Z] 😴 No active tokens found. Waiting 60s...
+[2026-05-08T16:40:19.730Z] 😴 No active tokens found. Waiting 60s...
+[2026-05-08T16:41:20.233Z] 😴 No active tokens found. Waiting 60s...
+[2026-05-08T16:42:20.794Z] 😴 No active tokens found. Waiting 60s...
+[2026-05-08T16:43:21.532Z] 😴 No active tokens found. Waiting 60s...
+[2026-05-08T16:44:22.036Z] 😴 No active tokens found. Waiting 60s...
+[2026-05-08T16:45:22.585Z] 😴 No active tokens found. Waiting 60s...
+[2026-05-08T16:46:23.294Z] 😴 No active tokens found. Waiting 60s...
+[2026-05-08T16:47:23.815Z] 😴 No active tokens found. Waiting 60s...
+[2026-05-08T16:48:24.308Z] 😴 No active tokens found. Waiting 60s...
+[2026-05-08T16:49:24.841Z] 😴 No active tokens found. Waiting 60s...
+[2026-05-08T16:50:25.382Z] 😴 No active tokens found. Waiting 60s...
+[2026-05-08T16:51:25.951Z] 😴 No active tokens found. Waiting 60s...
+[2026-05-08T16:52:26.441Z] 😴 No active tokens found. Waiting 60s...
+[2026-05-08T16:53:26.959Z] 😴 No active tokens found. Waiting 60s...
+[2026-05-08T16:54:27.886Z] 😴 No active tokens found. Waiting 60s...
+[2026-05-08T16:55:28.391Z] 😴 No active tokens found. Waiting 60s...
+[2026-05-08T16:56:28.995Z] 😴 No active tokens found. Waiting 60s...
+[2026-05-08T16:57:29.496Z] 😴 No active tokens found. Waiting 60s...
+[2026-05-08T16:58:29.999Z] 😴 No active tokens found. Waiting 60s...
+[2026-05-08T16:59:30.477Z] 😴 No active tokens found. Waiting 60s...
+[2026-05-08T17:00:31.482Z] 😴 No active tokens found. Waiting 60s...
+[2026-05-08T17:01:32.264Z] 😴 No active tokens found. Waiting 60s...
+[2026-05-08T17:02:32.922Z] 😴 No active tokens found. Waiting 60s...
+[2026-05-08T17:03:33.429Z] 😴 No active tokens found. Waiting 60s...
+[2026-05-08T17:04:34.015Z] 😴 No active tokens found. Waiting 60s...
+[2026-05-08T17:05:34.551Z] 😴 No active tokens found. Waiting 60s...
+[2026-05-08T17:06:35.155Z] 😴 No active tokens found. Waiting 60s...
+[2026-05-08T17:07:35.811Z] 😴 No active tokens found. Waiting 60s...
+[2026-05-08T17:08:36.398Z] 😴 No active tokens found. Waiting 60s...
+[2026-05-08T17:09:36.941Z] 😴 No active tokens found. Waiting 60s...
+[2026-05-08T17:10:37.755Z] 😴 No active tokens found. Waiting 60s...
+[2026-05-08T17:11:38.373Z] 😴 No active tokens found. Waiting 60s...
+[2026-05-08T17:12:38.912Z] 😴 No active tokens found. Waiting 60s...
+[2026-05-08T17:13:39.403Z] 😴 No active tokens found. Waiting 60s...
+[2026-05-08T17:14:40.468Z] 😴 No active tokens found. Waiting 60s...
+[2026-05-08T17:15:40.951Z] 😴 No active tokens found. Waiting 60s...
+[2026-05-08T17:16:41.806Z] 😴 No active tokens found. Waiting 60s...
+[2026-05-08T17:17:42.393Z] 😴 No active tokens found. Waiting 60s...
+[2026-05-08T17:18:42.922Z] 😴 No active tokens found. Waiting 60s...
+[2026-05-08T17:19:43.495Z] 😴 No active tokens found. Waiting 60s...
+[2026-05-08T17:20:44.262Z] 😴 No active tokens found. Waiting 60s...
+[2026-05-08T17:21:44.786Z] 😴 No active tokens found. Waiting 60s...
+[2026-05-08T17:22:45.438Z] 😴 No active tokens found. Waiting 60s...
+[2026-05-08T17:23:45.950Z] 😴 No active tokens found. Waiting 60s...
+[2026-05-08T17:24:46.491Z] 😴 No active tokens found. Waiting 60s...
+[2026-05-08T17:25:47.168Z] 😴 No active tokens found. Waiting 60s...
+[2026-05-08T17:26:48.931Z] 😴 No active tokens found. Waiting 60s...
+[2026-05-08T17:27:49.558Z] 😴 No active tokens found. Waiting 60s...
+[2026-05-08T17:28:50.080Z] 😴 No active tokens found. Waiting 60s...
+[2026-05-08T17:29:51.659Z] 😴 No active tokens found. Waiting 60s...
+[2026-05-08T17:30:52.182Z] 😴 No active tokens found. Waiting 60s...
+[2026-05-08T17:31:52.670Z] 😴 No active tokens found. Waiting 60s...

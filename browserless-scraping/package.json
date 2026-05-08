@@ -1,0 +1,14 @@
+{
+  "name": "browserless-token-farmer",
+  "version": "1.0.0",
+  "description": "Infinite account generator for Browserless using Cloudflare Email Workers",
+  "main": "generator.js",
+  "scripts": {
+    "start": "node generator.js"
+  },
+  "dependencies": {
+    "@supabase/supabase-js": "^2.105.3",
+    "dotenv": "^16.0.3",
+    "playwright": "^1.32.3"
+  }
+}

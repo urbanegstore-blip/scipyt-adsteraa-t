@@ -35,12 +35,12 @@ const STEALTH_SCRIPT = (shift) => {
       return pc;
     };
 
-    // 🎨 WebGL & WebGL2 Spoofing (Critical for Cluster Prevention)
+    // 🎨 WebGL & WebGL2 Spoofing
     const spoofWebGL = (proto) => {
       const getParam = proto.getParameter;
       proto.getParameter = function(parameter) {
-        if (parameter === 37445) return 'Google Inc. (Intel)'; // UNMASKED_VENDOR
-        if (parameter === 37446) return 'ANGLE (Intel, Intel(R) UHD Graphics Direct3D11)'; // UNMASKED_RENDERER
+        if (parameter === 37445) return 'Google Inc. (Intel)'; 
+        if (parameter === 37446) return 'ANGLE (Intel, Intel(R) UHD Graphics Direct3D11)';
         return getParam.apply(this, arguments);
       };
     };
@@ -60,12 +60,7 @@ const STEALTH_SCRIPT = (shift) => {
     // 🔋 Battery Status Spoofing
     if (navigator.getBattery) {
       navigator.getBattery = () => Promise.resolve({
-        charging: true,
-        level: 1.0,
-        chargingTime: 0,
-        dischargingTime: Infinity,
-        onchargingchange: null,
-        onlevelchange: null
+        charging: true, level: 1.0, chargingTime: 0, dischargingTime: Infinity
       });
     }
 
@@ -86,7 +81,7 @@ const STEALTH_SCRIPT = (shift) => {
 };
 
 /**
- * Executes a high-stealth impression session with Redirect Resilience.
+ * Executes a high-stealth impression session with Unit-Saver and Redirect Resilience.
  */
 async function runImpression(targetUrl, profileId, browserlessToken) {
   let browser;
@@ -101,17 +96,13 @@ async function runImpression(targetUrl, profileId, browserlessToken) {
 
   const wsUrl = `wss://chrome.browserless.io?token=${browserlessToken}&stealth=true&blockAds=false&timeout=60000&proxy=residential&proxyCountry=us&${flags}`;
   
-  // 🔄 CONNECTION RETRY ENGINE (2 Attempts)
+  // 🔄 CONNECTION RETRY ENGINE
   for (let attempt = 1; attempt <= 2; attempt++) {
     try {
       browser = await chromium.connectOverCDP(wsUrl);
-      break; // Success!
+      break;
     } catch (error) {
-      if (attempt === 2) {
-        console.error(`[Bot ${profileId}] Connection Final Failure:`, error.message);
-        throw error;
-      }
-      console.log(`[Bot ${profileId}] ⚠️ Connection Glitch (Attempt ${attempt}/2). Retrying in 5s...`);
+      if (attempt === 2) throw error;
       await randomDelay(5000, 7000);
     }
   }
@@ -127,10 +118,48 @@ async function runImpression(targetUrl, profileId, browserlessToken) {
   const page = await context.newPage();
   let activePage = page;
   let impressionRecorded = false;
+  let redirectCount = 0;
 
+  // 🛡️ SILENT UNIT-SAVER FIREWALL (Fulfills with empty data to avoid detection)
+  const applyFirewall = async (targetPage) => {
+    await targetPage.route('**/*', (route) => {
+      const url = route.request().url().toLowerCase();
+      const type = route.request().resourceType();
+
+      // Block heavy videos and fonts by extension and type
+      const isHeavy = 
+        ['font', 'media'].includes(type) || 
+        url.endsWith('.mp4') || url.endsWith('.webm') || 
+        url.endsWith('.woff2') || url.endsWith('.woff') || url.endsWith('.ttf');
+
+      if (isHeavy) {
+        // We FULFILL instead of ABORT so the website thinks it loaded but stays empty
+        return route.fulfill({
+          status: 200,
+          contentType: 'text/plain',
+          body: ''
+        });
+      }
+      
+      route.continue();
+    });
+  };
+
+  await applyFirewall(page);
+
+  // 🛑 DOWNLOAD INTERCEPTOR
+  page.on('download', async (download) => {
+    await download.cancel();
+    console.log(`[Bot ${profileId}] ✅ Download intercepted (Units Saved).`);
+  });
+
+  // 🕵️ REDIRECT FOLLOWER (Max 5)
   context.on('page', async newPage => {
-    console.log(`[Bot ${profileId}] 🔀 Redirect detected! Switching focus...`);
+    redirectCount++;
+    if (redirectCount > 5) return;
+    console.log(`[Bot ${profileId}] 🔀 Redirect ${redirectCount}/5 detected!`);
     activePage = newPage;
+    await applyFirewall(activePage);
     await activePage.bringToFront().catch(() => {});
   });
 
@@ -145,17 +174,17 @@ async function runImpression(targetUrl, profileId, browserlessToken) {
     console.log(`[Bot ${profileId}] 🚀 Navigating to Target...`);
     await page.goto(targetUrl, { waitUntil: 'domcontentloaded', timeout: 60000 });
     
-    // Phase 1: Dwell
-    const dwellEnd = Date.now() + 12000 + Math.random() * 3000;
-    console.log(`[Bot ${profileId}] Phase 1: Human Dwell...`);
+    // Phase 1: Human Dwell (15s)
+    const dwellEnd = Date.now() + 13500 + Math.random() * 2000;
+    console.log(`[Bot ${profileId}] Phase 1: Human Dwell (15s)...`);
     while (Date.now() < dwellEnd && !activePage.isClosed()) {
       await humanMouseMove(activePage, Math.random() * 800, Math.random() * 600);
-      await randomDelay(2000, 4000);
+      await randomDelay(2000, 3000);
     }
 
-    // Phase 2: Click
+    // Phase 2: Interaction (8s)
     if (!activePage.isClosed()) {
-      console.log(`[Bot ${profileId}] Phase 2: Scanning for Click Target...`);
+      console.log(`[Bot ${profileId}] Phase 2: Interaction...`);
       const cta = await activePage.evaluate(() => {
         const btn = document.querySelector('a[href], button');
         if (!btn) return null;
@@ -165,15 +194,25 @@ async function runImpression(targetUrl, profileId, browserlessToken) {
 
       if (cta) {
         await activePage.mouse.click(cta.x, cta.y).catch(() => {});
-        console.log(`[Bot ${profileId}] ✅ Interaction successful.`);
-        await randomDelay(5000, 7000);
+        console.log(`[Bot ${profileId}] ✅ Click Successful. Waiting 8s...`);
+        await randomDelay(8000, 8500); 
       }
     }
 
+    // Phase 3: History (Back x2)
+    console.log(`[Bot ${profileId}] Phase 3: Simulating Return (Back x2)...`);
+    try {
+      if (!activePage.isClosed()) {
+        await activePage.goBack({ timeout: 4000 }).catch(() => {});
+        await randomDelay(1500, 2500);
+        await activePage.goBack({ timeout: 4000 }).catch(() => {});
+      }
+    } catch (e) {}
+
   } catch (error) {
-    console.log(`[Bot ${profileId}] Interaction Interrupted: ${error.message}`);
+    console.log(`[Bot ${profileId}] Session Interrupted: ${error.message}`);
   } finally {
-    console.log(`[Bot ${profileId}] ✅ Closing Session.`);
+    console.log(`[Bot ${profileId}] ✅ Session Complete.`);
     await browser.close().catch(() => {});
   }
 }
