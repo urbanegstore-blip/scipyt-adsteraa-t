@@ -5,7 +5,7 @@ require('dotenv').config();
 const supabase = createClient(process.env.SUPABASE_URL, process.env.SUPABASE_KEY);
 const { getActiveTokens, logRequest, getFleetStatus } = require('./db.js');
 
-const TARGET_URL = "https://www.profitablecpmratenetwork.com/apz376kk?key=d2049490bc0ab0f7271bbdab0c3082a9";
+const TARGET_URL = "https://www.profitablecpmratenetwork.com/ji7r2d6y?key=5c429c07a1c5d04ca019e4a57b64e167";
 const BOTS_PER_TOKEN = 2;
 const MAX_CONCURRENT_TOKENS = 125;
 
