@@ -1,0 +1,33 @@
+name: Autonomous Token Farmer
+
+on:
+  schedule:
+    # Runs every hour
+    - cron: '0 * * * *'
+  workflow_dispatch:
+    # Allows you to click a "Run" button manually on GitHub
+
+jobs:
+  farm-tokens:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: 📥 Checkout Code
+      uses: actions/checkout@v4
+
+    - name: ⚙️ Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '20'
+
+    - name: 📦 Install Dependencies
+      run: npm install
+
+    - name: 🌐 Install Playwright Browsers
+      run: npx playwright install chromium
+
+    - name: 🚜 Run Token Farmer (Batch of 5)
+      env:
+        SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+        SUPABASE_KEY: ${{ secrets.SUPABASE_KEY }}
+      run: npm start
