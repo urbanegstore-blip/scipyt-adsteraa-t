@@ -26,9 +26,7 @@ jobs:
 
     - name: 📦 Install Dependencies
       working-directory: ./bot
-      run: |
-        npm install
-        npx playwright install --with-deps chromium
+      run: npm install
 
     - name: 🔥 Run Sharded Fleet (Instance ${{ matrix.instance }})
       working-directory: ./bot
