@@ -55,9 +55,32 @@
             </div>
             <div class="flex gap-4">
                 <button id="toggle-btn" onclick="toggleFleet()" class="px-8 py-3 rounded-2xl font-bold border transition-all text-xs tracking-widest bg-emerald-600/10 border-emerald-500/30 text-emerald-500">LOADING...</button>
+                <button onclick="openConfig()" class="glass px-8 py-3 rounded-2xl font-bold text-xs tracking-widest text-emerald-400 hover:bg-white/5">GLOBAL CONFIG</button>
                 <button onclick="openVault()" class="glass px-8 py-3 rounded-2xl font-bold text-xs tracking-widest text-indigo-400 hover:bg-white/5">LOG VAULT</button>
             </div>
         </header>
+
+        <!-- Global Config Modal -->
+        <div id="config-modal" class="fixed inset-0 modal z-[110] hidden flex items-center justify-center p-4">
+            <div class="glass w-full max-w-2xl rounded-3xl overflow-hidden border-emerald-500/20 flex flex-col">
+                <div class="p-6 border-b border-white/5 flex justify-between items-center bg-white/5">
+                    <h2 class="text-xl font-bold flex items-center gap-3 italic text-emerald-400">GLOBAL CONFIGURATION</h2>
+                    <button onclick="closeConfig()" class="text-slate-400 hover:text-white font-bold">CLOSE [ESC]</button>
+                </div>
+                <div class="p-6 space-y-4">
+                    <div>
+                        <label class="block text-xs font-bold text-slate-400 uppercase tracking-widest mb-2">Target URL</label>
+                        <input type="text" id="config-target-url" class="w-full bg-slate-900 border border-slate-800 p-3 rounded-xl text-xs font-mono text-white outline-none focus:border-emerald-500">
+                        <button onclick="saveConfig('target_url', document.getElementById('config-target-url').value)" class="mt-2 text-[10px] bg-emerald-500/20 text-emerald-400 px-4 py-2 rounded-lg font-bold hover:bg-emerald-500 hover:text-white transition">Save Target URL</button>
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold text-slate-400 uppercase tracking-widest mb-2">Email Domains (Comma Separated)</label>
+                        <input type="text" id="config-email-domains" class="w-full bg-slate-900 border border-slate-800 p-3 rounded-xl text-xs font-mono text-white outline-none focus:border-emerald-500">
+                        <button onclick="saveConfig('email_domains', document.getElementById('config-email-domains').value)" class="mt-2 text-[10px] bg-emerald-500/20 text-emerald-400 px-4 py-2 rounded-lg font-bold hover:bg-emerald-500 hover:text-white transition">Save Email Domains</button>
+                    </div>
+                </div>
+            </div>
+        </div>
 
         <div class="grid grid-cols-1 lg:grid-cols-4 gap-8 mb-8">
             <!-- Sidebar -->
@@ -99,6 +122,9 @@
                             </thead>
                             <tbody id="token-table" class="divide-y divide-white/5 text-[11px]"></tbody>
                         </table>
+                        <div id="load-more-container" class="p-4 text-center hidden">
+                            <button onclick="loadMoreKeys()" class="text-xs font-bold text-indigo-400 hover:text-white bg-indigo-500/10 px-6 py-2 rounded-xl transition">LOAD MORE KEYS</button>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -120,6 +146,8 @@
         let password = localStorage.getItem('fleet_pass') || '';
         let currentFilter = 'all';
         let currentSort = 'last_used_at';
+        let renderLimit = 50;
+        let globalTokensData = [];
 
         if (password) {
             document.getElementById('login-screen').style.display = 'none';
@@ -178,16 +206,22 @@
 
             const table = el('token-table');
             if (table) {
-                let tokens = [...data.tokens];
-                if (currentFilter !== 'all') tokens = tokens.filter(t => t.status === currentFilter);
+                globalTokensData = [...data.tokens];
+                if (currentFilter !== 'all') globalTokensData = globalTokensData.filter(t => t.status === currentFilter);
                 
-                tokens.sort((a, b) => {
+                // Keep the search filter alive without hitting the server again
+                const searchQ = document.getElementById('search-input').value.toLowerCase();
+                if (searchQ) globalTokensData = globalTokensData.filter(t => t.token.toLowerCase().includes(searchQ));
+                
+                globalTokensData.sort((a, b) => {
                     const dateA = a.last_used_at ? new Date(a.last_used_at) : new Date(0);
                     const dateB = b.last_used_at ? new Date(b.last_used_at) : new Date(0);
                     return dateB - dateA;
                 });
 
-                table.innerHTML = tokens.length ? tokens.map(t => `
+                const displayTokens = globalTokensData.slice(0, renderLimit);
+
+                table.innerHTML = displayTokens.length ? displayTokens.map(t => `
                     <tr class="hover:bg-white/[0.02]">
                         <td class="px-8 py-4 font-mono text-slate-400">
                             <span class="hover:text-indigo-400 cursor-pointer" onclick="editToken('${t.token}')">${t.token.slice(0, 35)}...</span>
@@ -208,8 +242,20 @@
                         </td>
                     </tr>
                 `).join('') : '<tr><td colspan="4" class="px-8 py-10 text-center text-slate-600 italic">No tokens found.</td></tr>';
+                
+                const loadMoreBtn = el('load-more-container');
+                if (globalTokensData.length > renderLimit) loadMoreBtn.classList.remove('hidden');
+                else loadMoreBtn.classList.add('hidden');
+            }
+
+            // Sync config fields
+            if (data.config) {
+                if (document.getElementById('config-target-url').value === '') document.getElementById('config-target-url').value = data.config.target_url || '';
+                if (document.getElementById('config-email-domains').value === '') document.getElementById('config-email-domains').value = data.config.email_domains || '';
             }
         }
+
+        function loadMoreKeys() { renderLimit += 50; refresh(); }
 
         async function editToken(oldToken) {
             const newToken = prompt("Update API Token String:", oldToken);
@@ -252,7 +298,16 @@
         function setFilter(f) { currentFilter = f; refresh(); }
         function clearTerminal() { document.getElementById('terminal-out').innerHTML = ''; }
         function init() { refresh(); setInterval(refresh, 5000); initSSE(); }
-        window.addEventListener('keydown', (e) => { if(e.key === 'Escape') closeVault(); });
+        function openConfig() { document.getElementById('config-modal').classList.remove('hidden'); }
+        function closeConfig() { document.getElementById('config-modal').classList.add('hidden'); }
+        async function saveConfig(key, value) {
+            await api('/api/config', 'POST', { key, value });
+            alert('Config Saved Successfully!');
+        }
+
+        window.addEventListener('keydown', (e) => { 
+            if(e.key === 'Escape') { closeVault(); closeConfig(); } 
+        });
     </script>
 </body>
 </html>

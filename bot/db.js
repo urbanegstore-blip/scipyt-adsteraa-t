@@ -113,11 +113,32 @@ async function toggleFleetStatus(isRunning) {
     .eq('id', 'master_switch');
 }
 
+/**
+ * Gets global configuration variables
+ */
+async function getGlobalConfig() {
+  const { data } = await supabase.from('global_config').select('*');
+  const config = {};
+  if (data) {
+    data.forEach(row => config[row.id] = row.value);
+  }
+  return config;
+}
+
+/**
+ * Updates a global configuration variable
+ */
+async function updateGlobalConfig(key, value) {
+  await supabase.from('global_config').upsert({ id: key, value });
+}
+
 module.exports = {
   getActiveTokens,
   updateTokenStatus,
   logRequest,
   resetMonthlyKeys,
   getFleetStatus,
-  toggleFleetStatus
+  toggleFleetStatus,
+  getGlobalConfig,
+  updateGlobalConfig
 };

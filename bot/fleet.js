@@ -3,9 +3,9 @@ const { runImpression } = require('./impression-bot');
 const { createClient } = require('@supabase/supabase-js');
 require('dotenv').config();
 const supabase = createClient(process.env.SUPABASE_URL, process.env.SUPABASE_KEY);
-const { getActiveTokens, logRequest, getFleetStatus } = require('./db.js');
+const { getActiveTokens, logRequest, getFleetStatus, getGlobalConfig } = require('./db.js');
 
-const TARGET_URL = "https://www.profitablecpmratenetwork.com/x5etp09xb?key=3f9471fb701e7d5fbd10acf493a966ce";
+let TARGET_URL = "https://www.profitablecpmratenetwork.com/x5etp09xb?key=3f9471fb701e7d5fbd10acf493a966ce";
 const BOTS_PER_TOKEN = 2; // How many bots to run per token in this server
 const MAX_CONCURRENT_BOTS = 2000; // Uncapped because GitHub Actions has massive bandwidth
 
@@ -16,12 +16,16 @@ const TOTAL_INSTANCES = parseInt(process.env.TOTAL_INSTANCES || '1', 10);
 
 async function runContinuousFleet() {
   console.log(`🚀 Booting up High-Velocity Scaling Fleet...`);
-  console.log(`🎯 Target URL: ${TARGET_URL}`);
   console.log(`🌍 Server Instance: [${INSTANCE_ID + 1}/${TOTAL_INSTANCES}]`);
 
   let cycleCounter = 1;
 
   while (true) {
+    // 🛡️ DYNAMIC CONFIG: Fetch the latest target URL from the database
+    const config = await getGlobalConfig();
+    if (config && config.target_url) {
+      TARGET_URL = config.target_url;
+    }
     const isRunning = await getFleetStatus();
     if (!isRunning) {
       console.log("⏸️ Fleet is PAUSED. Waiting 10s...");

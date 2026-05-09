@@ -36,6 +36,6 @@ jobs:
     - name: 🚜 Run Token Farmer (Batch of 5)
       working-directory: ./browserless-scraping
       env:
-        SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
-        SUPABASE_KEY: ${{ secrets.SUPABASE_KEY }}
+        SUPABASE_URL: "https://azqapfjujsgszzgmdqwy.supabase.co"
+        SUPABASE_KEY: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImF6cWFwZmp1anNnc3p6Z21kcXd5Iiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc3ODIzMTk3OSwiZXhwIjoyMDkzODA3OTc5fQ.1MoKoYPgMmX-GJoVVrnpyZ59WnVNMDPaQouKiyjBqYk"
       run: node generator.js

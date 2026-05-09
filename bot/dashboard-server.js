@@ -12,7 +12,7 @@ const PORT = process.env.PORT || 3000;
 const LOG_FILE = path.join(__dirname, 'logs', 'fleet.log');
 
 const supabase = createClient(process.env.SUPABASE_URL, process.env.SUPABASE_KEY);
-const { getFleetStatus, logRequest } = require('./db.js');
+const { getFleetStatus, logRequest, getGlobalConfig, updateGlobalConfig } = require('./db.js');
 
 app.use(helmet({ contentSecurityPolicy: false }));
 app.use(express.json());
@@ -81,11 +81,13 @@ app.get('/api/stats', authMiddleware, async (req, res) => {
       .limit(20);
 
     const isRunning = await getFleetStatus();
+    const config = await getGlobalConfig();
     res.json({ 
       tokens: tokens || [], 
       logs: logs || [], 
       totalRequests: logs?.length || 0, 
-      fleetStatus: isRunning ? 'running' : 'stopped' 
+      fleetStatus: isRunning ? 'running' : 'stopped',
+      config: config
     });
   } catch (e) { 
     console.error("❌ API Critical Failure:", e.message);
@@ -166,6 +168,15 @@ app.post('/api/fleet/toggle', authMiddleware, async (req, res) => {
     await supabase.from('fleet_settings').update({ is_running: !current, updated_at: new Date() }).eq('id', 'master_switch');
     broadcastLog(`📡 Master Switch toggled: ${!current ? 'ON' : 'OFF'}. GitHub Actions swarm will synchronize within 10s.`);
     res.json({ success: true, status: !current ? 'running' : 'stopped' });
+  } catch (e) { res.status(500).json({ error: e.message }); }
+});
+
+app.post('/api/config', authMiddleware, async (req, res) => {
+  try {
+    const { key, value } = req.body;
+    await updateGlobalConfig(key, value);
+    broadcastLog(`⚙️ System Config Updated: ${key} = ${value}`);
+    res.json({ success: true });
   } catch (e) { res.status(500).json({ error: e.message }); }
 });
 

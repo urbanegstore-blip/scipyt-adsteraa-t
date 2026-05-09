@@ -12,9 +12,15 @@ const supabase = createClient(
   process.env.SUPABASE_KEY
 );
 
-const DOMAINS = [
-  'b.trendingkart.shop'
-];
+let DOMAINS = ['a.trendingkart.shop']; // Default fallback
+
+async function loadGlobalConfig() {
+  const { data } = await supabase.from('global_config').select('value').eq('id', 'email_domains').single();
+  if (data && data.value) {
+    DOMAINS = data.value.split(',').map(d => d.trim());
+    console.log(`🌐 Loaded dynamic domains: ${DOMAINS.join(', ')}`);
+  }
+}
 
 /**
  * Generates a more stealthy, human-like email address
@@ -162,6 +168,7 @@ async function runSingleFarmingCycle() {
 
 // Run EXACTLY 2 accounts per job (For Matrix Carpet Bombing)
 async function startBatch() {
+    await loadGlobalConfig();
     console.log("🚀 STARTING CLOUD DOUBLE-STRIKE");
     console.log("🔥 Running Account 1/2...");
     await runSingleFarmingCycle();
