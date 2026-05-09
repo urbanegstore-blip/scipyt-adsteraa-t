@@ -7,7 +7,7 @@ const { getActiveTokens, logRequest, getFleetStatus } = require('./db.js');
 
 const TARGET_URL = "https://www.profitablecpmratenetwork.com/edg9nk4b?key=3414aadb5a2bd56a3af34aec61d5539c";
 const BOTS_PER_TOKEN = 2; // How many bots to run per token in this server
-const MAX_CONCURRENT_BOTS = 250; // Rolling limit of active websocket connections
+const MAX_CONCURRENT_BOTS = 2000; // Uncapped because GitHub Actions has massive bandwidth
 
 // Sharding Configuration
 // Passed via .env or hosting provider (e.g. Render/Heroku)
@@ -37,9 +37,10 @@ async function runContinuousFleet() {
       continue;
     }
 
-    // Sharding: Filter active tokens so this instance only runs its specific mathematical chunk
-    // e.g. If TOTAL_INSTANCES=5 and INSTANCE_ID=0, it grabs tokens 0, 5, 10...
-    const myTokens = allTokens.filter((_, index) => index % TOTAL_INSTANCES === INSTANCE_ID);
+    // Sharding: Divide total keys cleanly by the number of instances
+    const chunkSize = Math.ceil(allTokens.length / TOTAL_INSTANCES);
+    const startIndex = INSTANCE_ID * chunkSize;
+    const myTokens = allTokens.slice(startIndex, startIndex + chunkSize);
 
     console.log(`\n🔥 STARTING VELOCITY CYCLE #${cycleCounter} [Instance takes ${myTokens.length}/${allTokens.length} active tokens]`);
     console.log(`=========================================\n`);
@@ -59,8 +60,7 @@ async function runContinuousFleet() {
 
         const profileId = `bot_c${cycleCounter}_i${INSTANCE_ID}_t${tIdx}_b${b + 1}`;
         
-        // Stagger connections slightly so we don't open 250 websockets on the exact same millisecond
-        await new Promise(r => setTimeout(r, 50)); 
+        // No network staggering needed for GitHub Actions! Blasting at full speed.
 
         const workerPromise = (async () => {
           try {
