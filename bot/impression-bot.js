@@ -122,10 +122,9 @@ function generateProfile() {
 async function runImpression(targetUrl, profileId, browserlessToken) {
   let browser;
 
-  // 🔗 CONNECTION URL
-  // Use the dedicated /chromium/stealth route for maximum stealth
-  // Do NOT pass chrome flags that conflict with stealth mode
-  const wsUrl = `wss://chrome.browserless.io/chromium/stealth?token=${browserlessToken}&blockAds=false&timeout=90000&proxy=residential&proxyCountry=us`;
+  // 🔗 CONNECTION URL — using ?stealth=true param (works on all token tiers incl. free)
+  // NOTE: /chromium/stealth dedicated route requires paid plan — do NOT use it
+  const wsUrl = `wss://chrome.browserless.io?token=${browserlessToken}&stealth=true&blockAds=false&timeout=90000&proxy=residential&proxyCountry=us`;
   
   // 🔄 CONNECTION RETRY ENGINE
   for (let attempt = 1; attempt <= 3; attempt++) {
