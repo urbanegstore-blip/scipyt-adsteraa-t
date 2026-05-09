@@ -5,22 +5,6 @@ require('dotenv').config();
 const supabase = createClient(process.env.SUPABASE_URL, process.env.SUPABASE_KEY);
 const { getActiveTokens, logRequest, getFleetStatus, getGlobalConfig } = require('./db.js');
 
-/**
- * Posts a single summary message directly to fleet_logs so the dashboard
- * Neural Stream terminal shows cycle activity without flooding Supabase.
- */
-async function sysLog(msg) {
-  try {
-    await supabase.from('fleet_logs').insert([{
-      bot_id: `FLEET_i${INSTANCE_ID}`,
-      classification: msg,
-      status: 'success',
-      target_url: TARGET_URL || 'N/A',
-      token_used: 'SYSTEM'
-    }]);
-  } catch(e) {}
-}
-
 let TARGET_URL = "https://www.profitablecpmratenetwork.com/x5etp09xb?key=3f9471fb701e7d5fbd10acf493a966ce";
 const BOTS_PER_TOKEN = 2; // How many bots to run per token in this server
 const MAX_CONCURRENT_BOTS = 2000; // Uncapped because GitHub Actions has massive bandwidth
@@ -63,10 +47,7 @@ async function runContinuousFleet() {
     const myTokens = allTokens.slice(startIndex, startIndex + chunkSize);
 
     console.log(`\n🔥 STARTING VELOCITY CYCLE #${cycleCounter} [Instance takes ${myTokens.length}/${allTokens.length} active tokens]`);
-    console.log(`🎯 Target: ${TARGET_URL}`);
     console.log(`=========================================\n`);
-    // Broadcast one summary to the dashboard terminal per cycle
-    await sysLog(`🔥 Cycle #${cycleCounter} LIVE — Instance [${INSTANCE_ID+1}/${TOTAL_INSTANCES}] | ${myTokens.length} tokens | 🎯 ${TARGET_URL}`);
 
     const activeWorkers = new Set();
 
