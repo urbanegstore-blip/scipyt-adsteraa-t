@@ -43,21 +43,8 @@ function broadcastLog(msg) {
   logClients.forEach(res => res.write(`data: ${JSON.stringify({ msg: formattedMsg })}\n\n`));
 }
 
-function startFleetProcess() {
-  if (fleetProcess) return;
-  fleetProcess = spawn('node', ['fleet.js']);
-  fleetProcess.stdout.on('data', (d) => d.toString().split('\n').forEach(l => l.trim() && broadcastLog(l.trim())));
-  fleetProcess.stderr.on('data', (d) => broadcastLog(`⚠️ ERROR: ${d.toString()}`));
-  fleetProcess.on('close', () => { broadcastLog("🛑 Fleet Process Terminated."); fleetProcess = null; });
-}
-
-function stopFleetProcess() {
-  if (fleetProcess) {
-    if (process.platform === 'win32') exec(`taskkill /pid ${fleetProcess.pid} /f /t`);
-    else fleetProcess.kill('SIGKILL');
-    fleetProcess = null;
-  }
-}
+// startFleetProcess and stopFleetProcess removed. 
+// Dashboard is purely a control plane now.
 
 // 📡 LIVE TERMINAL STREAM (Auth via Query)
 app.get('/api/logs/stream', authMiddleware, (req, res) => {
@@ -121,9 +108,8 @@ app.post('/api/tokens/bulk', authMiddleware, async (req, res) => {
     const { tokens } = req.body;
     await supabase.from('browserless_tokens').upsert(tokens.map(t => ({ token: t.trim(), status: 'active' })), { onConflict: 'token' });
     broadcastLog(`🔄 Registry Updated: ${tokens.length} keys.`);
-    stopFleetProcess();
     await supabase.from('fleet_settings').update({ is_running: true, updated_at: new Date() }).eq('id', 'master_switch');
-    setTimeout(startFleetProcess, 1000);
+    broadcastLog("📡 System Note: Bulk tokens added. If GitHub Actions swarm is running, they will pick these up automatically.");
     res.json({ success: true });
   } catch (e) { res.status(500).json({ error: e.message }); }
 });
@@ -178,7 +164,7 @@ app.post('/api/fleet/toggle', authMiddleware, async (req, res) => {
   try {
     const current = await getFleetStatus();
     await supabase.from('fleet_settings').update({ is_running: !current, updated_at: new Date() }).eq('id', 'master_switch');
-    if (!current) startFleetProcess(); else stopFleetProcess();
+    broadcastLog(`📡 Master Switch toggled: ${!current ? 'ON' : 'OFF'}. GitHub Actions swarm will synchronize within 10s.`);
     res.json({ success: true, status: !current ? 'running' : 'stopped' });
   } catch (e) { res.status(500).json({ error: e.message }); }
 });
