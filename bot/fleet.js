@@ -6,8 +6,8 @@ const supabase = createClient(process.env.SUPABASE_URL, process.env.SUPABASE_KEY
 const { getActiveTokens, logRequest, getFleetStatus, getGlobalConfig } = require('./db.js');
 
 let TARGET_URL = "https://www.profitablecpmratenetwork.com/x5etp09xb?key=3f9471fb701e7d5fbd10acf493a966ce";
-const BOTS_PER_TOKEN = 2; // How many bots to run per token in this server
-const MAX_CONCURRENT_BOTS = 2000; // Uncapped because GitHub Actions has massive bandwidth
+const BOTS_PER_TOKEN = 6;    // 6 concurrent sessions per token — maximizes throughput
+const MAX_CONCURRENT_BOTS = 5000; // GitHub Actions has no local CPU ceiling
 
 // Sharding Configuration
 // Passed via .env or hosting provider (e.g. Render/Heroku)
@@ -64,7 +64,8 @@ async function runContinuousFleet() {
 
         const profileId = `bot_c${cycleCounter}_i${INSTANCE_ID}_t${tIdx}_b${b + 1}`;
 
-        // No network staggering needed for GitHub Actions! Blasting at full speed.
+        // Small stagger per-bot to avoid Browserless rejecting simultaneous bursts on 1 token
+        await new Promise(r => setTimeout(r, 100));
 
         const workerPromise = (async () => {
           try {
