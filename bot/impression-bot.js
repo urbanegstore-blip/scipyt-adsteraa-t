@@ -1,352 +1,287 @@
 // bot/impression-bot.js
 const { chromium } = require('playwright');
 
-/**
- * Generates a Bézier-curved mouse path for organic human movement.
- * Anti-bot systems flag linear mouse.move() paths; real humans move in curves.
- */
-async function humanMouseMove(page, targetX, targetY) {
-  if (page.isClosed()) return;
-  try {
-    // Get current mouse position (default to random origin)
-    const startX = Math.random() * 400;
-    const startY = Math.random() * 300;
-    
-    // Bézier control points for natural curve
-    const cp1x = startX + (targetX - startX) * 0.25 + (Math.random() - 0.5) * 100;
-    const cp1y = startY + (targetY - startY) * 0.25 + (Math.random() - 0.5) * 100;
-    const cp2x = startX + (targetX - startX) * 0.75 + (Math.random() - 0.5) * 60;
-    const cp2y = startY + (targetY - startY) * 0.75 + (Math.random() - 0.5) * 60;
-    
-    const steps = Math.floor(Math.random() * 15) + 20;
-    for (let i = 0; i <= steps; i++) {
-      const t = i / steps;
-      const u = 1 - t;
-      const x = u*u*u*startX + 3*u*u*t*cp1x + 3*u*t*t*cp2x + t*t*t*targetX;
-      const y = u*u*u*startY + 3*u*u*t*cp1y + 3*u*t*t*cp2y + t*t*t*targetY;
-      await page.mouse.move(x, y);
-      // Variable speed: slower at start/end, faster in middle (like a real hand)
-      const delay = Math.floor(5 + Math.random() * 15 * (1 + Math.sin(Math.PI * t)));
-      await new Promise(r => setTimeout(r, delay));
-    }
-  } catch (e) {}
-}
-
-/**
- * Simulates organic page scrolling with variable speed and pauses.
- */
-async function humanScroll(page) {
-  if (page.isClosed()) return;
-  try {
-    const scrollChunks = Math.floor(Math.random() * 4) + 2;
-    for (let i = 0; i < scrollChunks; i++) {
-      const distance = Math.floor(Math.random() * 300) + 100;
-      await page.mouse.wheel(0, distance);
-      await randomDelay(500, 1500);
-    }
-    // Occasionally scroll back up slightly (like a real reader)
-    if (Math.random() < 0.3) {
-      await page.mouse.wheel(0, -(Math.floor(Math.random() * 150) + 50));
-      await randomDelay(300, 800);
-    }
-  } catch (e) {}
-}
-
 const randomDelay = (min, max) =>
   new Promise(r => setTimeout(r, Math.floor(Math.random() * (max - min) + min)));
 
-const pick = (arr) => arr[Math.floor(Math.random() * arr.length)];
+/**
+ * Moves the mouse along a Bezier curve — identical to real human movement.
+ * Straight-line movement is a bot fingerprint. Curves are not.
+ * @param {object} page - Playwright page object
+ * @param {number} targetX - Destination X coordinate
+ * @param {number} targetY - Destination Y coordinate
+ */
+async function bezierMouseMove(page, targetX, targetY) {
+  if (page.isClosed()) return;
+  const startX = Math.random() * 800;
+  const startY = Math.random() * 600;
+  // Two control points for the Bezier curve (the "handles")
+  const cp1x = startX + (Math.random() - 0.5) * 300;
+  const cp1y = startY + (Math.random() - 0.5) * 300;
+  const cp2x = targetX + (Math.random() - 0.5) * 200;
+  const cp2y = targetY + (Math.random() - 0.5) * 200;
+  const steps = Math.floor(Math.random() * 20) + 20;
+
+  for (let i = 0; i <= steps; i++) {
+    const t = i / steps;
+    const x = Math.pow(1 - t, 3) * startX
+            + 3 * Math.pow(1 - t, 2) * t * cp1x
+            + 3 * (1 - t) * Math.pow(t, 2) * cp2x
+            + Math.pow(t, 3) * targetX;
+    const y = Math.pow(1 - t, 3) * startY
+            + 3 * Math.pow(1 - t, 2) * t * cp1y
+            + 3 * (1 - t) * Math.pow(t, 2) * cp2y
+            + Math.pow(t, 3) * targetY;
+    await page.mouse.move(x, y).catch(() => {});
+    await randomDelay(10, 30);
+  }
+}
 
 /**
- * Generates a realistic browser profile for context creation.
- * NOTE: We only generate profiles that match Chromium-based browsers,
- * since Browserless runs real Chromium. Faking Safari/iOS user-agents
- * on a Chromium engine is a MASSIVE detection vector (TLS mismatch).
+ * Simulates organic, human-like scrolling behavior.
+ * A 0% scroll rate is statistically impossible for real users.
+ * @param {object} page - Playwright page object
+ */
+async function organicScroll(page) {
+  if (page.isClosed()) return;
+  const scrolls = Math.floor(Math.random() * 4) + 2;
+  for (let i = 0; i < scrolls; i++) {
+    const distance = Math.floor(Math.random() * 400) + 100;
+    await page.mouse.wheel(0, distance).catch(() => {});
+    await randomDelay(600, 1800);
+  }
+  // Sometimes scroll back up a bit like a real reader
+  if (Math.random() > 0.5) {
+    await page.mouse.wheel(0, -(Math.floor(Math.random() * 200) + 50)).catch(() => {});
+    await randomDelay(400, 900);
+  }
+}
+
+/**
+ * Generates a realistic Chrome desktop device profile.
+ * Safari/iOS profiles are removed — faking Safari on Chromium
+ * creates a detectable TLS mismatch.
+ * @returns {object} Device profile
  */
 function generateProfile() {
-  const desktopProfiles = [
-    () => {
-      // Windows Chrome
-      const res = pick([{w:1920, h:1080}, {w:2560, h:1440}, {w:1366, h:768}, {w:1536, h:864}, {w:1600, h:900}]);
-      return { userAgent: `Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/${pick(['124','125','126'])}.0.0.0 Safari/537.36`, width: res.w, height: res.h, isMobile: false };
-    },
-    () => {
-      // Windows Edge
-      const res = pick([{w:1920, h:1080}, {w:2560, h:1440}, {w:1366, h:768}]);
-      const ver = pick(['124','125','126']);
-      return { userAgent: `Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/${ver}.0.0.0 Safari/537.36 Edg/${ver}.0.0.0`, width: res.w, height: res.h, isMobile: false };
-    },
-    () => {
-      // macOS Chrome
-      const res = pick([{w:1440, h:900}, {w:2560, h:1600}, {w:1512, h:982}, {w:1728, h:1117}]);
-      return { userAgent: `Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/${pick(['123','124','125'])}.0.0.0 Safari/537.36`, width: res.w, height: res.h, isMobile: false };
-    },
-    () => {
-      // Android Chrome (mobile)
-      const res = pick([{w:412, h:915}, {w:360, h:800}, {w:384, h:854}, {w:432, h:960}]);
-      const device = pick(['SM-S918B', 'SM-A546B', 'Pixel 8 Pro', 'SM-S928B']);
-      return { userAgent: `Mozilla/5.0 (Linux; Android 14; ${device}) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/${pick(['124','125','126'])}.0.0.0 Mobile Safari/537.36`, width: res.w, height: res.h, isMobile: true };
-    }
+  const pick = (arr) => arr[Math.floor(Math.random() * arr.length)];
+
+  // 🕐 US Timezones to match the US residential proxy pool
+  const US_TIMEZONES = [
+    'America/New_York',
+    'America/Chicago',
+    'America/Denver',
+    'America/Los_Angeles',
+    'America/Phoenix',
   ];
 
-  return pick(desktopProfiles)();
+  const windowsGPUs = [
+    { gpuVendor: 'Google Inc. (NVIDIA)', gpuRenderer: 'ANGLE (NVIDIA, NVIDIA GeForce RTX 3060 Direct3D11 vs_5_0 ps_5_0)' },
+    { gpuVendor: 'Google Inc. (NVIDIA)', gpuRenderer: 'ANGLE (NVIDIA, NVIDIA GeForce RTX 4070 Direct3D11 vs_5_0 ps_5_0)' },
+    { gpuVendor: 'Google Inc. (NVIDIA)', gpuRenderer: 'ANGLE (NVIDIA, NVIDIA GeForce GTX 1660 Ti Direct3D11 vs_5_0 ps_5_0)' },
+    { gpuVendor: 'Google Inc. (Intel)',  gpuRenderer: 'ANGLE (Intel, Intel(R) Iris(R) Xe Graphics Direct3D11 vs_5_0 ps_5_0)' },
+    { gpuVendor: 'Google Inc. (Intel)',  gpuRenderer: 'ANGLE (Intel, Intel(R) UHD Graphics 770 Direct3D11 vs_5_0 ps_5_0)' },
+    { gpuVendor: 'Google Inc. (AMD)',    gpuRenderer: 'ANGLE (AMD, AMD Radeon RX 6700 XT Direct3D11 vs_5_0 ps_5_0)' },
+  ];
+
+  const macGPUs = [
+    { gpuVendor: 'Apple Inc.', gpuRenderer: 'Apple M1' },
+    { gpuVendor: 'Apple Inc.', gpuRenderer: 'Apple M2' },
+    { gpuVendor: 'Apple Inc.', gpuRenderer: 'Apple M3' },
+    { gpuVendor: 'Google Inc. (Apple)', gpuRenderer: 'ANGLE (Apple, Apple M2, OpenGL 4.1)' },
+  ];
+
+  const windowsRes = [{ w: 1920, h: 1080 }, { w: 2560, h: 1440 }, { w: 1366, h: 768 }, { w: 1536, h: 864 }];
+  const macRes     = [{ w: 1440, h: 900  }, { w: 2560, h: 1600 }, { w: 1512, h: 982 }, { w: 1728, h: 1117 }];
+
+  // Chrome versions with matching userAgentData brands
+  const chromeVersions = [
+    { version: '122.0.0.0', fullVersion: '122.0.6261.128' },
+    { version: '123.0.0.0', fullVersion: '123.0.6312.107' },
+    { version: '124.0.0.0', fullVersion: '124.0.6367.82'  },
+  ];
+
+  const deviceTypes = [
+    () => { // Windows Chrome
+      const res = pick(windowsRes); const gpu = pick(windowsGPUs); const cv = pick(chromeVersions);
+      return {
+        userAgent: `Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/${cv.version} Safari/537.36`,
+        platform: 'Win32', cores: pick([4, 8, 12, 16]), memory: pick([8, 16, 32]),
+        width: res.w, height: res.h, gpuVendor: gpu.gpuVendor, gpuRenderer: gpu.gpuRenderer,
+        isMobile: false, timezone: pick(US_TIMEZONES), chromeVersion: cv.version, fullVersion: cv.fullVersion,
+        uaDataPlatform: 'Windows', brands: [
+          { brand: 'Chromium', version: cv.version.split('.')[0] },
+          { brand: 'Google Chrome', version: cv.version.split('.')[0] },
+          { brand: 'Not:A-Brand', version: '24' }
+        ]
+      };
+    },
+    () => { // Windows Edge
+      const res = pick(windowsRes); const gpu = pick(windowsGPUs); const cv = pick(chromeVersions);
+      return {
+        userAgent: `Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/${cv.version} Safari/537.36 Edg/${cv.version}`,
+        platform: 'Win32', cores: pick([4, 8, 12, 16]), memory: pick([8, 16, 32]),
+        width: res.w, height: res.h, gpuVendor: gpu.gpuVendor, gpuRenderer: gpu.gpuRenderer,
+        isMobile: false, timezone: pick(US_TIMEZONES), chromeVersion: cv.version, fullVersion: cv.fullVersion,
+        uaDataPlatform: 'Windows', brands: [
+          { brand: 'Chromium', version: cv.version.split('.')[0] },
+          { brand: 'Microsoft Edge', version: cv.version.split('.')[0] },
+          { brand: 'Not:A-Brand', version: '24' }
+        ]
+      };
+    },
+    () => { // macOS Chrome
+      const res = pick(macRes); const gpu = pick(macGPUs); const cv = pick(chromeVersions);
+      return {
+        userAgent: `Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/${cv.version} Safari/537.36`,
+        platform: 'MacIntel', cores: pick([8, 10, 12]), memory: pick([8, 16, 24]),
+        width: res.w, height: res.h, gpuVendor: gpu.gpuVendor, gpuRenderer: gpu.gpuRenderer,
+        isMobile: false, timezone: pick(US_TIMEZONES), chromeVersion: cv.version, fullVersion: cv.fullVersion,
+        uaDataPlatform: 'macOS', brands: [
+          { brand: 'Chromium', version: cv.version.split('.')[0] },
+          { brand: 'Google Chrome', version: cv.version.split('.')[0] },
+          { brand: 'Not:A-Brand', version: '24' }
+        ]
+      };
+    },
+  ];
+
+  return pick(deviceTypes)();
 }
 
 /**
  * Executes a high-stealth impression session.
- * 
- * CRITICAL DESIGN DECISION:
- * Browserless's `stealth=true` already handles at the CDP level:
- *   - navigator.webdriver = false
- *   - navigator.plugins (realistic injection)
- *   - Canvas fingerprint entropy
- *   - WebGL vendor/renderer masking
- *   - Audio context fingerprint noise
- *   - Chrome runtime object injection
- * 
- * We do NOT re-inject any of these via addInitScript because:
- *   1. Double-patching creates detectable inconsistencies
- *   2. JS-level overrides can be detected via property descriptor checks
- *   3. Browserless applies patches at CDP level which is invisible to JS
- * 
- * What WE handle (things Browserless does NOT):
- *   - Realistic user-agent (Chromium-only, no Safari faking)
- *   - Timezone matching to proxy country
- *   - Locale consistency
- *   - Referrer headers (organic traffic source)
- *   - Human-like mouse movement (Bézier curves, not linear)
- *   - Organic scroll behavior
- *   - Randomized dwell times
- *   - Realistic CTR limiting (15%)
+ * All stealth overrides are handled at the CDP layer by Browserless.
+ * @param {string} targetUrl - The ad network URL to hit
+ * @param {string} profileId - Unique ID for this bot instance (for logging)
+ * @param {string} browserlessToken - The Browserless API key
  */
 async function runImpression(targetUrl, profileId, browserlessToken) {
   let browser;
+  const profile = generateProfile();
 
-  // 🔗 CONNECTION URL — using ?stealth=true param (works on all token tiers incl. free)
-  // NOTE: /chromium/stealth dedicated route requires paid plan — do NOT use it
+  // ✅ Original Browserless endpoint with stealth=true activated at CDP level.
+  // No extra Chrome flags — they change browser behavior in detectable ways.
   const wsUrl = `wss://chrome.browserless.io?token=${browserlessToken}&stealth=true&blockAds=false&timeout=90000&proxy=residential&proxyCountry=us`;
-  
+
   // 🔄 CONNECTION RETRY ENGINE
-  for (let attempt = 1; attempt <= 3; attempt++) {
+  for (let attempt = 1; attempt <= 2; attempt++) {
     try {
       browser = await chromium.connectOverCDP(wsUrl);
       break;
     } catch (error) {
-      if (attempt === 3) throw error;
-      await randomDelay(3000, 6000);
+      if (attempt === 2) throw error;
+      await randomDelay(5000, 8000);
     }
   }
 
-  const profile = generateProfile();
-
   const context = await browser.newContext({
     userAgent: profile.userAgent,
-    viewport: { width: profile.width, height: profile.height },
-    isMobile: profile.isMobile,
-    hasTouch: profile.isMobile,
-    locale: 'en-US',
-    timezoneId: pick(['America/New_York', 'America/Chicago', 'America/Los_Angeles', 'America/Denver']),
-    colorScheme: pick(['light', 'dark']),
-    acceptDownloads: true
+    viewport:  { width: profile.width, height: profile.height },
+    isMobile:  false,
+    locale:    'en-US',
+    timezoneId: profile.timezone,
+    // 🔗 REFERRER SPOOFING: Traffic appears to come from a real gaming/lifestyle site.
+    // A blank referer = direct traffic = instant ban. Real users click links.
+    extraHTTPHeaders: {
+      'Referer':         'https://ankergames.net/',
+      'Accept-Language': 'en-US,en;q=0.9',
+    },
   });
 
-  // 🛡️ REFERRER HEADER (Organic traffic source)
-  await context.setExtraHTTPHeaders({
-    'Referer': 'https://ankergames.net/',
-    'Accept-Language': 'en-US,en;q=0.9'
-  });
+  // 🎭 Spoof userAgentData (Client Hints) — the hidden API that exposes Chromium
+  // even when you fake the User-Agent string. This must match the profile exactly.
+  await context.addInitScript((p) => {
+    try {
+      Object.defineProperty(navigator, 'userAgentData', {
+        get: () => ({
+          brands:   p.brands,
+          mobile:   false,
+          platform: p.uaDataPlatform,
+          getHighEntropyValues: (hints) => Promise.resolve({
+            brands:          p.brands,
+            mobile:          false,
+            platform:        p.uaDataPlatform,
+            uaFullVersion:   p.fullVersion,
+            platformVersion: p.uaDataPlatform === 'Windows' ? '10.0.0' : '14.0.0',
+            architecture:    'x86',
+            bitness:         '64',
+            model:           '',
+          }),
+        }),
+      });
+    } catch(e) {}
+  }, { brands: profile.brands, uaDataPlatform: profile.uaDataPlatform, fullVersion: profile.fullVersion });
 
   const page = await context.newPage();
   let activePage = page;
-  let impressionFired = false;
 
-  // 📥 DOWNLOAD HANDLER
-  // If a bot clicks a download link, let it actually download the file organically
-  const handleDownload = async (download) => {
-    console.log(`[Bot ${profileId}] 📥 Download started: ${download.suggestedFilename()} ... waiting for completion`);
-    try {
-      await download.path();
-      console.log(`[Bot ${profileId}] ✅ Download completed organically.`);
-    } catch(e) {}
-  };
-  page.on('download', handleDownload);
-
-  // 🎯 IMPRESSION PIXEL DETECTOR
-  // Listen for ad network tracking requests to confirm impression was counted
-  context.on('request', req => {
-    if (/pixel|impression|trk|analytics|beacon|count|stat|event|ping/.test(req.url())) {
-      impressionFired = true;
-    }
-  });
-
-  // 🕵️ ALLOW REDIRECTS & POPUPS (Ad networks use redirect chains)
-  context.on('page', async newPage => {
-    console.log(`[Bot ${profileId}] 🔀 Redirect or Popup detected. Shifting focus.`);
+  // Follow any pop-ups or redirects from the ad network
+  context.on('page', async (newPage) => {
     activePage = newPage;
-    newPage.on('download', handleDownload);
-    
-    // Auto-wait for the redirect to finish loading before interacting
-    try {
-      await newPage.waitForLoadState('load', { timeout: 30000 });
-    } catch(e) {} // Ignore timeout, just keep going
-
-    // Also listen on popup/redirect pages for impression pixels
-    newPage.on('request', req => {
-      if (/pixel|impression|trk|analytics|beacon|count|stat|event|ping/.test(req.url())) {
-        impressionFired = true;
-      }
-    });
     await activePage.bringToFront().catch(() => {});
   });
 
   try {
-    console.log(`[Bot ${profileId}] 🚀 Navigating to Target...`);
-    // ✨ CRITICAL FIX: Use 'load' not 'domcontentloaded'
-    // We wrap this in a try-catch because ad network redirect chains often time out
-    // or trigger popups. We want to CONTINUE to Phase 1 even if the initial goto "fails"
-    try {
-      await page.goto(targetUrl, { waitUntil: 'load', timeout: 45000 });
-    } catch (e) {
-      console.log(`[Bot ${profileId}] ⚠️ Navigation interrupted (likely a redirect chain). Continuing...`);
-    }
+    console.log(`[Bot ${profileId}] 🚀 Navigating to Target... [${profile.timezone}]`);
+    await page.goto(targetUrl, { waitUntil: 'domcontentloaded', timeout: 60000 });
+    // Wait for ads/trackers to fire — critical for impression generation
+    await randomDelay(2000, 4000);
 
-    // ⏳ POST-LOAD SETTLING TIME: Wait for async ad scripts & redirect chains
-    await randomDelay(3000, 5000);
-    console.log(`[Bot ${profileId}] 🎯 Settled on final destination. Impression fired: ${impressionFired ? '✅ YES' : '⚠️ Not detected yet'}`);
+    // --- Phase 1: Human Dwell — Realistic bell-curve distribution ---
+    // Tight timing windows are statistically detectable. Real users:
+    // 20% bounce fast (5-10s), 60% read normally (15-35s), 20% deep-read (35-50s)
+    const dwellRoll = Math.random();
+    const dwellMs = dwellRoll < 0.20 ? (5000  + Math.random() * 5000)   // Bounce
+                  : dwellRoll < 0.80 ? (15000 + Math.random() * 20000)  // Normal
+                  :                    (35000 + Math.random() * 15000);  // Deep read
 
-    // ========= PHASE 1: ORGANIC DWELL (12-18s) =========
-    // Randomized dwell time prevents statistical clustering
-    const dwellMs = 12000 + Math.random() * 6000;
+    console.log(`[Bot ${profileId}] Phase 1: Human Dwell (${Math.round(dwellMs/1000)}s)...`);
     const dwellEnd = Date.now() + dwellMs;
-    console.log(`[Bot ${profileId}] Phase 1: Organic Dwell (${Math.round(dwellMs/1000)}s)...`);
-    
-    // Initial pause before any movement (humans take a moment to orient)
-    await randomDelay(1000, 2500);
-    
+    let scrolled = false;
     while (Date.now() < dwellEnd && !activePage.isClosed()) {
-      const action = Math.random();
-      if (action < 0.4) {
-        // Mouse movement (40% of actions)
-        const vw = profile.width;
-        const vh = profile.height;
-        await humanMouseMove(activePage, 
-          Math.floor(Math.random() * vw * 0.8 + vw * 0.1),
-          Math.floor(Math.random() * vh * 0.7 + vh * 0.1)
-        );
-      } else if (action < 0.7) {
-        // Scroll (30% of actions)
-        await humanScroll(activePage);
-      } else {
-        // Idle pause (30% of actions) — humans don't constantly move
-        await randomDelay(1500, 4000);
+      await bezierMouseMove(activePage, Math.random() * profile.width, Math.random() * profile.height);
+      if (!scrolled && Math.random() > 0.3) {
+        await organicScroll(activePage);
+        scrolled = true;
       }
-      await randomDelay(800, 2000);
+      await randomDelay(1500, 3500);
     }
 
-    // ========= PHASE 2: SMART CTR ENGINE (30%) =========
-    if (!activePage.isClosed()) {
-      const shouldClick = Math.random() < 0.30;
+    // --- Phase 2: Interaction — Realistic 5% CTR ---
+    // Real human CTR is 1-5%. 100% CTR is a guaranteed fraud flag.
+    if (!activePage.isClosed() && Math.random() < 0.05) {
+      console.log(`[Bot ${profileId}] Phase 2: CTA Click...`);
+      const cta = await activePage.evaluate(() => {
+        const btn = document.querySelector('a[href], button');
+        if (!btn) return null;
+        const r = btn.getBoundingClientRect();
+        return { x: r.left + r.width / 2, y: r.top + r.height / 2 };
+      }).catch(() => null);
 
-      if (shouldClick) {
-        console.log(`[Bot ${profileId}] Phase 2: CTR Trigger — hunting for high-value element...`);
-
-        const cta = await activePage.evaluate(() => {
-          /**
-           * Smart element finder: Prioritizes high-value ad elements in order:
-           * 1. Download / Install buttons (highest CPM value)
-           * 2. Spin buttons (game ad engagement)
-           * 3. Linked images (banner ad clicks)
-           * 4. Any visible link/button (fallback)
-           */
-          const keywords = {
-            priority1: /download|install|get.?it|free.?download|play.?now|install.?now|get.?app/i,
-            priority2: /spin|play|start|try.?now|launch/i,
-          };
-
-          function getClickCoords(el) {
-            const r = el.getBoundingClientRect();
-            if (r.width < 10 || r.height < 8 || r.top < 0 || r.top > window.innerHeight) return null;
-            return {
-              x: r.left + (r.width * 0.2) + (Math.random() * (r.width * 0.6)),
-              y: r.top + (r.height * 0.2) + (Math.random() * (r.height * 0.6))
-            };
-          }
-
-          // Priority 1: Download / Install buttons
-          const allButtons = [...document.querySelectorAll('a[href], button, input[type="button"], input[type="submit"]')];
-          for (const el of allButtons) {
-            const text = (el.textContent || el.value || el.title || el.alt || '').trim();
-            if (keywords.priority1.test(text)) {
-              const coords = getClickCoords(el);
-              if (coords) return { ...coords, type: 'Download/Install' };
-            }
-          }
-
-          // Priority 2: Spin / Play buttons
-          for (const el of allButtons) {
-            const text = (el.textContent || el.value || el.title || el.alt || '').trim();
-            if (keywords.priority2.test(text)) {
-              const coords = getClickCoords(el);
-              if (coords) return { ...coords, type: 'Spin/Play' };
-            }
-          }
-
-          // Priority 3: Linked images (banner ad clicks — image wrapped in <a>)
-          const linkedImages = document.querySelectorAll('a[href] img, a[href] > picture');
-          for (const img of linkedImages) {
-            const parent = img.closest('a[href]');
-            if (parent) {
-              const coords = getClickCoords(parent);
-              if (coords) return { ...coords, type: 'Linked Image' };
-            }
-          }
-
-          // Priority 4: Any visible link/button (fallback)
-          for (const el of allButtons) {
-            const coords = getClickCoords(el);
-            if (coords) return { ...coords, type: 'Generic CTA' };
-          }
-
-          return null;
-        }).catch(() => null);
-
-        if (cta) {
-          // Move to button with Bézier curve first (no teleport clicking)
-          await humanMouseMove(activePage, cta.x, cta.y);
-          await randomDelay(150, 500);
-          await activePage.mouse.click(cta.x, cta.y).catch(() => {});
-          console.log(`[Bot ${profileId}] ✅ Clicked [${cta.type}]. Dwelling post-click...`);
-          await randomDelay(5000, 11000);
-        } else {
-          console.log(`[Bot ${profileId}] 👁️ CTR triggered but no clickable element found.`);
-          await randomDelay(2000, 4000);
-        }
-      } else {
-        console.log(`[Bot ${profileId}] 👁️ Impression Only (no click).`);
-        await randomDelay(2000, 5000);
+      if (cta) {
+        await bezierMouseMove(activePage, cta.x, cta.y);
+        await randomDelay(300, 700);
+        await activePage.mouse.click(cta.x, cta.y).catch(() => {});
+        console.log(`[Bot ${profileId}] ✅ Click Successful. Dwelling 6-9s...`);
+        await randomDelay(6000, 9000);
       }
     }
 
-    // ========= PHASE 3: EXIT BEHAVIOR =========
-    // Simulating deep human history navigation before exit
+    // --- Phase 3: Randomized Exit — 30% back button, 70% just close ---
+    // Using back button 100% of the time is a bot pattern.
     if (!activePage.isClosed()) {
-      // Options: Just close the tab (direct exit), or go back 3, 4, or 5 times.
-      const exitAction = pick(['close', 'back3', 'back4', 'back5']);
-      console.log(`[Bot ${profileId}] Phase 3: Exit Action decided — ${exitAction}`);
-      
-      if (exitAction !== 'close') {
-        const backCount = parseInt(exitAction.replace('back', ''), 10);
-        for (let i = 0; i < backCount; i++) {
-          if (activePage.isClosed()) break;
-          console.log(`[Bot ${profileId}] Going back... (${i+1}/${backCount})`);
-          await activePage.goBack({ timeout: 4000 }).catch(() => {});
-          await randomDelay(1200, 2500); // Wait a human amount of time between back clicks
-        }
+      if (Math.random() < 0.30) {
+        console.log(`[Bot ${profileId}] Phase 3: Back Button Exit...`);
+        await activePage.goBack({ timeout: 4000 }).catch(() => {});
+        await randomDelay(1000, 2000);
+        await activePage.goBack({ timeout: 4000 }).catch(() => {});
       }
+      // else: just close the browser, like a normal user closing a tab
     }
 
   } catch (error) {
-    console.log(`[Bot ${profileId}] Session Interrupted: ${error.message}`);
+    console.log(`[Bot ${profileId}] Session Interrupted: ${error.message.split('\n')[0]}`);
   } finally {
     console.log(`[Bot ${profileId}] ✅ Session Complete.`);
     await browser.close().catch(() => {});
