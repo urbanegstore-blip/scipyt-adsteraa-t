@@ -6,7 +6,7 @@ const supabase = createClient(process.env.SUPABASE_URL, process.env.SUPABASE_KEY
 const { getActiveTokens, logRequest, getFleetStatus, getGlobalConfig } = require('./db.js');
 
 let TARGET_URL = "https://www.profitablecpmratenetwork.com/x5etp09xb?key=3f9471fb701e7d5fbd10acf493a966ce";
-const BOTS_PER_TOKEN = 6;    // 6 concurrent sessions per token — maximizes throughput
+const BOTS_PER_TOKEN = 2; // 6 concurrent sessions per token — maximizes throughput
 const MAX_CONCURRENT_BOTS = 5000; // GitHub Actions has no local CPU ceiling
 
 // Sharding Configuration
