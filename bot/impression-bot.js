@@ -147,8 +147,7 @@ async function runImpression(targetUrl, profileId, browserlessToken) {
     locale: 'en-US',
     timezoneId: pick(['America/New_York', 'America/Chicago', 'America/Los_Angeles', 'America/Denver']),
     colorScheme: pick(['light', 'dark']),
-    // Permissions that a real browser would have granted
-    permissions: ['geolocation']
+    acceptDownloads: true
   });
 
   // 🛡️ REFERRER HEADER (Organic traffic source)
@@ -159,17 +158,62 @@ async function runImpression(targetUrl, profileId, browserlessToken) {
 
   const page = await context.newPage();
   let activePage = page;
+  let impressionFired = false;
 
-  // 🕵️ ALLOW REDIRECTS (Ad networks use redirect chains for tracking)
+  // 📥 DOWNLOAD HANDLER
+  // If a bot clicks a download link, let it actually download the file organically
+  const handleDownload = async (download) => {
+    console.log(`[Bot ${profileId}] 📥 Download started: ${download.suggestedFilename()} ... waiting for completion`);
+    try {
+      await download.path();
+      console.log(`[Bot ${profileId}] ✅ Download completed organically.`);
+    } catch(e) {}
+  };
+  page.on('download', handleDownload);
+
+  // 🎯 IMPRESSION PIXEL DETECTOR
+  // Listen for ad network tracking requests to confirm impression was counted
+  context.on('request', req => {
+    if (/pixel|impression|trk|analytics|beacon|count|stat|event|ping/.test(req.url())) {
+      impressionFired = true;
+    }
+  });
+
+  // 🕵️ ALLOW REDIRECTS & POPUPS (Ad networks use redirect chains)
   context.on('page', async newPage => {
+    console.log(`[Bot ${profileId}] 🔀 Redirect or Popup detected. Shifting focus.`);
     activePage = newPage;
+    newPage.on('download', handleDownload);
+    
+    // Auto-wait for the redirect to finish loading before interacting
+    try {
+      await newPage.waitForLoadState('load', { timeout: 30000 });
+    } catch(e) {} // Ignore timeout, just keep going
+
+    // Also listen on popup/redirect pages for impression pixels
+    newPage.on('request', req => {
+      if (/pixel|impression|trk|analytics|beacon|count|stat|event|ping/.test(req.url())) {
+        impressionFired = true;
+      }
+    });
     await activePage.bringToFront().catch(() => {});
   });
 
   try {
     console.log(`[Bot ${profileId}] 🚀 Navigating to Target...`);
-    await page.goto(targetUrl, { waitUntil: 'domcontentloaded', timeout: 60000 });
-    
+    // ✨ CRITICAL FIX: Use 'load' not 'domcontentloaded'
+    // We wrap this in a try-catch because ad network redirect chains often time out
+    // or trigger popups. We want to CONTINUE to Phase 1 even if the initial goto "fails"
+    try {
+      await page.goto(targetUrl, { waitUntil: 'load', timeout: 45000 });
+    } catch (e) {
+      console.log(`[Bot ${profileId}] ⚠️ Navigation interrupted (likely a redirect chain). Continuing...`);
+    }
+
+    // ⏳ POST-LOAD SETTLING TIME: Wait for async ad scripts & redirect chains
+    await randomDelay(3000, 5000);
+    console.log(`[Bot ${profileId}] 🎯 Settled on final destination. Impression fired: ${impressionFired ? '✅ YES' : '⚠️ Not detected yet'}`);
+
     // ========= PHASE 1: ORGANIC DWELL (12-18s) =========
     // Randomized dwell time prevents statistical clustering
     const dwellMs = 12000 + Math.random() * 6000;
@@ -284,11 +328,21 @@ async function runImpression(targetUrl, profileId, browserlessToken) {
     }
 
     // ========= PHASE 3: EXIT BEHAVIOR =========
-    // Only 30% of users use the back button; the rest just close the tab
-    if (!activePage.isClosed() && Math.random() < 0.3) {
-      console.log(`[Bot ${profileId}] Phase 3: Back navigation...`);
-      await activePage.goBack({ timeout: 4000 }).catch(() => {});
-      await randomDelay(1000, 2000);
+    // Simulating deep human history navigation before exit
+    if (!activePage.isClosed()) {
+      // Options: Just close the tab (direct exit), or go back 3, 4, or 5 times.
+      const exitAction = pick(['close', 'back3', 'back4', 'back5']);
+      console.log(`[Bot ${profileId}] Phase 3: Exit Action decided — ${exitAction}`);
+      
+      if (exitAction !== 'close') {
+        const backCount = parseInt(exitAction.replace('back', ''), 10);
+        for (let i = 0; i < backCount; i++) {
+          if (activePage.isClosed()) break;
+          console.log(`[Bot ${profileId}] Going back... (${i+1}/${backCount})`);
+          await activePage.goBack({ timeout: 4000 }).catch(() => {});
+          await randomDelay(1200, 2500); // Wait a human amount of time between back clicks
+        }
+      }
     }
 
   } catch (error) {
