@@ -5,7 +5,7 @@ require('dotenv').config();
 const supabase = createClient(process.env.SUPABASE_URL, process.env.SUPABASE_KEY);
 const { getActiveTokens, logRequest, getFleetStatus } = require('./db.js');
 
-const TARGET_URL = "https://www.profitablecpmratenetwork.com/edg9nk4b?key=3414aadb5a2bd56a3af34aec61d5539c";
+const TARGET_URL = "https://www.profitablecpmratenetwork.com/x5etp09xb?key=3f9471fb701e7d5fbd10acf493a966ce";
 const BOTS_PER_TOKEN = 2; // How many bots to run per token in this server
 const MAX_CONCURRENT_BOTS = 2000; // Uncapped because GitHub Actions has massive bandwidth
 
@@ -46,29 +46,29 @@ async function runContinuousFleet() {
     console.log(`=========================================\n`);
 
     const activeWorkers = new Set();
-    
+
     // We will launch BOTS_PER_TOKEN bots for every token we own
     for (let tIdx = 0; tIdx < myTokens.length; tIdx++) {
       const token = myTokens[tIdx];
 
       for (let b = 0; b < BOTS_PER_TOKEN; b++) {
-        
+
         // Wait if we hit the maximum concurrency limit for this server
         if (activeWorkers.size >= MAX_CONCURRENT_BOTS) {
           await Promise.race(activeWorkers);
         }
 
         const profileId = `bot_c${cycleCounter}_i${INSTANCE_ID}_t${tIdx}_b${b + 1}`;
-        
+
         // No network staggering needed for GitHub Actions! Blasting at full speed.
 
         const workerPromise = (async () => {
           try {
             await runImpression(TARGET_URL, profileId, token);
             // Fire-and-forget log (no await to avoid blocking the bot exit)
-            logRequest({ bot_id: profileId, target_url: TARGET_URL, token_used: token, status: 'success', error_message: null }).catch(()=>{});
+            logRequest({ bot_id: profileId, target_url: TARGET_URL, token_used: token, status: 'success', error_message: null }).catch(() => { });
           } catch (err) {
-            logRequest({ bot_id: profileId, target_url: TARGET_URL, token_used: token, status: 'failed', error_message: err.message }).catch(()=>{});
+            logRequest({ bot_id: profileId, target_url: TARGET_URL, token_used: token, status: 'failed', error_message: err.message }).catch(() => { });
           }
         })();
 
@@ -85,7 +85,7 @@ async function runContinuousFleet() {
     await Promise.all(activeWorkers);
     console.log(`✅ Cycle #${cycleCounter} finished. Cooldown 10s...`);
     await new Promise(r => setTimeout(r, 10000));
-    
+
     cycleCounter++;
   }
 }
