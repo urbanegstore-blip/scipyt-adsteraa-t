@@ -59,15 +59,25 @@ app.get('/api/logs/stream', authMiddleware, (req, res) => {
 // 📊 OPTIMIZED STATS
 app.get('/api/stats', authMiddleware, async (req, res) => {
   try {
-    // ⚡ SELECTIVE FETCH (Handling NULLS FIRST for new tokens)
-    const { data: tokens, error: tErr } = await supabase
-      .from('browserless_tokens')
-      .select('token, status, usage_count, last_used_at')
-      .order('last_used_at', { ascending: false, nullsFirst: true });
-    
-    if (tErr) {
-      console.error("❌ Stats Fetch Error (Tokens):", tErr.message);
-      return res.status(500).json({ error: "Tokens Error: " + tErr.message });
+    // ⚡ SELECTIVE FETCH (Handling NULLS FIRST for new tokens, with Pagination bypass for 1000+ limits)
+    let tokens = [];
+    let start = 0;
+    const limit = 1000;
+    while (true) {
+      const { data: chunk, error: tErr } = await supabase
+        .from('browserless_tokens')
+        .select('token, status, usage_count, last_used_at')
+        .order('last_used_at', { ascending: false, nullsFirst: true })
+        .range(start, start + limit - 1);
+      
+      if (tErr) {
+        console.error("❌ Stats Fetch Error (Tokens):", tErr.message);
+        return res.status(500).json({ error: "Tokens Error: " + tErr.message });
+      }
+      if (!chunk || chunk.length === 0) break;
+      tokens = tokens.concat(chunk);
+      if (chunk.length < limit) break;
+      start += limit;
     }
 
     if (!tokens || tokens.length === 0) {

@@ -9,13 +9,24 @@ const supabase = createClient(supabaseUrl, supabaseKey);
  * Fetches all 'active' tokens from Supabase
  */
 async function getActiveTokens() {
-  const { data, error } = await supabase
-    .from('browserless_tokens')
-    .select('token')
-    .eq('status', 'active');
-  
-  if (error) throw error;
-  return data.map(d => d.token);
+  let allTokens = [];
+  let start = 0;
+  const limit = 1000;
+  while (true) {
+    const { data, error } = await supabase
+      .from('browserless_tokens')
+      .select('token')
+      .eq('status', 'active')
+      .range(start, start + limit - 1);
+    
+    if (error) throw error;
+    if (!data || data.length === 0) break;
+    
+    allTokens = allTokens.concat(data);
+    if (data.length < limit) break;
+    start += limit;
+  }
+  return allTokens.map(d => d.token);
 }
 
 /**

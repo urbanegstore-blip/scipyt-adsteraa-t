@@ -110,9 +110,9 @@
                             <span id="stat-total" class="text-lg font-mono font-bold">0</span>
                         </div>
                     </div>
-                    <div class="overflow-x-auto min-h-[400px]">
-                        <table class="w-full text-left">
-                            <thead class="text-slate-500 text-[10px] uppercase font-bold border-b border-white/5">
+                    <div class="overflow-auto max-h-[500px]">
+                        <table class="w-full text-left relative">
+                            <thead class="text-slate-500 text-[10px] uppercase font-bold border-b border-white/5 sticky top-0 bg-slate-950/90 backdrop-blur-md z-10">
                                 <tr>
                                     <th class="px-8 py-4">Identity</th>
                                     <th class="px-8 py-4">Status</th>
@@ -146,7 +146,7 @@
         let password = localStorage.getItem('fleet_pass') || '';
         let currentFilter = 'all';
         let currentSort = 'last_used_at';
-        let renderLimit = 50;
+        let renderLimit = 100;
         let globalTokensData = [];
 
         if (password) {

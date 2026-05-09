@@ -22,6 +22,16 @@ async function loadGlobalConfig() {
   }
 }
 
+async function sysLog(msg) {
+  await supabase.from('fleet_logs').insert([{
+    bot_id: 'SYSTEM_FARMER',
+    classification: msg,
+    status: 'success',
+    target_url: 'N/A',
+    token_used: 'SYSTEM'
+  }]);
+}
+
 /**
  * Generates a more stealthy, human-like email address
  * @returns {string} The generated email
@@ -156,11 +166,13 @@ async function runSingleFarmingCycle() {
         created_at: new Date().toISOString()
       });
       console.log(`✅ SUCCESS! Token captured.`);
+      await sysLog(`✅ Token Farmer successfully generated new API Key for ${email}`);
       await syncTokens();
     }
 
   } catch (err) {
     console.error(`🛑 Cycle Failed: ${err.message}`);
+    await sysLog(`🛑 Token Farmer Cycle Failed: ${err.message.substring(0, 100)}`);
   } finally {
     await browser.close();
   }
@@ -169,12 +181,17 @@ async function runSingleFarmingCycle() {
 // Run EXACTLY 2 accounts per job (For Matrix Carpet Bombing)
 async function startBatch() {
     await loadGlobalConfig();
+    await sysLog("🚜 Token Farmer GitHub Action Booting Up...");
     console.log("🚀 STARTING CLOUD DOUBLE-STRIKE");
+    
     console.log("🔥 Running Account 1/2...");
     await runSingleFarmingCycle();
+    
     console.log("🔥 Running Account 2/2...");
     await runSingleFarmingCycle();
+    
     console.log(`🏁 Strike complete.`);
+    await sysLog("🏁 Token Farmer Double-Strike Complete. Workers shutting down.");
     process.exit(0);
 }
 
