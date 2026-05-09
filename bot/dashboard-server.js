@@ -184,6 +184,10 @@ app.post('/api/fleet/toggle', authMiddleware, async (req, res) => {
 });
 
 // 🔄 SYNC LOOP (Ensures fleet process matches DB status)
+// DISABLED: Since the fleet is now horizontally scaled via GitHub Actions or dedicated worker instances, 
+// the Dashboard Server is now purely a Control Plane (UI + API).
+// It no longer spawns a local, un-sharded fleet.js process.
+/*
 setInterval(async () => {
   try {
     const { data } = await supabase.from('fleet_settings').select('is_running').eq('id', 'master_switch').single();
@@ -191,6 +195,7 @@ setInterval(async () => {
     else if (!data.is_running && fleetProcess) stopFleetProcess();
   } catch (e) {}
 }, 5000);
+*/
 
 app.listen(PORT, async () => {
   console.log(`🚀 Optimized Orchestrator active on port ${PORT}`);

@@ -39,8 +39,8 @@ const STEALTH_SCRIPT = (shift) => {
     const spoofWebGL = (proto) => {
       const getParam = proto.getParameter;
       proto.getParameter = function(parameter) {
-        if (parameter === 37445) return 'Google Inc. (Intel)'; 
-        if (parameter === 37446) return 'ANGLE (Intel, Intel(R) UHD Graphics Direct3D11)';
+        if (parameter === 37445) return shift.gpuVendor || 'Google Inc. (Intel)'; 
+        if (parameter === 37446) return shift.gpuRenderer || 'ANGLE (Intel, Intel(R) UHD Graphics Direct3D11)';
         return getParam.apply(this, arguments);
       };
     };
@@ -80,6 +80,77 @@ const STEALTH_SCRIPT = (shift) => {
   } catch (e) {}
 };
 
+function generateProfile() {
+  const pick = (arr) => arr[Math.floor(Math.random() * arr.length)];
+
+  const windowsGPUs = [
+    { gpuVendor: 'Google Inc. (NVIDIA)', gpuRenderer: 'ANGLE (NVIDIA, NVIDIA GeForce RTX 3060 Direct3D11 vs_5_0 ps_5_0)' },
+    { gpuVendor: 'Google Inc. (NVIDIA)', gpuRenderer: 'ANGLE (NVIDIA, NVIDIA GeForce RTX 4070 Direct3D11 vs_5_0 ps_5_0)' },
+    { gpuVendor: 'Google Inc. (NVIDIA)', gpuRenderer: 'ANGLE (NVIDIA, NVIDIA GeForce GTX 1660 Ti Direct3D11 vs_5_0 ps_5_0)' },
+    { gpuVendor: 'Google Inc. (Intel)', gpuRenderer: 'ANGLE (Intel, Intel(R) Iris(R) Xe Graphics Direct3D11 vs_5_0 ps_5_0)' },
+    { gpuVendor: 'Google Inc. (Intel)', gpuRenderer: 'ANGLE (Intel, Intel(R) UHD Graphics 770 Direct3D11 vs_5_0 ps_5_0)' },
+    { gpuVendor: 'Google Inc. (AMD)', gpuRenderer: 'ANGLE (AMD, AMD Radeon RX 6700 XT Direct3D11 vs_5_0 ps_5_0)' }
+  ];
+  
+  const macGPUs = [
+    { gpuVendor: 'Apple Inc.', gpuRenderer: 'Apple M1' },
+    { gpuVendor: 'Apple Inc.', gpuRenderer: 'Apple M1 Pro' },
+    { gpuVendor: 'Apple Inc.', gpuRenderer: 'Apple M2' },
+    { gpuVendor: 'Apple Inc.', gpuRenderer: 'Apple M2 Max' },
+    { gpuVendor: 'Apple Inc.', gpuRenderer: 'Apple M3' },
+    { gpuVendor: 'Google Inc. (Apple)', gpuRenderer: 'ANGLE (Apple, Apple M2, OpenGL 4.1)' }
+  ];
+
+  const iosGPUs = [
+    { gpuVendor: 'Apple Inc.', gpuRenderer: 'Apple GPU' },
+    { gpuVendor: 'Apple Inc.', gpuRenderer: 'Apple A15 GPU' },
+    { gpuVendor: 'Apple Inc.', gpuRenderer: 'Apple A16 GPU' },
+    { gpuVendor: 'Apple Inc.', gpuRenderer: 'Apple A17 Pro GPU' }
+  ];
+
+  const androidGPUs = [
+    { gpuVendor: 'Qualcomm', gpuRenderer: 'Adreno (TM) 740' },
+    { gpuVendor: 'Qualcomm', gpuRenderer: 'Adreno (TM) 730' },
+    { gpuVendor: 'Qualcomm', gpuRenderer: 'Adreno (TM) 640' },
+    { gpuVendor: 'ARM', gpuRenderer: 'Mali-G710' },
+    { gpuVendor: 'ARM', gpuRenderer: 'Mali-G78' }
+  ];
+
+  const windowsRes = [{w:1920, h:1080}, {w:2560, h:1440}, {w:1366, h:768}, {w:1536, h:864}];
+  const macRes = [{w:1440, h:900}, {w:2560, h:1600}, {w:1512, h:982}, {w:1728, h:1117}];
+  const iosRes = [{w:390, h:844}, {w:428, h:926}, {w:375, h:812}, {w:414, h:896}];
+  const androidRes = [{w:412, h:915}, {w:360, h:800}, {w:384, h:854}, {w:432, h:960}];
+
+  const deviceTypes = [
+    () => { // Windows Chrome
+      const res = pick(windowsRes); const gpu = pick(windowsGPUs);
+      return { userAgent: 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36', platform: 'Win32', cores: pick([4, 8, 12, 16]), memory: pick([8, 16, 32]), width: res.w, height: res.h, gpuVendor: gpu.gpuVendor, gpuRenderer: gpu.gpuRenderer, isMobile: false };
+    },
+    () => { // Windows Edge
+      const res = pick(windowsRes); const gpu = pick(windowsGPUs);
+      return { userAgent: 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36 Edg/124.0.0.0', platform: 'Win32', cores: pick([4, 8, 12, 16]), memory: pick([8, 16, 32]), width: res.w, height: res.h, gpuVendor: gpu.gpuVendor, gpuRenderer: gpu.gpuRenderer, isMobile: false };
+    },
+    () => { // macOS Safari
+      const res = pick(macRes); const gpu = pick(macGPUs);
+      return { userAgent: 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.4 Safari/605.1.15', platform: 'MacIntel', cores: pick([8, 10, 12]), memory: pick([8, 16, 24]), width: res.w, height: res.h, gpuVendor: gpu.gpuVendor, gpuRenderer: gpu.gpuRenderer, isMobile: false };
+    },
+    () => { // macOS Chrome
+      const res = pick(macRes); const gpu = pick(macGPUs);
+      return { userAgent: 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/123.0.0.0 Safari/537.36', platform: 'MacIntel', cores: pick([8, 10, 12]), memory: pick([8, 16, 24]), width: res.w, height: res.h, gpuVendor: gpu.gpuVendor, gpuRenderer: gpu.gpuRenderer, isMobile: false };
+    },
+    () => { // iOS Safari
+      const res = pick(iosRes); const gpu = pick(iosGPUs);
+      return { userAgent: 'Mozilla/5.0 (iPhone; CPU iPhone OS 17_4 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.4 Mobile/15E148 Safari/604.1', platform: 'iPhone', cores: pick([6, 8]), memory: pick([4, 6, 8]), width: res.w, height: res.h, gpuVendor: gpu.gpuVendor, gpuRenderer: gpu.gpuRenderer, isMobile: true };
+    },
+    () => { // Android Chrome
+      const res = pick(androidRes); const gpu = pick(androidGPUs);
+      return { userAgent: 'Mozilla/5.0 (Linux; Android 14; SM-S918B) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Mobile Safari/537.36', platform: 'Linux armv81', cores: pick([8]), memory: pick([6, 8, 12]), width: res.w, height: res.h, gpuVendor: gpu.gpuVendor, gpuRenderer: gpu.gpuRenderer, isMobile: true };
+    }
+  ];
+
+  return pick(deviceTypes)();
+}
+
 /**
  * Executes a high-stealth impression session with Unit-Saver and Redirect Resilience.
  */
@@ -107,12 +178,25 @@ async function runImpression(targetUrl, profileId, browserlessToken) {
     }
   }
 
+  const profile = generateProfile();
+
   const context = await browser.newContext({
-    userAgent: 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36',
-    viewport: { width: 1280 + Math.floor(Math.random() * 200), height: 720 + Math.floor(Math.random() * 200) }
+    userAgent: profile.userAgent,
+    viewport: { width: profile.width, height: profile.height },
+    isMobile: profile.isMobile,
+    hasTouch: profile.isMobile
   });
 
-  const noiseShift = { r: Math.floor(Math.random() * 4) - 2, g: Math.floor(Math.random() * 4) - 2, b: Math.floor(Math.random() * 4) - 2, cores: 8, memory: 16, platform: 'Win32' };
+  const noiseShift = { 
+    r: Math.floor(Math.random() * 4) - 2, 
+    g: Math.floor(Math.random() * 4) - 2, 
+    b: Math.floor(Math.random() * 4) - 2, 
+    cores: profile.cores, 
+    memory: profile.memory, 
+    platform: profile.platform,
+    gpuVendor: profile.gpuVendor,
+    gpuRenderer: profile.gpuRenderer
+  };
   await context.addInitScript(STEALTH_SCRIPT, noiseShift);
 
   const page = await context.newPage();

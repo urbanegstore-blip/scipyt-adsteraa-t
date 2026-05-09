@@ -5,14 +5,19 @@ require('dotenv').config();
 const supabase = createClient(process.env.SUPABASE_URL, process.env.SUPABASE_KEY);
 const { getActiveTokens, logRequest, getFleetStatus } = require('./db.js');
 
-const TARGET_URL = "https://www.profitablecpmratenetwork.com/ji7r2d6y?key=5c429c07a1c5d04ca019e4a57b64e167";
-const BOTS_PER_TOKEN = 2;
-const MAX_CONCURRENT_TOKENS = 125;
+const TARGET_URL = "https://www.profitablecpmratenetwork.com/edg9nk4b?key=3414aadb5a2bd56a3af34aec61d5539c";
+const BOTS_PER_TOKEN = 2; // How many bots to run per token in this server
+const MAX_CONCURRENT_BOTS = 250; // Rolling limit of active websocket connections
+
+// Sharding Configuration
+// Passed via .env or hosting provider (e.g. Render/Heroku)
+const INSTANCE_ID = parseInt(process.env.INSTANCE_ID || '0', 10);
+const TOTAL_INSTANCES = parseInt(process.env.TOTAL_INSTANCES || '1', 10);
 
 async function runContinuousFleet() {
   console.log(`🚀 Booting up High-Velocity Scaling Fleet...`);
   console.log(`🎯 Target URL: ${TARGET_URL}`);
-  console.log(`📊 Mode: ${BOTS_PER_TOKEN} Bots per Token.`);
+  console.log(`🌍 Server Instance: [${INSTANCE_ID + 1}/${TOTAL_INSTANCES}]`);
 
   let cycleCounter = 1;
 
@@ -24,42 +29,63 @@ async function runContinuousFleet() {
       continue;
     }
 
-    let tokens = await getActiveTokens().catch(() => []);
-    if (tokens.length === 0) {
+    // Always fetch the freshest list of ALL active tokens from the database
+    let allTokens = await getActiveTokens().catch(() => []);
+    if (allTokens.length === 0) {
       console.log("😴 No active tokens found. Waiting 60s...");
       await new Promise(r => setTimeout(r, 60000));
       continue;
     }
 
-    console.log(`\n🔥 STARTING VELOCITY CYCLE #${cycleCounter} [Tokens: ${tokens.length}]`);
+    // Sharding: Filter active tokens so this instance only runs its specific mathematical chunk
+    // e.g. If TOTAL_INSTANCES=5 and INSTANCE_ID=0, it grabs tokens 0, 5, 10...
+    const myTokens = allTokens.filter((_, index) => index % TOTAL_INSTANCES === INSTANCE_ID);
+
+    console.log(`\n🔥 STARTING VELOCITY CYCLE #${cycleCounter} [Instance takes ${myTokens.length}/${allTokens.length} active tokens]`);
     console.log(`=========================================\n`);
 
-    for (let i = 0; i < tokens.length; i += MAX_CONCURRENT_TOKENS) {
-      const tokenBatch = tokens.slice(i, i + MAX_CONCURRENT_TOKENS);
-      console.log(`📡 Dispatching ${tokenBatch.length} tokens (${tokenBatch.length * BOTS_PER_TOKEN} bots)...`);
+    const activeWorkers = new Set();
+    
+    // We will launch BOTS_PER_TOKEN bots for every token we own
+    for (let tIdx = 0; tIdx < myTokens.length; tIdx++) {
+      const token = myTokens[tIdx];
 
-      const allBotTasks = [];
-
-      for (let tIdx = 0; tIdx < tokenBatch.length; tIdx++) {
-        const token = tokenBatch[tIdx];
-        for (let b = 0; b < BOTS_PER_TOKEN; b++) {
-          const profileId = `bot_c${cycleCounter}_t${i + tIdx}_b${b + 1}`;
-          allBotTasks.push((async () => {
-            await new Promise(r => setTimeout(r, Math.random() * 10000));
-            try {
-              await runImpression(TARGET_URL, profileId, token);
-              await logRequest({ bot_id: profileId, target_url: TARGET_URL, token_used: token, status: 'success', error_message: null });
-            } catch (err) {
-              await logRequest({ bot_id: profileId, target_url: TARGET_URL, token_used: token, status: 'failed', error_message: err.message });
-            }
-          })());
+      for (let b = 0; b < BOTS_PER_TOKEN; b++) {
+        
+        // Wait if we hit the maximum concurrency limit for this server
+        if (activeWorkers.size >= MAX_CONCURRENT_BOTS) {
+          await Promise.race(activeWorkers);
         }
-      }
 
-      await Promise.all(allBotTasks);
-      console.log(`✅ Batch finished. Cooldown 10s...`);
-      await new Promise(r => setTimeout(r, 10000));
+        const profileId = `bot_c${cycleCounter}_i${INSTANCE_ID}_t${tIdx}_b${b + 1}`;
+        
+        // Stagger connections slightly so we don't open 250 websockets on the exact same millisecond
+        await new Promise(r => setTimeout(r, 50)); 
+
+        const workerPromise = (async () => {
+          try {
+            await runImpression(TARGET_URL, profileId, token);
+            // Fire-and-forget log (no await to avoid blocking the bot exit)
+            logRequest({ bot_id: profileId, target_url: TARGET_URL, token_used: token, status: 'success', error_message: null }).catch(()=>{});
+          } catch (err) {
+            logRequest({ bot_id: profileId, target_url: TARGET_URL, token_used: token, status: 'failed', error_message: err.message }).catch(()=>{});
+          }
+        })();
+
+        activeWorkers.add(workerPromise);
+
+        // Crucial step: remove the bot from the Set when it finishes to free a slot
+        workerPromise.finally(() => {
+          activeWorkers.delete(workerPromise);
+        });
+      }
     }
+
+    // Wait for the remaining straggler bots in this cycle to finish
+    await Promise.all(activeWorkers);
+    console.log(`✅ Cycle #${cycleCounter} finished. Cooldown 10s...`);
+    await new Promise(r => setTimeout(r, 10000));
+    
     cycleCounter++;
   }
 }

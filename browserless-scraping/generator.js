@@ -12,11 +12,32 @@ const supabase = createClient(
   process.env.SUPABASE_KEY
 );
 
-const DOMAIN = 'trendingkart.shop';
+const DOMAIN = 'mintlight.online';
 
+/**
+ * Generates a more stealthy, human-like email address
+ * @returns {string} The generated email
+ */
 function generateEmail() {
-  const randomStr = Math.random().toString(36).substring(2, 8);
-  return `bot_${randomStr}@${DOMAIN}`;
+  const firstNames = ['alex', 'jordan', 'taylor', 'casey', 'morgan', 'sam', 'riley', 'jamie', 'chris', 'pat', 'michael', 'sarah', 'jessica', 'david', 'john', 'emily', 'josh', 'matt', 'ryan', 'laura'];
+  const lastNames = ['smith', 'johnson', 'williams', 'brown', 'jones', 'garcia', 'miller', 'davis', 'martinez', 'rodriguez', 'lee', 'white', 'clark', 'lewis', 'walker', 'hall', 'allen'];
+  
+  const fName = firstNames[Math.floor(Math.random() * firstNames.length)];
+  const lName = lastNames[Math.floor(Math.random() * lastNames.length)];
+  const randomYear = Math.floor(Math.random() * 40) + 1975; // e.g., 1975 to 2014
+  const randomNum = Math.floor(Math.random() * 999);
+  
+  const formats = [
+    `${fName}.${lName}${randomYear}`,
+    `${fName}${lName}${randomNum}`,
+    `${fName[0]}${lName}${randomYear}`,
+    `${lName}.${fName}${Math.floor(Math.random() * 99)}`,
+    `${fName}_${lName}${randomNum}`
+  ];
+  
+  const selectedFormat = formats[Math.floor(Math.random() * formats.length)];
+  
+  return `${selectedFormat}@${DOMAIN}`;
 }
 
 async function waitForOTP(email, startTime) {
@@ -75,21 +96,24 @@ async function runSingleFarmingCycle() {
     
     const emailInput = page.locator('input[type="email"]');
     await emailInput.waitFor({ state: 'visible', timeout: 15000 });
-    await emailInput.fill(email);
+    await emailInput.pressSequentially(email, { delay: 35 + Math.random() * 40 });
     await page.getByRole('button', { name: 'Continue with email' }).click();
 
     const otpInput = page.getByPlaceholder('000 000');
     await otpInput.waitFor({ state: 'visible', timeout: 20000 });
     
     const otp = await waitForOTP(email, startTime);
-    await otpInput.fill(otp);
+    await otpInput.pressSequentially(otp, { delay: 100 + Math.random() * 50 });
     await page.getByRole('button', { name: 'Submit code' }).click();
 
     console.log(`📝 Handling Onboarding...`);
     try {
         const nameInput = page.getByPlaceholder('Jamie Rivera');
         await nameInput.waitFor({ state: 'visible', timeout: 15000 });
-        await nameInput.fill('Cloud Farmer');
+        const firstNames = ['Alex', 'Jordan', 'Taylor', 'Casey', 'Morgan', 'Sam', 'Riley', 'Jamie'];
+        const lastNames = ['Smith', 'Johnson', 'Williams', 'Brown', 'Jones', 'Garcia', 'Miller', 'Davis'];
+        const randomName = `${firstNames[Math.floor(Math.random() * firstNames.length)]} ${lastNames[Math.floor(Math.random() * lastNames.length)]}`;
+        await nameInput.pressSequentially(randomName, { delay: 40 + Math.random() * 60 });
         await page.click('input[type="checkbox"]');
         await page.getByTestId('complete-signup-button').click();
     } catch (e) { console.log("⚠️ Onboarding skipped."); }
@@ -126,9 +150,12 @@ async function runSingleFarmingCycle() {
   }
 }
 
-// Run EXACTLY 1 account per job (For Matrix Carpet Bombing)
+// Run EXACTLY 2 accounts per job (For Matrix Carpet Bombing)
 async function startBatch() {
-    console.log("🚀 STARTING CLOUD SINGLE-STRIKE");
+    console.log("🚀 STARTING CLOUD DOUBLE-STRIKE");
+    console.log("🔥 Running Account 1/2...");
+    await runSingleFarmingCycle();
+    console.log("🔥 Running Account 2/2...");
     await runSingleFarmingCycle();
     console.log(`🏁 Strike complete.`);
     process.exit(0);

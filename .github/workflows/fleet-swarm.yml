@@ -1,0 +1,40 @@
+name: 🚀 Autonomous Fleet Swarm
+
+on:
+  workflow_dispatch:
+  # Optional: Keep the fleet alive continuously 
+  # schedule:
+  #   - cron: '*/30 * * * *' 
+
+jobs:
+  fleet-worker:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        # This tells GitHub to spin up 10 completely separate Ubuntu servers simultaneously.
+        instance: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9] 
+        
+    steps:
+    - name: 📥 Checkout Code
+      uses: actions/checkout@v4
+
+    - name: ⚙️ Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '22'
+
+    - name: 📦 Install Dependencies
+      working-directory: ./bot
+      run: |
+        npm install
+        npx playwright install --with-deps chromium
+
+    - name: 🔥 Run Sharded Fleet (Instance ${{ matrix.instance }})
+      working-directory: ./bot
+      env:
+        SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+        SUPABASE_KEY: ${{ secrets.SUPABASE_KEY }}
+        INSTANCE_ID: ${{ matrix.instance }}
+        TOTAL_INSTANCES: 10
+      run: node fleet.js
