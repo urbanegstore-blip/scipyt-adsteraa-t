@@ -13,7 +13,7 @@ const supabase = createClient(
 );
 
 const DOMAINS = [
-  'a.trendingkart.shop'
+  'b.trendingkart.shop'
 ];
 
 /**
@@ -103,7 +103,14 @@ async function runSingleFarmingCycle() {
     await page.getByRole('button', { name: 'Continue with email' }).click();
 
     const otpInput = page.getByPlaceholder('000 000');
-    await otpInput.waitFor({ state: 'visible', timeout: 20000 });
+    try {
+        await otpInput.waitFor({ state: 'visible', timeout: 20000 });
+    } catch (e) {
+        console.log("⚠️ [DEBUG] OTP box didn't appear. Capturing page text to see what went wrong...");
+        const pageText = await page.evaluate(() => document.body.innerText);
+        console.log("📄 PAGE TEXT DUMP:\n", pageText.substring(0, 1000));
+        throw new Error("OTP input never appeared. See page text dump above.");
+    }
     
     const otp = await waitForOTP(email, startTime);
     await otpInput.pressSequentially(otp, { delay: 100 + Math.random() * 50 });
