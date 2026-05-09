@@ -12,7 +12,9 @@ const supabase = createClient(
   process.env.SUPABASE_KEY
 );
 
-const DOMAIN = 'mintlight.online';
+const DOMAINS = [
+  'a.trendingkart.shop'
+];
 
 /**
  * Generates a more stealthy, human-like email address
@@ -36,8 +38,9 @@ function generateEmail() {
   ];
   
   const selectedFormat = formats[Math.floor(Math.random() * formats.length)];
+  const selectedDomain = DOMAINS[Math.floor(Math.random() * DOMAINS.length)];
   
-  return `${selectedFormat}@${DOMAIN}`;
+  return `${selectedFormat}@${selectedDomain}`;
 }
 
 async function waitForOTP(email, startTime) {
