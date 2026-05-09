@@ -95,7 +95,7 @@ async function runSingleFarmingCycle() {
     });
     
     console.log(`🌐 Navigating to Browserless...`);
-    await page.goto('https://www.browserless.io/signup/email', { waitUntil: 'domcontentloaded', timeout: 30000 });
+    await page.goto('https://www.browserless.io/signup/email?plan=free', { waitUntil: 'domcontentloaded', timeout: 30000 });
     
     const emailInput = page.locator('input[type="email"]');
     await emailInput.waitFor({ state: 'visible', timeout: 15000 });
